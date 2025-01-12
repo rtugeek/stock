@@ -12,11 +12,11 @@ dependencies:
     specifier: ^11.0.1
     version: 11.2.0(vue@3.5.12)
   '@widget-js/core':
-    specifier: ^24.1.1-beta.42
-    version: 24.1.1-beta.42
+    specifier: ^24.1.1-beta.44
+    version: 24.1.1-beta.44
   '@widget-js/vue3':
-    specifier: ^24.1.1-beta.41
-    version: 24.1.1-beta.41(axios@1.7.7)(vue@3.5.12)
+    specifier: ^24.1.1-beta.48
+    version: 24.1.1-beta.48(axios@1.7.7)(vue@3.5.12)
   axios:
     specifier: ^1.7.4
     version: 1.7.7
@@ -1910,8 +1910,8 @@ packages:
       path-normalize: 6.0.13
     dev: true
 
-  /@widget-js/core@24.1.1-beta.42:
-    resolution: {integrity: sha512-AD3o1Xhe5N/OU32gZN15Cksbmr330s25Un3ZfLpjbVAT/CHVa/MB1I2Xyacxr6thDrgScE3LqsTt62eLc/ADzQ==}
+  /@widget-js/core@24.1.1-beta.44:
+    resolution: {integrity: sha512-hsdS48bao2gebvyMfFagXoo3WO2VIZ3D6GeAUgR9zVgCTr5TufiJiPfnpSvBctgoOwCJ3vL77uBkT2NAPN6jAQ==}
     dependencies:
       '@types/css-tree': 2.3.8
       css-tree: 2.3.1
@@ -1985,14 +1985,14 @@ packages:
       - vue
     dev: true
 
-  /@widget-js/vue3@24.1.1-beta.41(axios@1.7.7)(vue@3.5.12):
-    resolution: {integrity: sha512-eOYjm5ewxvn5IKvzT8qyACh1c2lQWGE+jqn6dWAnSdMtSEe/LSRVDOvTnsNC5sIAaY6AsAg5CSTDb/JmcZytNA==}
+  /@widget-js/vue3@24.1.1-beta.48(axios@1.7.7)(vue@3.5.12):
+    resolution: {integrity: sha512-1UZ20h9MnGvQ1jA3C6UbRokZ5piJJJI0DuhfjP88qDZdG5xM7gTv/QuxS+l9GdTzUaPxHZAPrizrFTrrxlpqoA==}
     dependencies:
       '@icon-park/vue-next': 1.4.2(vue@3.5.12)
       '@vueuse/core': 9.13.0(vue@3.5.12)
       '@vueuse/integrations': 9.13.0(axios@1.7.7)(change-case@5.4.4)(vue@3.5.12)
       '@vueuse/shared': 10.11.1(vue@3.5.12)
-      '@widget-js/core': 24.1.1-beta.42
+      '@widget-js/core': 24.1.1-beta.44
       change-case: 5.4.4
       consola: 3.2.3
       element-plus: 2.8.7(vue@3.5.12)

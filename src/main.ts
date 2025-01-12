@@ -2,9 +2,9 @@ import { WidgetJsPlugin } from '@widget-js/vue3'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import 'virtual:uno.css'
 import '@widget-js/vue3/dist/style.css'
 import '@/assets/main.css'
-import 'virtual:uno.css'
 
 const app = createApp(App)
 

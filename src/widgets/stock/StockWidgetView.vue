@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import { useStockApi } from '@/hook/useStockApi'
+import { DEFAULT_STOCK_SYMBOLS } from '@/widgets/stock/model/StockModel'
 import { Refresh } from '@icon-park/vue-next'
 import { useStorage } from '@vueuse/core'
 import { useWidget, useWidgetTheme } from '@widget-js/vue3'
 import { computed } from 'vue'
 
-const { displayStockData, loading } = useStockApi()
+const symbols = useStorage('stock_symbols', DEFAULT_STOCK_SYMBOLS)
+const { displayStockData, loading } = useStockApi(symbols)
 const { sizeStyle } = useWidget()
 const stockColor = useStorage('stock_color', 0)
 const stockTitle = useStorage('stock_title', 0)

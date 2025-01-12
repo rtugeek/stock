@@ -27,11 +27,29 @@ export class BaiDuStockApi {
     }
     return undefined
   }
+
+  static async getIndexStock(symbol: string): Promise<Stock | undefined> {
+    try {
+      const response = await axios.get(`https://finance.pae.baidu.com/selfselect/sug?wd=${symbol}&skip_login=1&finClientType=pc}`)
+      const data = response.data as BaiDuApiResponse
+      if (data.ResultCode == '0' && data.Result.stock.length > 0) {
+        const stock = data.Result.stock.find(s => s.type == 'index')
+        return stock
+      }
+      else {
+        console.error(`Error fetching stock data for ${symbol}`)
+      }
+    }
+    catch (e) {
+      console.error(e)
+    }
+    return undefined
+  }
 }
 
 export interface Stock {
   code: string
-  type: string
+  type: 'index' | 'fund' | 'stock'
   market: string
   follow_status: string
   amount: string
