@@ -1,13 +1,13 @@
 {
   "name": "cn.stocks.widget",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": "Jason",
   "homepage": "",
   "title": {
-    "zh-CN": "实时股票"
+    "zh-CN": "股票组件"
   },
   "description": {
-    "zh-CN": "实时股票"
+    "zh-CN": "每分钟更新一次股票数据"
   },
   "entry": "/",
   "remote": {
@@ -19,12 +19,54 @@
   "url": "",
   "widgets": [
     {
-      "name": "cn.stocks.widget.stock",
+      "name": "cn.stocks.widget.stock_medium",
       "title": {
-        "zh-CN": "股票"
+        "zh-CN": "大A指数"
       },
       "description": {
-        "zh-CN": "跟踪股票价格，每分钟刷新一次"
+        "zh-CN": "真爱生命，远离股市"
+      },
+      "keywords": [
+        "recommend"
+      ],
+      "security": false,
+      "permissions": [],
+      "lang": "zh-CN",
+      "width": 4,
+      "height": 2,
+      "maxWidth": 4,
+      "webviewTag": false,
+      "maxHeight": 2,
+      "minWidth": 4,
+      "minHeight": 2,
+      "movable": true,
+      "singleton": false,
+      "resizable": true,
+      "path": "/widget/stock_medium",
+      "meta": {},
+      "backgroundThrottling": true,
+      "previewImage": "/preview_stock_medium.png",
+      "categories": [
+        "utilities"
+      ],
+      "supportDeployMode": 17,
+      "routes": [],
+      "socialLinks": [
+        {
+          "name": "github",
+          "link": "https://github.com/rtugeek/stocks-desktop"
+        }
+      ]
+    },
+    {
+      "name": "cn.stocks.widget.stock",
+      "title": {
+        "zh-CN": "股票",
+        "en-US": "Stock"
+      },
+      "description": {
+        "zh-CN": "跟踪股票价格，每分钟刷新一次",
+        "en-US": "Track stock prices, refresh every minute"
       },
       "keywords": [
         "recommend"
@@ -51,7 +93,13 @@
       ],
       "supportDeployMode": 17,
       "configPagePath": "/widget/config/stock?transparent=false&frame=true&height=400&width=600",
-      "routes": []
+      "routes": [],
+      "socialLinks": [
+        {
+          "name": "github",
+          "link": "https://github.com/rtugeek/stocks-desktop"
+        }
+      ]
     }
   ],
   "pages": []
