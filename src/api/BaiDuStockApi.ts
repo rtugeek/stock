@@ -1,47 +1,39 @@
-import type { StockModel } from '@/widgets/stock/model/StockModel'
 import axios from 'axios'
 
 export class BaiDuStockApi {
-  static async getStockPrice(symbol: string): Promise<StockModel | undefined> {
-    try {
-      const response = await axios.get(`https://finance.pae.baidu.com/selfselect/sug?wd=${symbol}&skip_login=1&finClientType=pc}`)
-      const data = response.data as BaiDuApiResponse
-      if (data.ResultCode == '0' && data.Result.stock.length > 0) {
-        const stock = data.Result.stock[0]
-        if (stock) {
-          return {
-            symbol,
-            price: stock.price,
-            change: stock.ratio,
-            changeArrow: stock.status == '1' ? 'up' : 'down',
-            name: stock.name,
-          } as StockModel
-        }
+  /**
+   * 股票
+   * @param code
+   */
+  static async getStock(code: string): Promise<Stock | undefined> {
+    const data = await this.selfSelect(code)
+    if (data.ResultCode == '0' && data.Result.stock.length > 0) {
+      const stock = data.Result.stock.find(it => it.type == 'stock')
+      if (stock) {
+        return stock
       }
-      else {
-        console.error(`Error fetching stock data for ${symbol}`)
-      }
-    }
-    catch (e) {
-      console.error(e)
     }
     return undefined
   }
 
-  static async getIndexStock(symbol: string): Promise<Stock | undefined> {
-    try {
-      const response = await axios.get(`https://finance.pae.baidu.com/selfselect/sug?wd=${symbol}&skip_login=1&finClientType=pc}`)
-      const data = response.data as BaiDuApiResponse
-      if (data.ResultCode == '0' && data.Result.stock.length > 0) {
-        const stock = data.Result.stock.find(s => s.type == 'index')
-        return stock
-      }
-      else {
-        console.error(`Error fetching stock data for ${symbol}`)
-      }
-    }
-    catch (e) {
-      console.error(e)
+  static async getQuotation(code: string): Promise<BaiDuApiResponse<QuotationResult>> {
+    const response = await axios.get(`https://finance.pae.baidu.com/vapi/v1/getquotation?all=1&srcid=5353&pointType=string&group=quotation_fiveday_ab&market_type=ab&new_Format=1&finClientType=pc&code=${code}`)
+    return response.data as BaiDuApiResponse<QuotationResult>
+  }
+
+  static async selfSelect(code: string) {
+    const response = await axios.get(`https://finance.pae.baidu.com/selfselect/sug?wd=${code}&skip_login=1&finClientType=pc}`)
+    return response.data as BaiDuApiResponse<any>
+  }
+
+  /**
+   * 指数
+   * @param code
+   */
+  static async getIndex(code: string): Promise<Stock | undefined> {
+    const data = await this.selfSelect(code)
+    if (data.ResultCode == '0' && data.Result.stock.length > 0) {
+      return data.Result.stock.find(s => s.type == 'index')
     }
     return undefined
   }
@@ -63,15 +55,19 @@ export interface Stock {
   holdingAmount: string
   volume: string
   capitalization: string
-  stockStatus: string
   peRate: string
   pbRate: string
   /**
+   * 0: 休市/停牌
    * 1: 涨
    * -1: 跌
    */
   status: string
-  stockStatusInfo: string
+  /**
+   * 6 - 停牌/休市
+   */
+  stockStatus: string
+  stockStatusInfo: 'STOPT' | 'ENDTR'
   src_loc: string
   subType: string
   sf_url: string
@@ -100,8 +96,39 @@ export interface Result {
   follow_num: string
 }
 
-export interface BaiDuApiResponse {
+export interface BaiDuApiResponse<T> {
   QueryID: string
-  ResultCode: string
-  Result: Result
+  /**
+   * 非0代表成功
+   */
+  ResultCode: string | number
+  Result: T
+}
+
+interface MarketData {
+  date: string
+  p: string // Contains the actual trading data in CSV format
+}
+
+export interface QuotationResult {
+  StdStg: string
+  StdStl: string
+  _update_time: string
+  code: string
+  url: string
+  wiseUrl: string
+  encode: string
+  key: string
+  provider: string
+  update: {
+    timezone: string
+    text: string
+    time: number
+    time_diff: string
+  }
+  newMarketData: {
+    headers: string[]
+    keys: string[]
+    marketData: MarketData[]
+  }
 }

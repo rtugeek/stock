@@ -1,7 +1,7 @@
 import { WidgetPackage } from '@widget-js/core'
 
 export default new WidgetPackage({
-  author: 'Jason',
+  author: 'Neo Fu',
   description: {
     'zh-CN': '每分钟更新一次股票数据',
   },

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import ExchangeTag from '@/component/ExchangeTag.vue'
 import { useStockIndexApi } from '@/hook/useStockIndexApi'
 import { useStorage } from '@vueuse/core'
 import { useWidget } from '@widget-js/vue3'
@@ -17,9 +18,7 @@ const stockColor = useStorage('stock_color', 0)
         <div class="flex flex-col justify-between gap-1">
           <span class="stock-title flex-1">{{ stock.name }}</span>
           <div class="info flex gap-1 items-center justify-center">
-            <div class="tag">
-              {{ stock.exchange }}
-            </div>
+            <ExchangeTag :text=" stock.exchange " />
             {{ stock.code }}
           </div>
         </div>
@@ -41,6 +40,7 @@ const stockColor = useStorage('stock_color', 0)
   display: flex;
   flex-direction: column;
   padding: 0.5rem 1rem;
+  width: 100%;
   box-sizing: border-box;
   justify-content: space-around;
   height: var(--widget-inner-height);
@@ -50,25 +50,19 @@ const stockColor = useStorage('stock_color', 0)
   font-size: 0.7rem;
 }
 
+.stock-item{
+  width: 100%;
+}
+
 .stock-title{
   font-size: 1rem;
   font-weight: bold;
 }
-
-.tag{
-  display: flex;
-  width: 2rem;
-  text-align: center;
-  justify-content: center;
-  border-radius: 4px;
-  align-items: center;
-  color: #ff5b6a;
-  background: rgba(255, 0, 0, 0.29);
-}
 .positive{
-  color: red;
+  color:white;
+  border-radius: 4px;
+  background: #ff0020;
 }
-
 .negative{
   color:white;
   background: #73c167;

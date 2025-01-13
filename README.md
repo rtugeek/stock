@@ -1,5 +1,9 @@
 # Stock Widgets
 
+### 股票组件【小】
+
+![](./public/preview_stock_small.png)
+
 ### 股票组件
 
 ![](./public/preview_stock.png)

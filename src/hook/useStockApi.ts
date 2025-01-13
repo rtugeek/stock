@@ -1,4 +1,4 @@
-import type { StockModel } from '@/widgets/stock/model/StockModel'
+import type { Stock } from '@/api/BaiDuStockApi'
 import type { Ref } from 'vue'
 import { BaiDuStockApi } from '@/api/BaiDuStockApi'
 
@@ -8,7 +8,7 @@ import consola from 'consola'
 import { computed, reactive, ref, watch } from 'vue'
 
 export function useStockApi(symbols: Ref<string>) {
-  const stockData = reactive<StockModel[]>([])
+  const stockData = reactive<Stock[]>([])
   const errorMsg = ref('')
   const loading = ref(false)
   const displayStockData = computed(() => {
@@ -18,7 +18,7 @@ export function useStockApi(symbols: Ref<string>) {
   watch(symbols, () => {
     // 移除被删除的股票
     for (let i = 0; i < stockData.length; i++) {
-      if (!symbols_arr.value.includes(stockData[i].symbol)) {
+      if (!symbols_arr.value.includes(stockData[i].code)) {
         stockData.splice(i, 1)
         i--
       }
@@ -29,12 +29,12 @@ export function useStockApi(symbols: Ref<string>) {
     loading.value = true
     try {
       for (const symbol of symbols_arr.value) {
-        const stockModel = await BaiDuStockApi.getStockPrice(symbol)
+        const stockModel = await BaiDuStockApi.getStock(symbol)
         // 每秒只请求一次，防止短时间内发起多次请求，被服务器拒绝
         if (stockModel) {
           consola.log(`Content of the second`, stockModel)
           // Update the stock data
-          const index = stockData.findIndex(s => s.symbol === stockModel.symbol)
+          const index = stockData.findIndex(s => s.code === stockModel.code)
           if (index > -1) {
             stockData[index] = stockModel
           }

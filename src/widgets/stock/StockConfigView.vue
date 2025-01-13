@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { DEFAULT_STOCK_SYMBOLS } from '@/widgets/stock/model/StockModel'
+import { DEFAULT_STOCK_CODE } from '@/widgets/stock/model/StockModel'
 import { useStorage } from '@vueuse/core'
 import {
   useWidget,
@@ -18,7 +18,7 @@ const widgetConfigOption = new WidgetConfigOption({
   },
 })
 
-const stockSymbols = useStorage<string>('stock_symbols', DEFAULT_STOCK_SYMBOLS)
+const stockSymbols = useStorage<string>('stock_symbols', DEFAULT_STOCK_CODE)
 const stockColor = useStorage('stock_color', 0)
 const stockTitle = useStorage('stock_title', 0)
 const stockSymbolsModel = computed<string>({

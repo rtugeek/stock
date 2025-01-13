@@ -1,18 +1,18 @@
 <script lang="ts" setup>
 import { useStockApi } from '@/hook/useStockApi'
-import { DEFAULT_STOCK_SYMBOLS } from '@/widgets/stock/model/StockModel'
+import { DEFAULT_STOCK_CODE } from '@/widgets/stock/model/StockModel'
 import { Refresh } from '@icon-park/vue-next'
 import { useStorage } from '@vueuse/core'
 import { useWidget, useWidgetTheme } from '@widget-js/vue3'
 import { computed } from 'vue'
 
-const symbols = useStorage('stock_symbols', DEFAULT_STOCK_SYMBOLS)
+const symbols = useStorage('stock_symbols', DEFAULT_STOCK_CODE)
 const { displayStockData, loading } = useStockApi(symbols)
 const { sizeStyle } = useWidget()
 const stockColor = useStorage('stock_color', 0)
 const stockTitle = useStorage('stock_title', 0)
 const titleProp = computed(() => {
-  return stockTitle.value === 0 ? 'symbol' : 'name'
+  return stockTitle.value === 0 ? 'code' : 'name'
 })
 useWidgetTheme()
 </script>
@@ -22,14 +22,14 @@ useWidgetTheme()
     <el-scrollbar :height="sizeStyle.height">
       <div class="stock-data flex flex-col">
         <Refresh v-show="loading" class="loading" />
-        <div v-for="stock in displayStockData" :key="stock.symbol" class="stock-item flex">
+        <div v-for="stock in displayStockData" :key="stock.code" class="stock-item flex">
           <span class="stock-title flex-1">{{ stock[titleProp] }}</span>
           <span class="stock-price flex-1">{{ stock.price }}</span>
-          <span v-if="stock.changeArrow === 'up'" class="stock-change positive" :class="{ china: stockColor == 0 }">
-            <i class="fas fa-arrow-up" /> {{ stock.change }}
+          <span v-if="stock.status === '1'" class="stock-change positive" :class="{ china: stockColor == 0 }">
+            <i class="fas fa-arrow-up" /> {{ stock.ratio }}
           </span>
-          <span v-if="stock.changeArrow === 'down'" class="stock-change negative" :class="{ china: stockColor == 0 } ">
-            <i class="fas fa-arrow-down" /> {{ stock.change }}
+          <span v-else class="stock-change negative" :class="{ china: stockColor == 0 } ">
+            <i class="fas fa-arrow-down" /> {{ stock.ratio }}
           </span>
         </div>
       </div>

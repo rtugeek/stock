@@ -29,7 +29,7 @@ export function useStockIndexApi(codes: Ref<string>) {
     loading.value = true
     try {
       for (const symbol of codeArray.value) {
-        const stockModel = await BaiDuStockApi.getIndexStock(symbol)
+        const stockModel = await BaiDuStockApi.getIndex(symbol)
         // 每秒只请求一次，防止短时间内发起多次请求，被服务器拒绝
         if (stockModel) {
           consola.log(`Content of the second`, stockModel)

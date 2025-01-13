@@ -1,7 +1,7 @@
 {
   "name": "cn.stocks.widget",
-  "version": "1.2.0",
-  "author": "Jason",
+  "version": "1.3.0",
+  "author": "Neo Fu",
   "homepage": "",
   "title": {
     "zh-CN": "股票组件"
@@ -18,6 +18,47 @@
   "hash": true,
   "url": "",
   "widgets": [
+    {
+      "name": "cn.stocks.widget.stock_small",
+      "title": {
+        "zh-CN": "股票",
+        "en-US": "Stock"
+      },
+      "description": {
+        "zh-CN": "跟踪股票价格，每分钟刷新一次",
+        "en-US": "Track stock prices, refresh every minute"
+      },
+      "keywords": [
+        "recommend"
+      ],
+      "security": false,
+      "permissions": [],
+      "lang": "zh-CN",
+      "width": 2,
+      "height": 2,
+      "maxWidth": 2,
+      "webviewTag": false,
+      "maxHeight": 2,
+      "minWidth": 2,
+      "minHeight": 2,
+      "movable": true,
+      "singleton": false,
+      "resizable": true,
+      "path": "/widget/stock_small",
+      "meta": {},
+      "backgroundThrottling": true,
+      "previewImage": "/preview_stock_small.png",
+      "categories": [],
+      "supportDeployMode": 17,
+      "configPagePath": "/widget/config/stock_small?width=600&height=500&frame=true&transparent=false",
+      "routes": [],
+      "socialLinks": [
+        {
+          "name": "github",
+          "link": "https://github.com/rtugeek/stocks-desktop"
+        }
+      ]
+    },
     {
       "name": "cn.stocks.widget.stock_medium",
       "title": {
