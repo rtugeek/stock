@@ -22,12 +22,17 @@ export class BaiDuStockApi {
     return response.data as BaiDuApiResponse<QuotationResult>
   }
 
-  static async getQuotationMinute(code: string): Promise<Quotation> {
+  /**
+   *
+   * @param code
+   * @param group quotation_minute_ab  quotation_index_fiveday
+   */
+  static async getQuotationMinute(code: string, group: QuotationGroup = 'quotation_minute_ab'): Promise<Quotation> {
     const response = await axios.get(`https://finance.pae.baidu.com/vapi/v1/getquotation`, {
       params: {
         all: 1,
         srcid: 5353,
-        group: 'quotation_minute_hk',
+        group,
         market_type: 'ab',
         code,
         finClientType: 'pc',
@@ -57,6 +62,8 @@ export class BaiDuStockApi {
     return undefined
   }
 }
+
+export type QuotationGroup = 'quotation_minute_ab' | 'quotation_index_fiveday'
 
 export interface Stock {
   code: string

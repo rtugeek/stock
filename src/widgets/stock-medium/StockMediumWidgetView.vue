@@ -1,14 +1,12 @@
 <script lang="ts" setup>
 import ExchangeTag from '@/component/ExchangeTag.vue'
 import { useStockIndexApi } from '@/hook/useStockIndexApi'
-import { useStorage } from '@vueuse/core'
 import { useWidget } from '@widget-js/vue3'
 import { ref } from 'vue'
 
 useWidget()
 const codes = ref('000001,399001,399006')
 const { displayStockData } = useStockIndexApi(codes)
-const stockColor = useStorage('stock_color', 0)
 </script>
 
 <template>
@@ -23,10 +21,10 @@ const stockColor = useStorage('stock_color', 0)
           </div>
         </div>
         <span class="stock-price ml-auto">{{ stock.price }}</span>
-        <span v-if="stock.status === '1'" class="stock-change positive" :class="{ china: stockColor == 0 }">
+        <span v-if="stock.status === '1'" class="stock-change positive">
           {{ stock.ratio }}
         </span>
-        <span v-if="stock.status === '-1'" class="stock-change negative" :class="{ china: stockColor == 0 } ">
+        <span v-if="stock.status === '-1'" class="stock-change negative">
           {{ stock.ratio }}
         </span>
       </div>

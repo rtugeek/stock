@@ -1,12 +1,12 @@
 import type { EChartsType } from 'echarts'
-import type { MaybeRef } from 'vue'
 import { useStockColor } from '@/hook/useStockColor'
 import * as echarts from 'echarts'
-import { nextTick, onMounted } from 'vue'
+import { nextTick, onMounted, watch } from 'vue'
 
-export function useStockChart(domId: string, isUp: MaybeRef<boolean>) {
+export function useStockChart(domId: string, height: number = 40) {
   let stockChart: EChartsType
-  const stockColor = useStockColor(isUp)
+  let currentIsUp = false
+  const stockColor = useStockColor()
   onMounted(async () => {
     await nextTick()
     stockChart = echarts.init(document.getElementById(domId))
@@ -19,7 +19,7 @@ export function useStockChart(domId: string, isUp: MaybeRef<boolean>) {
       grid: {
         top: 0,
         bottom: 0,
-        height: '40',
+        height: `${height}`,
       },
       yAxis: {
         type: 'value',
@@ -37,15 +37,15 @@ export function useStockChart(domId: string, isUp: MaybeRef<boolean>) {
     })
   })
 
-  function update(seriesData: (string | number)[]) {
-    const lineColor = stockColor.color.value
-    const alphaColor = stockColor.colorEnd.value
+  function updateStyle(isUp: boolean) {
+    const newColor = stockColor.getColor(isUp)
+    const lineColor = newColor.color
+    const alphaColor = newColor.colorEnd
     stockChart.setOption({
       series: [
         {
           name: '价格',
           type: 'line',
-          data: seriesData,
           showSymbol: false,
           itemStyle: {
             color: lineColor,
@@ -54,9 +54,6 @@ export function useStockChart(domId: string, isUp: MaybeRef<boolean>) {
             width: 1,
           },
           markLine: {
-            data: [
-              { yAxis: seriesData[seriesData.length - 1] },
-            ],
             symbol: 'none',
             label: {
               show: false,
@@ -85,6 +82,29 @@ export function useStockChart(domId: string, isUp: MaybeRef<boolean>) {
                 color: alphaColor,
               },
             ]),
+          },
+        },
+      ],
+    })
+  }
+
+  watch(stockColor.color, () => {
+    updateStyle(currentIsUp)
+  })
+
+  function update(seriesData: (string | number)[], isUp: boolean) {
+    currentIsUp = isUp
+    updateStyle(isUp)
+    stockChart.setOption({
+      series: [
+        {
+          name: '价格',
+          type: 'line',
+          data: seriesData,
+          markLine: {
+            data: [
+              { yAxis: seriesData[seriesData.length - 1] },
+            ],
           },
         },
       ],

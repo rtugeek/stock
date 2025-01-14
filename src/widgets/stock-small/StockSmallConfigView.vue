@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import StockColorFormItem from '@/component/StockColorFormItem.vue'
 import { useWidget, useWidgetStorage, WidgetConfigOption } from '@widget-js/vue3'
 
 const { widgetParams } = useWidget()
@@ -28,6 +29,7 @@ const stockCode = useWidgetStorage('stock-code', '01810')
           placeholder="输入股票代号"
         />
       </el-form-item>
+      <StockColorFormItem />
     </template>
   </widget-edit-dialog>
 </template>

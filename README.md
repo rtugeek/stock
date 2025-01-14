@@ -6,7 +6,7 @@
 
 ### 股票组件
 
-![](./public/preview_stock.png)
+![](./public/preview_stock_large.png)
 
 ### 大A指数
 ![](./public/preview_stock_medium.png)
