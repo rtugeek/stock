@@ -1,3 +1,4 @@
+import { Quotation } from '@/api/Qutation'
 import axios from 'axios'
 
 export class BaiDuStockApi {
@@ -19,6 +20,24 @@ export class BaiDuStockApi {
   static async getQuotation(code: string): Promise<BaiDuApiResponse<QuotationResult>> {
     const response = await axios.get(`https://finance.pae.baidu.com/vapi/v1/getquotation?all=1&srcid=5353&pointType=string&group=quotation_fiveday_ab&market_type=ab&new_Format=1&finClientType=pc&code=${code}`)
     return response.data as BaiDuApiResponse<QuotationResult>
+  }
+
+  static async getQuotationMinute(code: string): Promise<Quotation> {
+    const response = await axios.get(`https://finance.pae.baidu.com/vapi/v1/getquotation`, {
+      params: {
+        all: 1,
+        srcid: 5353,
+        group: 'quotation_minute_hk',
+        market_type: 'ab',
+        code,
+        finClientType: 'pc',
+        eprop: 'min',
+        chartType: 'minute',
+        stock_type: 'ab',
+      },
+    })
+    const data = response.data as BaiDuApiResponse<Quotation>
+    return new Quotation(data.Result)
   }
 
   static async selfSelect(code: string) {
@@ -64,10 +83,11 @@ export interface Stock {
    */
   status: string
   /**
+   * 2 - 交易中
    * 6 - 停牌/休市
    */
   stockStatus: string
-  stockStatusInfo: 'STOPT' | 'ENDTR'
+  stockStatusInfo: 'STOPT' | 'ENDTR' | 'TRADE'
   src_loc: string
   subType: string
   sf_url: string
@@ -126,9 +146,11 @@ export interface QuotationResult {
     time: number
     time_diff: string
   }
-  newMarketData: {
-    headers: string[]
-    keys: string[]
-    marketData: MarketData[]
-  }
+  newMarketData: NewMarketData
+}
+
+export interface NewMarketData {
+  headers: string[]
+  keys: string[]
+  marketData: MarketData[]
 }

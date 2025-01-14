@@ -3,7 +3,7 @@ import { Widget, WidgetKeyword } from '@widget-js/core'
 const StockMediumWidget = new Widget({
   name: 'cn.stocks.widget.stock_medium',
   title: { 'zh-CN': '大A指数' },
-  description: { 'zh-CN': '真爱生命，远离股市' },
+  description: { 'zh-CN': '珍爱生命，远离股市' },
   keywords: [WidgetKeyword.RECOMMEND],
   categories: ['utilities'],
   lang: 'zh-CN',

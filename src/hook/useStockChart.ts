@@ -55,7 +55,7 @@ export function useStockChart(domId: string, isUp: MaybeRef<boolean>) {
           },
           markLine: {
             data: [
-              { yAxis: seriesData[seriesData.length - 1] }, // 添加一条横线在 seriesData = 150 的位置
+              { yAxis: seriesData[seriesData.length - 1] },
             ],
             symbol: 'none',
             label: {
