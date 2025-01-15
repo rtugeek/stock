@@ -24,14 +24,16 @@ const { isUp, color } = useStockQuotation(code, { onNewData: (data) => {
 <template>
   <div class="stock-item flex items-center gap-2">
     <div class="flex flex-col justify-between gap-1">
-      <span class="stock-title flex-1">{{ stock.name }}</span>
-      <div class="info flex gap-1 items-center justify-center">
+      <div class="stock-title">
+        {{ stock.name }}
+      </div>
+      <div class="info flex gap-1">
         <ExchangeTag :text=" stock.exchange " />
         {{ stock.code }}
       </div>
     </div>
     <StockChart :id="chartId" ref="stockChartRef" class="ml-auto" :height="25" />
-    <span class="stock-price">{{ stock.price }}</span>
+    <span class="stock-price">{{ Number.parseFloat(stock.price).toFixed(2) }}</span>
     <span class="stock-change" :style="{ backgroundColor: color }">
       {{ stock.ratio }}
     </span>
@@ -48,18 +50,28 @@ const { isUp, color } = useStockQuotation(code, { onNewData: (data) => {
 }
 
 .stock-title{
+  width: 7rem;
+  white-space: nowrap;
   font-size: 1rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
   font-weight: bold;
 }
+
 .stock-change{
   border-radius: 4px;
   color: white;
   height: 1.5rem;
   width: 4rem;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
   justify-content: center;
   justify-items: center;
+}
+
+.stock-price{
+  width: 3.5rem;
 }
 
 .chart{

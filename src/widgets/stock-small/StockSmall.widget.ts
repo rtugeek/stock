@@ -5,7 +5,7 @@ const StockSmallWidget = new Widget({
   title: { 'zh-CN': '股票', 'en-US': 'Stock' },
   description: { 'zh-CN': '跟踪股票价格，每分钟刷新一次', 'en-US': 'Track stock prices, refresh every minute' },
   keywords: [WidgetKeyword.RECOMMEND],
-  categories: [],
+  categories: ['utilities', 'finance'],
   lang: 'zh-CN',
   width: 2,
   height: 2,

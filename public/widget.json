@@ -48,7 +48,10 @@
       "meta": {},
       "backgroundThrottling": true,
       "previewImage": "/preview_stock_small.png",
-      "categories": [],
+      "categories": [
+        "utilities",
+        "finance"
+      ],
       "supportDeployMode": 17,
       "configPagePath": "/widget/config/stock_small?width=600&height=500&frame=true&transparent=false",
       "routes": [],
@@ -88,7 +91,8 @@
       "backgroundThrottling": true,
       "previewImage": "/preview_stock_medium.png",
       "categories": [
-        "utilities"
+        "utilities",
+        "finance"
       ],
       "supportDeployMode": 17,
       "routes": [],
@@ -130,10 +134,11 @@
       "backgroundThrottling": true,
       "previewImage": "/preview_stock_large.png",
       "categories": [
-        "utilities"
+        "utilities",
+        "finance"
       ],
       "supportDeployMode": 17,
-      "configPagePath": "/widget/config/stock?transparent=false&frame=true&height=400&width=600",
+      "configPagePath": "/widget/config/stock?transparent=false&frame=true&height=700&width=600",
       "routes": [],
       "socialLinks": [
         {

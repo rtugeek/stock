@@ -1,5 +1,5 @@
 import type { QuotationGroup } from '@/api/BaiDuStockApi'
-import type { Quotation } from '@/api/Qutation'
+import type { Quotation } from '@/model/Qutation'
 import type { MaybeRef, Ref } from 'vue'
 import { BaiDuStockApi } from '@/api/BaiDuStockApi'
 import { useStockColor } from '@/hook/useStockColor'

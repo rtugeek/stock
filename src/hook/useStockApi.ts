@@ -7,7 +7,7 @@ import { delay } from '@widget-js/core'
 import consola from 'consola'
 import { computed, reactive, ref, watch } from 'vue'
 
-export function useStockApi(symbols: Ref<string>) {
+export function useStockApi(symbols: Ref<string>, onStockFetched?: (stock: Stock) => void) {
   const stockData = reactive<Stock[]>([])
   const errorMsg = ref('')
   const loading = ref(false)
@@ -32,7 +32,7 @@ export function useStockApi(symbols: Ref<string>) {
         const stockModel = await BaiDuStockApi.getStock(symbol)
         // 每秒只请求一次，防止短时间内发起多次请求，被服务器拒绝
         if (stockModel) {
-          consola.log(`Content of the second`, stockModel)
+          onStockFetched?.(stockModel)
           // Update the stock data
           const index = stockData.findIndex(s => s.code === stockModel.code)
           if (index > -1) {

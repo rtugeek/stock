@@ -1,4 +1,4 @@
-import { Quotation } from '@/api/Qutation'
+import { Quotation } from '@/model/Qutation'
 import axios from 'axios'
 
 export class BaiDuStockApi {
@@ -64,10 +64,10 @@ export class BaiDuStockApi {
 }
 
 export type QuotationGroup = 'quotation_minute_ab' | 'quotation_index_fiveday'
-
+export type StockType = 'index' | 'fund' | 'stock'
 export interface Stock {
   code: string
-  type: 'index' | 'fund' | 'stock'
+  type: StockType
   market: string
   follow_status: string
   amount: string

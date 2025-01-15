@@ -37,7 +37,7 @@ export function useStockChart(domId: string, height: number = 40) {
     })
   })
 
-  function updateStyle(isUp: boolean) {
+  function updateColor(isUp: boolean) {
     const newColor = stockColor.getColor(isUp)
     const lineColor = newColor.color
     const alphaColor = newColor.colorEnd
@@ -46,29 +46,12 @@ export function useStockChart(domId: string, height: number = 40) {
         {
           name: '价格',
           type: 'line',
-          showSymbol: false,
           itemStyle: {
             color: lineColor,
           },
-          lineStyle: {
-            width: 1,
-          },
           markLine: {
-            symbol: 'none',
-            label: {
-              show: false,
-            },
-            tooltip: {
-              show: false,
-            },
             lineStyle: {
               color: lineColor,
-              type: [2, 2],
-              dashOffset: 5,
-              width: 1,
-            },
-            emphasis: {
-              disabled: true,
             },
           },
           areaStyle: {
@@ -87,14 +70,46 @@ export function useStockChart(domId: string, height: number = 40) {
       ],
     })
   }
+  function updateStyle() {
+    stockChart.setOption({
+      series: [
+        {
+          name: '价格',
+          type: 'line',
+          showSymbol: false,
+          lineStyle: {
+            width: 1,
+          },
+          markLine: {
+            symbol: 'none',
+            label: {
+              show: false,
+            },
+            tooltip: {
+              show: false,
+            },
+            lineStyle: {
+              type: [2, 2],
+              dashOffset: 5,
+              width: 1,
+            },
+            emphasis: {
+              disabled: true,
+            },
+          },
+        },
+      ],
+    })
+  }
 
   watch(stockColor.color, () => {
-    updateStyle(currentIsUp)
+    updateColor(currentIsUp)
   })
 
   function update(seriesData: (string | number)[], isUp: boolean) {
     currentIsUp = isUp
-    updateStyle(isUp)
+    updateStyle()
+    updateColor(isUp)
     stockChart.setOption({
       series: [
         {

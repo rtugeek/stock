@@ -5,7 +5,7 @@ const StockMediumWidget = new Widget({
   title: { 'zh-CN': '大A指数' },
   description: { 'zh-CN': '珍爱生命，远离股市' },
   keywords: [WidgetKeyword.RECOMMEND],
-  categories: ['utilities'],
+  categories: ['utilities', 'finance'],
   lang: 'zh-CN',
   width: 4,
   height: 2,

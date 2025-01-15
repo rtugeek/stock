@@ -1,25 +1,38 @@
 <script lang="ts" setup>
+import { BaiDuStockApi } from '@/api/BaiDuStockApi'
 import StockItem from '@/component/StockItem.vue'
-import { useStockApi } from '@/hook/useStockApi'
-import { DEFAULT_STOCK_CODE } from '@/widgets/stock/model/StockModel'
-import { Refresh } from '@icon-park/vue-next'
+import { useSelfSelectStock } from '@/hook/useSelfSelectStock'
 import { useStorage } from '@vueuse/core'
-import { useWidget, useWidgetSize, useWidgetTheme } from '@widget-js/vue3'
+import { delay } from '@widget-js/core'
+import { useWidget, useWidgetSize } from '@widget-js/vue3'
 
-const symbols = useStorage('stock_symbols', DEFAULT_STOCK_CODE)
-const { displayStockData, loading } = useStockApi(symbols)
-useWidget()
+const selectStock = useSelfSelectStock()
 const { height } = useWidgetSize()
-useWidgetTheme()
+useWidget()
+
+const stockInit = useStorage('stock-init-2', false)
+async function init() {
+  if (!stockInit.value) {
+    const codes = ['AAPL', 'GOOGL', 'TSLA', 'MSFT', '01810', '00700']
+    for (const code of codes) {
+      const stock = await BaiDuStockApi.getStock(code)
+      if (stock) {
+        await selectStock.save(stock)
+      }
+      await delay(1000)
+    }
+    stockInit.value = true
+  }
+}
+init()
 </script>
 
 <template>
   <widget-wrapper>
     <div class="stock-list">
       <el-scrollbar :height="height - 18">
-        <div class="stock-data flex flex-col gap-3">
-          <Refresh v-show="loading" class="loading" />
-          <StockItem v-for="stock in displayStockData" :key="stock.code" :stock="stock" />
+        <div class="stock-data">
+          <StockItem v-for="stock in selectStock.stocks.value" :key="stock.code" :stock="stock" />
         </div>
       </el-scrollbar>
     </div>
@@ -34,6 +47,9 @@ padding: 0.8rem 0;
   box-sizing: border-box;
   padding: 0 0.8rem;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   color: var(--widget-color);
 }
 
@@ -44,16 +60,5 @@ padding: 0.8rem 0;
   to {
     transform: rotate(360deg);
   }
-}
-
-.loading {
-  color: var(--widget-color);
-  font-size: 18px;
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  transform-origin: 50% 50%;
-  display: flex;
-  animation: infinite 1s linear spin;
 }
 </style>

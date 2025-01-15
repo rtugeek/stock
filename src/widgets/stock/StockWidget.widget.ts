@@ -7,7 +7,7 @@ const StockWidget = new Widget({
   keywords: [WidgetKeyword.RECOMMEND],
   lang: 'zh-CN',
   width: 4,
-  categories: ['utilities'],
+  categories: ['utilities', 'finance'],
   height: 4,
   minWidth: 4,
   maxWidth: 5,
@@ -15,7 +15,7 @@ const StockWidget = new Widget({
   maxHeight: 8,
   previewImage: '/preview_stock_large.png',
   path: '/widget/stock',
-  configPagePath: '/widget/config/stock?transparent=false&frame=true&height=400&width=600',
+  configPagePath: '/widget/config/stock?transparent=false&frame=true&height=700&width=600',
   socialLinks: [
     { name: 'github', link: 'https://github.com/rtugeek/stocks-desktop' },
   ],
