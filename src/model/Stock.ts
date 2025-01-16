@@ -39,4 +39,12 @@ export interface Stock {
    *  排序顺序，这个是自己的字段
    */
   sortOrder?: number
+  /**
+   * 持仓价
+   */
+  holdingPrice?: number
+  /**
+   * 持仓数量（股）
+   */
+  holdingShares?: number
 }

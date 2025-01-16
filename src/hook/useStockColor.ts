@@ -3,7 +3,7 @@ import { useStorage } from '@vueuse/core'
 import Color from 'color'
 import { computed, toValue } from 'vue'
 
-export function useStockColor(isUp?: MaybeRef<boolean>) {
+export function useStockColor(isUpOrPrice?: MaybeRef<boolean | number>) {
   const green = 'rgb(95,194,93)'
   const red = '#f82842'
   const stockColor = useStorage('stock_color', 0)
@@ -14,7 +14,11 @@ export function useStockColor(isUp?: MaybeRef<boolean>) {
     return stockColor.value === 0 ? green : red
   })
   const color = computed(() => {
-    if (toValue(isUp)) {
+    const value = toValue(isUpOrPrice)
+    if (typeof value == 'number') {
+      return value >= 0 ? upColor.value : downColor.value
+    }
+    if (value) {
       return upColor.value
     }
     else {

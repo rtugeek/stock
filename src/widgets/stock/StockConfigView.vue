@@ -3,17 +3,19 @@ import type { Stock } from '@/model/Stock'
 import StockColorFormItem from '@/component/StockColorFormItem.vue'
 import StockSelect from '@/component/StockSelect.vue'
 import { useSelfSelectStock } from '@/hook/useSelfSelectStock'
-import { HamburgerButton } from '@icon-park/vue-next'
+import SelfSelectStockItem from '@/widgets/stock/SelfSelectStockItem.vue'
 import { useSortable } from '@vueuse/integrations/useSortable'
 import { delay } from '@widget-js/core'
 import {
   useWidget,
+  useWidgetStorage,
   WidgetConfigOption,
   WidgetEditDialog,
 } from '@widget-js/vue3'
 import { ref } from 'vue'
 
 const stockList = ref<HTMLElement | null>(null)
+const title = useWidgetStorage('widget-title', '自选股票')
 const { widgetParams, save } = useWidget()
 const keyword = ref('')
 const { stocks, save: saveStock, deleteStock, saveOrder } = useSelfSelectStock()
@@ -51,6 +53,9 @@ function onStockSelect(stock: Stock) {
   >
     <template #custom>
       <el-form label-width="70">
+        <el-form-item label="组件标题">
+          <el-input v-model="title" maxlength="8" />
+        </el-form-item>
         <StockColorFormItem />
         <el-form-item label="添加股票">
           <StockSelect v-model="keyword" @select="onStockSelect" />
@@ -59,24 +64,7 @@ function onStockSelect(stock: Stock) {
         <el-scrollbar height="440">
           <div ref="stockList" class="flex flex-col gap-2">
             <div v-for="stock in stocks" :key="stock.code">
-              <el-card shadow="never" body-style="padding:0.5rem">
-                <div class="flex items-center">
-                  <div class="handler">
-                    <HamburgerButton />
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <div class="name">
-                      {{ stock.name }}
-                    </div>
-                    <div class="code">
-                      {{ stock.code }}
-                    </div>
-                  </div>
-                  <el-button class="ml-auto" type="danger" size="small" @click="deleteStock(stock)">
-                    删除
-                  </el-button>
-                </div>
-              </el-card>
+              <SelfSelectStockItem :stock="stock" @delete="deleteStock" />
             </div>
           </div>
         </el-scrollbar>
@@ -97,11 +85,11 @@ function onStockSelect(stock: Stock) {
   justify-content: center;
 }
 
-.i-icon{
- line-height: 1;
+.i-icon {
+  line-height: 1;
 }
 
-.name{
+.name {
   font-weight: bold;
 }
 </style>
