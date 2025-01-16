@@ -1,6 +1,9 @@
 <script lang="ts" setup>
+import type { Stock } from '@/model/Stock'
 import StockColorFormItem from '@/component/StockColorFormItem.vue'
+import StockSelect from '@/component/StockSelect.vue'
 import { useWidget, useWidgetStorage, WidgetConfigOption } from '@widget-js/vue3'
+import { nextTick, onMounted, ref } from 'vue'
 
 const { widgetParams } = useWidget()
 
@@ -14,6 +17,20 @@ const widgetConfigOption = new WidgetConfigOption({
 })
 
 const stockCode = useWidgetStorage('stock-code', '01810')
+const stockLabel = useWidgetStorage<string>('stock-info', '')
+const keyword = ref()
+
+function onStockSelect(newStock: Stock) {
+  stockCode.value = newStock.code
+  stockLabel.value = `${newStock.name}(${newStock.code})`
+}
+
+if (stockLabel.value) {
+  keyword.value = stockLabel.value
+}
+onMounted(async () => {
+  await nextTick()
+})
 </script>
 
 <template>
@@ -22,12 +39,8 @@ const stockCode = useWidgetStorage('stock-code', '01810')
     :option="widgetConfigOption"
   >
     <template #custom>
-      <el-form-item label="股票代号">
-        <el-input
-          v-model="stockCode"
-          clearable
-          placeholder="输入股票代号"
-        />
+      <el-form-item label="搜索股票">
+        <StockSelect v-model="keyword" @select="onStockSelect" />
       </el-form-item>
       <StockColorFormItem />
     </template>

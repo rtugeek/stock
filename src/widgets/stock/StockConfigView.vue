@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { Stock } from '@/model/Stock'
 import StockColorFormItem from '@/component/StockColorFormItem.vue'
 import StockSelect from '@/component/StockSelect.vue'
 import { useSelfSelectStock } from '@/hook/useSelfSelectStock'
@@ -14,6 +15,7 @@ import { ref } from 'vue'
 
 const stockList = ref<HTMLElement | null>(null)
 const { widgetParams, save } = useWidget()
+const keyword = ref('')
 const { stocks, save: saveStock, deleteStock, saveOrder } = useSelfSelectStock()
 const widgetConfigOption = new WidgetConfigOption({
   title: '股票设置',
@@ -33,6 +35,11 @@ useSortable(stockList, stocks, {
     saveOrder(stocks.value)
   },
 })
+
+function onStockSelect(stock: Stock) {
+  saveStock(stock)
+  keyword.value = ''
+}
 </script>
 
 <template>
@@ -46,7 +53,7 @@ useSortable(stockList, stocks, {
       <el-form label-width="70">
         <StockColorFormItem />
         <el-form-item label="添加股票">
-          <StockSelect @select="saveStock" />
+          <StockSelect v-model="keyword" @select="onStockSelect" />
         </el-form-item>
         <h3>自选列表</h3>
         <el-scrollbar height="440">

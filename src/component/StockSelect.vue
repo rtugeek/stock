@@ -4,7 +4,7 @@ import { BaiDuStockApi } from '@/api/BaiDuStockApi'
 import { ref, toRaw } from 'vue'
 
 const emits = defineEmits(['select'])
-const keyword = ref('')
+const model = defineModel<string>()
 const loading = ref(false)
 const options = ref<Stock[]>([])
 function search(query: string) {
@@ -24,13 +24,12 @@ function search(query: string) {
 function onChanged(value: string) {
   const find = options.value.find(it => it.code == value)
   emits('select', toRaw(find))
-  keyword.value = ''
 }
 </script>
 
 <template>
   <el-select
-    v-model="keyword"
+    v-model="model"
     filterable
     remote
     reserve-keyword
