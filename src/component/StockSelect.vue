@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { BaiDuStockApi, type Stock } from '@/api/BaiDuStockApi'
+import type { Stock } from '@/model/Stock'
+import { BaiDuStockApi } from '@/api/BaiDuStockApi'
 import { ref, toRaw } from 'vue'
 
 const emits = defineEmits(['select'])

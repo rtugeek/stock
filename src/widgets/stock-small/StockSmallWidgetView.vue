@@ -9,7 +9,7 @@ useWidget()
 const stockCode = useWidgetStorage('stock-code', '01810')
 const stockChartRef = ref<InstanceType<typeof StockChart>>()
 const { quotation, isUp, color } = useStockQuotation(stockCode, {
-  onNewData: (data) => {
+  onNewData: (quotation, data) => {
     stockChartRef.value?.update(data, isUp.value)
   },
 })

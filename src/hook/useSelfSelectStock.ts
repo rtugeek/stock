@@ -1,11 +1,11 @@
-import type { Stock } from '@/api/BaiDuStockApi'
+import type { Stock } from '@/model/Stock'
 import { selfSelectStockRepository } from '@/data/SelfSelectStockRepository'
 import { useBroadcastChannel } from '@vueuse/core'
 import { onMounted, ref, toRaw, watch } from 'vue'
 
+const stocks = ref<Stock[]>([])
+const { data, post } = useBroadcastChannel({ name: 'self-select-stock' })
 export function useSelfSelectStock() {
-  const stocks = ref<Stock[]>([])
-  const { data, post } = useBroadcastChannel({ name: 'self-select-stock' })
   onMounted(() => {
     selfSelectStockRepository.all().then((res) => {
       stocks.value = res
@@ -25,11 +25,11 @@ export function useSelfSelectStock() {
     })
   }
 
-  async function saveAll(item: Stock[]) {
+  async function saveOrder(item: Stock[]) {
     const rawData = JSON.parse(JSON.stringify(item))
-    await selfSelectStockRepository.saveAll(rawData)
+    await selfSelectStockRepository.saveOrder(rawData)
     post({
-      event: 'saveAll',
+      event: 'saveOrder',
       payload: rawData,
     })
   }
@@ -43,5 +43,5 @@ export function useSelfSelectStock() {
     })
   }
 
-  return { stocks, deleteStock, save, saveAll }
+  return { stocks, deleteStock, save, saveOrder }
 }

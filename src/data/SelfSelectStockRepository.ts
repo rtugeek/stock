@@ -1,60 +1,79 @@
-import type { Stock } from '@/api/BaiDuStockApi'
+import type { Stock } from '@/model/Stock'
+import consola from 'consola'
 import localforage from 'localforage'
 
 const selfSelectStock = localforage.createInstance({
-  name: 'selfSelectStock',
+  name: 'selfSelectStock-v2',
 })
 
 class SelfSelectStockRepository {
-  private static readonly STOCK_KEY = 'stocks'
-
   /**
    * 更新或者添加自选股
    * @param stock 股票信息
    */
   async save(stock: Stock): Promise<void> {
     try {
-      const stocks = await this.getStocks()
-      const index = stocks.findIndex(s => s.code === stock.code)
-
-      if (index !== -1) {
-        // 更新现有股票
-        stocks[index] = stock
+      const exists = await this.exists(stock.code)
+      if (!exists) {
+        // 新股票，设置排序顺序为当前最大值+1
+        const stocks = await this.all()
+        const maxOrder = Math.max(...stocks.map(s => s.sortOrder || 0), 0)
+        stock.sortOrder = maxOrder + 1
       }
-      else {
-        // 添加新股票
-        stocks.push(stock)
-      }
-
-      await selfSelectStock.setItem(SelfSelectStockRepository.STOCK_KEY, stocks)
+      await selfSelectStock.setItem(stock.code, stock)
     }
     catch (error) {
-      console.error('Failed to save stock:', error)
-      throw new Error('保存自选股失败')
-    }
-  }
-
-  async saveAll(stocks: Stock[]): Promise<void> {
-    try {
-      await selfSelectStock.setItem(SelfSelectStockRepository.STOCK_KEY, stocks)
-    }
-    catch (error) {
-      console.error('Failed to save stocks:', error)
+      consola.error('Failed to save stock:', error)
       throw new Error('保存自选股失败')
     }
   }
 
   /**
+   * 更新股票列表顺序
+   * @param stocks 排序后的股票列表
+   */
+  async saveOrder(stocks: Stock[]): Promise<void> {
+    try {
+      // 更新每个股票的sortOrder
+      const updates = stocks.map((stock, index) => {
+        stock.sortOrder = index
+        return selfSelectStock.setItem(stock.code, stock)
+      })
+      await Promise.all(updates)
+    }
+    catch (error) {
+      consola.error('Failed to update order:', error)
+      throw new Error('更新股票顺序失败')
+    }
+  }
+
+  /**
    * 列出所有自选股票
-   * @returns 自选股票列表
+   * @returns 按sortOrder排列的自选股票列表
    */
   async all(): Promise<Stock[]> {
     try {
-      return await this.getStocks()
+      const keys = await selfSelectStock.keys()
+      const stocks = await Promise.all(
+        keys.map(key => selfSelectStock.getItem<Stock>(key)),
+      )
+      return stocks
+        .filter((stock): stock is Stock => stock !== null)
+        .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
     }
     catch (error) {
-      console.error('Failed to get stocks:', error)
+      consola.error('Failed to get stocks:', error)
       return []
+    }
+  }
+
+  async findByCode(code: string): Promise<Stock | undefined> {
+    try {
+      return await selfSelectStock.getItem<Stock>(code) || undefined
+    }
+    catch (error) {
+      consola.error('Failed to get stock:', error)
+      return undefined
     }
   }
 
@@ -64,23 +83,12 @@ class SelfSelectStockRepository {
    */
   async remove(code: string): Promise<void> {
     try {
-      const stocks = await this.getStocks()
-      const filteredStocks = stocks.filter(stock => stock.code !== code)
-      await selfSelectStock.setItem(SelfSelectStockRepository.STOCK_KEY, filteredStocks)
+      await selfSelectStock.removeItem(code)
     }
     catch (error) {
-      console.error('Failed to remove stock:', error)
+      consola.error('Failed to remove stock:', error)
       throw new Error('删除自选股失败')
     }
-  }
-
-  /**
-   * 获取存储的股票列表
-   * @private
-   */
-  private async getStocks(): Promise<Stock[]> {
-    const stocks = await selfSelectStock.getItem<Stock[]>(SelfSelectStockRepository.STOCK_KEY)
-    return stocks || []
   }
 
   /**
@@ -88,8 +96,8 @@ class SelfSelectStockRepository {
    * @param code 股票代码
    */
   async exists(code: string): Promise<boolean> {
-    const stocks = await this.getStocks()
-    return stocks.some(stock => stock.code === code)
+    const stock = await this.findByCode(code)
+    return !!stock
   }
 
   /**
@@ -97,10 +105,10 @@ class SelfSelectStockRepository {
    */
   async clear(): Promise<void> {
     try {
-      await selfSelectStock.removeItem(SelfSelectStockRepository.STOCK_KEY)
+      await selfSelectStock.clear()
     }
     catch (error) {
-      console.error('Failed to clear stocks:', error)
+      consola.error('Failed to clear stocks:', error)
       throw new Error('清空自选股失败')
     }
   }

@@ -14,7 +14,7 @@ import { ref } from 'vue'
 
 const stockList = ref<HTMLElement | null>(null)
 const { widgetParams, save } = useWidget()
-const { stocks, save: saveStock, deleteStock, saveAll } = useSelfSelectStock()
+const { stocks, save: saveStock, deleteStock, saveOrder } = useSelfSelectStock()
 const widgetConfigOption = new WidgetConfigOption({
   title: '股票设置',
   theme: {
@@ -30,7 +30,7 @@ useSortable(stockList, stocks, {
   onEnd: async () => {
     // 有个动画的延迟
     await delay(300)
-    saveAll(stocks.value)
+    saveOrder(stocks.value)
   },
 })
 </script>
@@ -49,7 +49,7 @@ useSortable(stockList, stocks, {
           <StockSelect @select="saveStock" />
         </el-form-item>
         <h3>自选列表</h3>
-        <el-scrollbar height="450">
+        <el-scrollbar height="440">
           <div ref="stockList" class="flex flex-col gap-2">
             <div v-for="stock in stocks" :key="stock.code">
               <el-card shadow="never" body-style="padding:0.5rem">

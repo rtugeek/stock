@@ -6,18 +6,18 @@ import { useStorage } from '@vueuse/core'
 import { delay } from '@widget-js/core'
 import { useWidget, useWidgetSize } from '@widget-js/vue3'
 
-const selectStock = useSelfSelectStock()
+const { stocks, save } = useSelfSelectStock()
 const { height } = useWidgetSize()
 useWidget()
 
-const stockInit = useStorage('stock-init-2', false)
+const stockInit = useStorage('stock-init-4', false)
 async function init() {
   if (!stockInit.value) {
     const codes = ['AAPL', 'GOOGL', 'TSLA', 'MSFT', '01810', '00700']
     for (const code of codes) {
       const stock = await BaiDuStockApi.getStock(code)
       if (stock) {
-        await selectStock.save(stock)
+        await save(stock)
       }
       await delay(1000)
     }
@@ -32,7 +32,7 @@ init()
     <div class="stock-list">
       <el-scrollbar :height="height - 18">
         <div class="stock-data">
-          <StockItem v-for="stock in selectStock.stocks.value" :key="stock.code" :stock="stock" />
+          <StockItem v-for="stock in stocks" :key="stock.code" :stock="stock" />
         </div>
       </el-scrollbar>
     </div>

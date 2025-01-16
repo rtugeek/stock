@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { Stock } from '@/api/BaiDuStockApi'
+import type { Stock } from '@/model/Stock'
 import ExchangeTag from '@/component/ExchangeTag.vue'
 import StockChart from '@/component/StockChart.vue'
+import { useSelfSelectStock } from '@/hook/useSelfSelectStock'
 import { useStockQuotation } from '@/hook/useStockQuotation'
 import { computed, type PropType, ref } from 'vue'
 
@@ -16,7 +17,15 @@ const chartId = computed(() => {
   return `chart_${props.stock.code}`
 })
 const code = ref(props.stock.code)
-const { isUp, color } = useStockQuotation(code, { onNewData: (data) => {
+const selectStock = useSelfSelectStock()
+const { isUp, color } = useStockQuotation(code, { onNewData: (quotation, data) => {
+  const stock = JSON.parse(JSON.stringify(props.stock))
+  stock.increase = quotation.cur.increase
+  stock.price = quotation.cur.price
+  stock.ratio = quotation.cur.ratio
+  stock.amount = quotation.cur.amount
+  stock.volume = quotation.cur.volume
+  selectStock.save(stock)
   stockChartRef.value?.update(data, isUp.value)
 }, group: props.stock.type == 'index' ? 'quotation_index_fiveday' : 'quotation_minute_ab' })
 </script>

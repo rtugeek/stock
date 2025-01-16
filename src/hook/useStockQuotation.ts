@@ -22,7 +22,7 @@ export function useStockQuotation(code: Ref<string>, option?: UseStockQuotationO
     for (const mapElement of data.p.split(';').map(it => it.split(','))) {
       seriesData.push(mapElement[2])
     }
-    option?.onNewData?.(seriesData)
+    option?.onNewData?.(result, seriesData)
     return seriesData
   }
 
@@ -39,6 +39,6 @@ export function useStockQuotation(code: Ref<string>, option?: UseStockQuotationO
 
 export interface UseStockQuotationOption {
   refreshInterval?: MaybeRef<number>
-  onNewData?: (data: (string | number)[]) => void
+  onNewData?: (quotation: Quotation, data: (string | number)[]) => void
   group?: QuotationGroup
 }

@@ -1,4 +1,4 @@
-import type { Stock } from '@/api/BaiDuStockApi'
+import type { Stock } from '@/model/Stock'
 import type { Ref } from 'vue'
 import { BaiDuStockApi } from '@/api/BaiDuStockApi'
 
