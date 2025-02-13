@@ -16,7 +16,7 @@ const StockSmallWidget = new Widget({
   previewImage: '/preview_stock_small.png',
   path: '/widget/stock_small',
   socialLinks: [
-    { name: 'github', link: 'https://github.com/rtugeek/stocks-desktop' },
+    { name: 'github', link: 'https://github.com/widget-js/widgets' },
   ],
   configPagePath:
     '/widget/config/stock_small?width=600&height=500&frame=true&transparent=false',
