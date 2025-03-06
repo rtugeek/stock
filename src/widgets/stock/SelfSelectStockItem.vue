@@ -36,11 +36,11 @@ const debounceChange = useDebounceFn(change, 500)
         <div class="name">
           {{ stock.name }}
         </div>
-        <div class="code">
-          {{ stock.code }}
-        </div>
       </div>
       <div class="ml-auto" />
+      <div class="code mr-4">
+        {{ stock.code }}
+      </div>
       <div class="holding">
         持有份额：
         <el-input-number
@@ -70,7 +70,5 @@ const debounceChange = useDebounceFn(change, 500)
 .name {
   overflow: hidden;
   text-wrap: nowrap;
-  max-width: 100px;
-  text-overflow: ellipsis;
 }
 </style>

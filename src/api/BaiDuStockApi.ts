@@ -1,3 +1,4 @@
+import type { OpenDataResult } from '@/api/opendata'
 import type { Stock } from '@/model/Stock'
 import { Quotation } from '@/model/Qutation'
 import axios from 'axios'
@@ -8,9 +9,22 @@ export class BaiDuStockApi {
    * @param code
    */
   static async getStock(code: string): Promise<Stock | undefined> {
+    return this.getByType(code, 'stock')
+  }
+
+  static async getFund(code: string): Promise<Stock | undefined> {
+    return this.getByType(code, 'fund')
+  }
+
+  /**
+   * 股票
+   * @param code
+   * @param type
+   */
+  static async getByType<T>(code: string, type: StockType): Promise<T | undefined> {
     const data = await this.selfSelect(code)
     if (data.ResultCode == '0' && data.Result.stock.length > 0) {
-      const stock = data.Result.stock.find(it => it.type == 'stock')
+      const stock = data.Result.stock.find(it => it.type == type)
       if (stock) {
         return stock
       }
@@ -21,6 +35,20 @@ export class BaiDuStockApi {
   static async getQuotation(code: string): Promise<BaiDuApiResponse<QuotationResult>> {
     const response = await axios.get(`https://finance.pae.baidu.com/vapi/v1/getquotation?all=1&srcid=5353&pointType=string&group=quotation_fiveday_ab&market_type=ab&new_Format=1&finClientType=pc&code=${code}`)
     return response.data as BaiDuApiResponse<QuotationResult>
+  }
+
+  /**
+   *
+   * @param query
+   * @param month 1,3,6,12,36,60
+   */
+  static async getOpenData(query: string, month: number): Promise<OpenDataResult | undefined> {
+    const response = await axios.get(`https://gushitong.baidu.com/opendata?resource_id=5824&query=${query}&new_need_di=1&source=qieman&m=${month}&t=ai&finClientType=pc`)
+    const data = response.data as BaiDuApiResponse<OpenDataResult[]>
+    if (data.Result && data.Result.length > 0) {
+      return data.Result[0]
+    }
+    return undefined
   }
 
   /**
@@ -47,7 +75,7 @@ export class BaiDuStockApi {
   }
 
   static async selfSelect(code: string) {
-    const response = await axios.get(`https://finance.pae.baidu.com/selfselect/sug?wd=${code}&skip_login=1&finClientType=pc}`)
+    const response = await axios.get(`https://finance.pae.baidu.com/selfselect/sug?wd=${code}&skip_login=1&finClientType=pc`)
     return response.data as BaiDuApiResponse<any>
   }
 

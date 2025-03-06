@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import type { Stock } from '@/model/Stock'
-import { BaiDuStockApi } from '@/api/BaiDuStockApi'
+import { BaiDuStockApi, type StockType } from '@/api/BaiDuStockApi'
 import { ref, toRaw } from 'vue'
 
+const props = defineProps({
+  type: {
+    type: Array<StockType>,
+    default: ['stock', 'fund'],
+  },
+})
 const emits = defineEmits(['select'])
 const model = defineModel<string>()
 const loading = ref(false)
@@ -11,8 +17,7 @@ function search(query: string) {
   if (query) {
     loading.value = true
     BaiDuStockApi.selfSelect(query).then((res) => {
-      const stocks = res.Result.stock.filter(it => it.type == 'stock')
-      options.value = stocks
+      options.value = res.Result.stock.filter(it => props.type.includes(it.type))
     }).finally(() => {
       loading.value = false
     })
@@ -33,7 +38,7 @@ function onChanged(value: string) {
     filterable
     remote
     reserve-keyword
-    placeholder="请输入股票代码或名称"
+    placeholder="输入代码或名称"
     :remote-method="search"
     :loading="loading"
     style="width: 240px"

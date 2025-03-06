@@ -1,6 +1,6 @@
 {
   "name": "cn.stocks.widget",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "author": "Neo Fu",
   "homepage": "",
   "title": {
@@ -58,7 +58,7 @@
       "socialLinks": [
         {
           "name": "github",
-          "link": "https://github.com/rtugeek/stocks-desktop"
+          "link": "https://github.com/widget-js/widgets"
         }
       ]
     },
@@ -99,7 +99,7 @@
       "socialLinks": [
         {
           "name": "github",
-          "link": "https://github.com/rtugeek/stocks-desktop"
+          "link": "https://github.com/widget-js/widgets"
         }
       ]
     },
@@ -138,12 +138,12 @@
         "finance"
       ],
       "supportDeployMode": 17,
-      "configPagePath": "/widget/config/stock?transparent=false&frame=true&height=700&width=600",
+      "configPagePath": "/widget/config/stock?transparent=false&frame=true&height=700&width=800",
       "routes": [],
       "socialLinks": [
         {
           "name": "github",
-          "link": "https://github.com/rtugeek/stocks-desktop"
+          "link": "https://github.com/widget-js/widgets"
         }
       ]
     }

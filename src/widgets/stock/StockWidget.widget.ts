@@ -15,7 +15,7 @@ const StockWidget = new Widget({
   maxHeight: 8,
   previewImage: '/preview_stock_large.png',
   path: '/widget/stock',
-  configPagePath: '/widget/config/stock?transparent=false&frame=true&height=700&width=600',
+  configPagePath: '/widget/config/stock?transparent=false&frame=true&height=700&width=800',
   socialLinks: [
     { name: 'github', link: 'https://github.com/widget-js/widgets' },
   ],

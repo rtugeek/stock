@@ -1,24 +1,28 @@
+import type { StockType } from '@/api/BaiDuStockApi'
 import type { Stock } from '@/model/Stock'
 import { selfSelectStockRepository } from '@/data/SelfSelectStockRepository'
 import { useBroadcastChannel } from '@vueuse/core'
-import { onMounted, ref, toRaw, watch } from 'vue'
+import { onMounted, ref, toRaw, watch, watchEffect } from 'vue'
 
+const allStocks = ref<Stock[]>([])
 const stocks = ref<Stock[]>([])
 const { data, post } = useBroadcastChannel({ name: 'self-select-stock' })
-export function useSelfSelectStock() {
-  onMounted(() => {
-    selfSelectStockRepository.all().then((res) => {
-      stocks.value = res
-    })
+export function useSelfSelectStock(types: StockType[] = ['stock', 'fund']) {
+  onMounted(async () => {
+    allStocks.value = await selfSelectStockRepository.all()
+  })
+
+  watchEffect(() => {
+    stocks.value = allStocks.value.filter(it => types.includes(it.type))
   })
 
   watch(data, async () => {
-    stocks.value = await selfSelectStockRepository.all()
+    allStocks.value = await selfSelectStockRepository.all()
   }, { deep: true })
 
   async function save(item: Stock) {
     await selfSelectStockRepository.save(item)
-    stocks.value = await selfSelectStockRepository.all()
+    allStocks.value = await selfSelectStockRepository.all()
     post({
       event: 'save',
       payload: toRaw(item),
@@ -36,7 +40,7 @@ export function useSelfSelectStock() {
 
   async function deleteStock(item: Stock) {
     await selfSelectStockRepository.remove(item.code)
-    stocks.value = await selfSelectStockRepository.all()
+    allStocks.value = await selfSelectStockRepository.all()
     post({
       event: 'delete',
       payload: toRaw(item),
