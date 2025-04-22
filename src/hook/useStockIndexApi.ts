@@ -2,7 +2,7 @@ import type { Stock } from '@/model/Stock'
 import type { Ref } from 'vue'
 import { BaiDuStockApi } from '@/api/BaiDuStockApi'
 
-import { useDebounceFn, useIntervalFn } from '@vueuse/core'
+import { useDebounceFn, useIntervalFn, useStorage } from '@vueuse/core'
 import { delay } from '@widget-js/core'
 import consola from 'consola'
 import { computed, reactive, ref, watch } from 'vue'
@@ -14,6 +14,8 @@ export function useStockIndexApi(codes: Ref<string>) {
   const displayStockData = computed(() => {
     return stockData
   })
+  const defaultRefreshInterval = useStorage('refresh_interval', 60000)
+
   const codeArray = computed(() => codes.value.split(',').filter(s => s.trim().length > 0))
   watch(codes, () => {
     // 移除被删除的代码
@@ -62,7 +64,7 @@ export function useStockIndexApi(codes: Ref<string>) {
 
   update()
 
-  useIntervalFn(debounceUpdate, 60000)
+  useIntervalFn(debounceUpdate, defaultRefreshInterval)
 
   return {
     displayStockData,

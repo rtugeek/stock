@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import RefreshIntervalFormItem from '@/component/RefreshIntervalFormItem.vue'
 import { useStorage } from '@vueuse/core'
 import {
   useWidget,
@@ -28,6 +29,7 @@ const stockColor = useStorage('stock_color', 0)
   >
     <template #custom>
       <el-form label-width="70">
+        <RefreshIntervalFormItem />
         <el-form-item label="涨跌颜色">
           <el-radio-group v-model="stockColor">
             <el-radio :value="0">

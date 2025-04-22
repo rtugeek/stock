@@ -3,7 +3,7 @@ import type { Quotation } from '@/model/Qutation'
 import type { MaybeRef, Ref } from 'vue'
 import { BaiDuStockApi } from '@/api/BaiDuStockApi'
 import { useStockColor } from '@/hook/useStockColor'
-import { useIntervalFn, watchThrottled } from '@vueuse/core'
+import { useIntervalFn, useStorage, watchThrottled } from '@vueuse/core'
 import consola from 'consola'
 import { ref } from 'vue'
 
@@ -11,6 +11,8 @@ export function useStockQuotation(code: Ref<string>, option?: UseStockQuotationO
   const quotation = ref<Quotation>()
   const isUp = ref(false)
   const stockColor = useStockColor(isUp)
+  const defaultRefreshInterval = useStorage('refresh_interval', 60000)
+
   async function refresh() {
     consola.info('refreshing')
     const result = await BaiDuStockApi.getQuotationMinute(code.value, option?.group)
@@ -33,7 +35,7 @@ export function useStockQuotation(code: Ref<string>, option?: UseStockQuotationO
     immediate: true,
   })
 
-  useIntervalFn(refresh, option?.refreshInterval ?? 60 * 1000)
+  useIntervalFn(refresh, option?.refreshInterval ?? defaultRefreshInterval.value)
   return { quotation, isUp, color: stockColor.color }
 }
 

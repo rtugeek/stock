@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { Stock } from '@/model/Stock'
+import RefreshIntervalFormItem from '@/component/RefreshIntervalFormItem.vue'
 import StockColorFormItem from '@/component/StockColorFormItem.vue'
 import StockSelect from '@/component/StockSelect.vue'
 import { useSelfSelectStock } from '@/hook/useSelfSelectStock'
@@ -53,15 +54,18 @@ function onStockSelect(stock: Stock) {
   >
     <template #custom>
       <el-form label-width="70">
-        <el-form-item label="组件标题">
-          <el-input v-model="title" maxlength="8" />
-        </el-form-item>
+        <div class="flex gap-2 w-full">
+          <el-form-item class="flex-1" label="组件标题">
+            <el-input v-model="title" maxlength="8" />
+          </el-form-item>
+          <RefreshIntervalFormItem class="flex-1" />
+        </div>
         <StockColorFormItem />
         <el-form-item label="添加股票">
           <StockSelect v-model="keyword" @select="onStockSelect" />
         </el-form-item>
         <h3>自选列表</h3>
-        <el-scrollbar height="440">
+        <el-scrollbar height="390">
           <div ref="stockList" class="flex flex-col gap-2">
             <div v-for="stock in stocks" :key="stock.code">
               <SelfSelectStockItem :stock="stock" @delete="deleteStock" />

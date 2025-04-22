@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { Stock } from '@/model/Stock'
+import RefreshIntervalFormItem from '@/component/RefreshIntervalFormItem.vue'
 import StockColorFormItem from '@/component/StockColorFormItem.vue'
 import StockSelect from '@/component/StockSelect.vue'
 import { useWidget, useWidgetStorage, WidgetConfigOption } from '@widget-js/vue3'
@@ -39,6 +40,7 @@ onMounted(async () => {
     :option="widgetConfigOption"
   >
     <template #custom>
+      <RefreshIntervalFormItem />
       <el-form-item label="搜索股票">
         <StockSelect v-model="keyword" @select="onStockSelect" />
       </el-form-item>
