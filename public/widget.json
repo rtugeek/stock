@@ -63,47 +63,6 @@
       ]
     },
     {
-      "name": "cn.stocks.widget.stock_medium",
-      "title": {
-        "zh-CN": "大A指数"
-      },
-      "description": {
-        "zh-CN": "珍爱生命，远离股市"
-      },
-      "keywords": [
-        "recommend"
-      ],
-      "security": false,
-      "permissions": [],
-      "lang": "zh-CN",
-      "width": 4,
-      "height": 2,
-      "maxWidth": 4,
-      "webviewTag": false,
-      "maxHeight": 2,
-      "minWidth": 4,
-      "minHeight": 2,
-      "movable": true,
-      "singleton": false,
-      "resizable": true,
-      "path": "/widget/stock_medium",
-      "meta": {},
-      "backgroundThrottling": true,
-      "previewImage": "/preview_stock_medium.png",
-      "categories": [
-        "utilities",
-        "finance"
-      ],
-      "supportDeployMode": 17,
-      "routes": [],
-      "socialLinks": [
-        {
-          "name": "github",
-          "link": "https://github.com/widget-js/widgets"
-        }
-      ]
-    },
-    {
       "name": "cn.stocks.widget.stock",
       "title": {
         "zh-CN": "股票",
@@ -183,6 +142,47 @@
       "supportDeployMode": 17,
       "configPagePath": "/widget/config/gold?width=600&height=500&frame=true&transparent=false",
       "routes": []
+    },
+    {
+      "name": "cn.stocks.widget.stock_medium",
+      "title": {
+        "zh-CN": "大A指数"
+      },
+      "description": {
+        "zh-CN": "珍爱生命，远离股市"
+      },
+      "keywords": [
+        "recommend"
+      ],
+      "security": false,
+      "permissions": [],
+      "lang": "zh-CN",
+      "width": 4,
+      "height": 2,
+      "maxWidth": 4,
+      "webviewTag": false,
+      "maxHeight": 2,
+      "minWidth": 4,
+      "minHeight": 2,
+      "movable": true,
+      "singleton": false,
+      "resizable": true,
+      "path": "/widget/stock_medium",
+      "meta": {},
+      "backgroundThrottling": true,
+      "previewImage": "/preview_stock_medium.png",
+      "categories": [
+        "utilities",
+        "finance"
+      ],
+      "supportDeployMode": 17,
+      "routes": [],
+      "socialLinks": [
+        {
+          "name": "github",
+          "link": "https://github.com/widget-js/widgets"
+        }
+      ]
     }
   ],
   "pages": []

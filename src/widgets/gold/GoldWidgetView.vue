@@ -16,6 +16,7 @@ useIntervalFn(() => {
     goldData.value = it
     goldChartRef.value?.update(it.data, currentPrice.value)
     consola.info(it)
+    consola.info('当前价格', currentPrice.value)
   })
 }, 60000, {
   immediate: true,
@@ -36,9 +37,18 @@ const currentPrice = computed<number>(() => {
   const data = goldData.value?.data
   if (data) {
     const times = goldData.value!.delaystr.split(' ')[1].split(':')
+    const lastPrice = data[data.length - 1]
     const delayTime = `${times[0]}:${times[1]}`
     const index = goldData.value!.times.findIndex(it => it == delayTime)
-    return data[index]
+    const previousPrice = data[index - 1]
+    const current = data[index]
+    if (current == lastPrice && index != data.length - 1) {
+      consola.info('回退价格', previousPrice)
+      return previousPrice
+    }
+    else {
+      return current
+    }
   }
   return 0
 })
