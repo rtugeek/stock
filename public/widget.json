@@ -1,6 +1,6 @@
 {
   "name": "cn.stocks.widget",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "author": "Neo Fu",
   "homepage": "",
   "title": {
@@ -63,6 +63,47 @@
       ]
     },
     {
+      "name": "cn.stocks.widget.stock_medium",
+      "title": {
+        "zh-CN": "大A指数"
+      },
+      "description": {
+        "zh-CN": "珍爱生命，远离股市"
+      },
+      "keywords": [
+        "recommend"
+      ],
+      "security": false,
+      "permissions": [],
+      "lang": "zh-CN",
+      "width": 4,
+      "height": 2,
+      "maxWidth": 4,
+      "webviewTag": false,
+      "maxHeight": 2,
+      "minWidth": 4,
+      "minHeight": 2,
+      "movable": true,
+      "singleton": false,
+      "resizable": true,
+      "path": "/widget/stock_medium",
+      "meta": {},
+      "backgroundThrottling": true,
+      "previewImage": "/preview_stock_medium.png",
+      "categories": [
+        "utilities",
+        "finance"
+      ],
+      "supportDeployMode": 17,
+      "routes": [],
+      "socialLinks": [
+        {
+          "name": "github",
+          "link": "https://github.com/widget-js/widgets"
+        }
+      ]
+    },
+    {
       "name": "cn.stocks.widget.stock",
       "title": {
         "zh-CN": "股票",
@@ -107,12 +148,14 @@
       ]
     },
     {
-      "name": "cn.stocks.widget.stock_medium",
+      "name": "cn.stocks.widget.gold",
       "title": {
-        "zh-CN": "大A指数"
+        "zh-CN": "黄金价格",
+        "en-US": "Gold Price"
       },
       "description": {
-        "zh-CN": "珍爱生命，远离股市"
+        "zh-CN": "AU99.99价格，每分钟刷新一次",
+        "en-US": "AU99.99 price, refresh every minute"
       },
       "keywords": [
         "recommend"
@@ -120,32 +163,26 @@
       "security": false,
       "permissions": [],
       "lang": "zh-CN",
-      "width": 4,
+      "width": 2,
       "height": 2,
-      "maxWidth": 4,
+      "maxWidth": 2,
       "webviewTag": false,
       "maxHeight": 2,
-      "minWidth": 4,
+      "minWidth": 2,
       "minHeight": 2,
       "movable": true,
       "singleton": false,
       "resizable": true,
-      "path": "/widget/stock_medium",
+      "path": "/widget/gold",
       "meta": {},
       "backgroundThrottling": true,
-      "previewImage": "/preview_stock_medium.png",
+      "previewImage": "/preview_gold.png",
       "categories": [
-        "utilities",
         "finance"
       ],
       "supportDeployMode": 17,
-      "routes": [],
-      "socialLinks": [
-        {
-          "name": "github",
-          "link": "https://github.com/widget-js/widgets"
-        }
-      ]
+      "configPagePath": "/widget/config/gold?width=600&height=500&frame=true&transparent=false",
+      "routes": []
     }
   ],
   "pages": []
