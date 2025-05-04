@@ -14,17 +14,23 @@ export class GoldApi {
     return res.data
   }
 
-  static async hqsj(): Promise<number> {
+  static async hqsj(): Promise<{ close: number, open: number } > {
     const res = await axios.get('https://www.sge.com.cn/hqsj')
     const dom = new DOMParser()
     const document = dom.parseFromString(res.data as string, 'text/html')
-    const price = document.querySelector('.ininfo td:nth-child(2)')?.textContent
-    if (price) {
-      return Number.parseFloat(price)
+    const openPrice = document.querySelector('.ininfo td:nth-child(2)')?.textContent
+    const closePrice = document.querySelector('.ininfo td:nth-child(3)')?.textContent
+    const result = {
+      close: 0,
+      open: 0,
     }
-    else {
-      return 0
+    if (openPrice) {
+      result.open = Number.parseFloat(openPrice)
     }
+    if (closePrice) {
+      result.close = Number.parseFloat(closePrice)
+    }
+    return result
   }
 
   /**
