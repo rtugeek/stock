@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 
+import CoinSmallWidgetRoutes from './coin-small/CoinSmallWidgetRoutes'
 import GoldWidgetRoutes from './gold/GoldWidgetRoutes'
 import StockWidgetRoutes from './stock/StockWidgetRoutes'
 import StockMediumWidgetRoutes from './stock-medium/StockMediumWidgetRoutes'
@@ -10,6 +11,7 @@ const WidgetRouter: RouteRecordRaw[] = [
   ...StockMediumWidgetRoutes,
   ...StockSmallWidgetRoutes,
   ...GoldWidgetRoutes,
+  ...CoinSmallWidgetRoutes,
   // FBI WANING! ROUTE PLACE, DONT DELETE THIS LINE
 ]
 export default WidgetRouter

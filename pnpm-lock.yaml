@@ -18,11 +18,11 @@ dependencies:
     specifier: ^12.4.0
     version: 12.4.0(axios@1.7.7)(sortablejs@1.15.6)(typescript@5.3.3)
   '@widget-js/core':
-    specifier: ^24.1.1-beta.45
-    version: 24.1.1-beta.45
+    specifier: ^24.1.1-beta.62
+    version: 24.1.1-beta.62
   '@widget-js/vue3':
-    specifier: ^24.1.1-beta.48
-    version: 24.1.1-beta.48(axios@1.7.7)(vue@3.5.12)
+    specifier: ^24.1.1-beta.62
+    version: 24.1.1-beta.62(axios@1.7.7)(vue@3.5.12)
   axios:
     specifier: ^1.7.4
     version: 1.7.7
@@ -54,7 +54,7 @@ dependencies:
 devDependencies:
   '@antfu/eslint-config':
     specifier: ^3.8.0
-    version: 3.8.0(@typescript-eslint/utils@8.12.2)(@vue/compiler-sfc@3.5.12)(eslint@9.14.0)(typescript@5.3.3)
+    version: 3.8.0(@typescript-eslint/utils@8.12.2)(@vue/compiler-sfc@3.5.13)(eslint@9.14.0)(typescript@5.3.3)
   '@tsconfig/node18':
     specifier: ^18.2.2
     version: 18.2.4
@@ -68,14 +68,17 @@ devDependencies:
     specifier: ^0.5.0
     version: 0.5.1
   '@widget-js/cli':
-    specifier: ^24.1.1-beta.40
-    version: 24.1.1-beta.40(vue@3.5.12)
+    specifier: ^24.1.1-beta.62
+    version: 24.1.1-beta.62(vue@3.5.12)
   '@widget-js/vite-plugin-widget':
-    specifier: ^24.1.1-beta.41
-    version: 24.1.1-beta.41(@types/node@18.19.63)(sass@1.83.1)
+    specifier: ^24.1.1-beta.62
+    version: 24.1.1-beta.62(@types/node@18.19.63)(sass@1.83.1)
   eslint:
     specifier: ^9.14.0
     version: 9.14.0
+  esno:
+    specifier: ^4.8.0
+    version: 4.8.0
   lint-staged:
     specifier: ^15.2.10
     version: 15.2.10
@@ -90,7 +93,7 @@ devDependencies:
     version: 5.3.3
   unocss:
     specifier: ^0.63.6
-    version: 0.63.6(postcss@8.4.47)(typescript@5.3.3)(vite@5.4.10)
+    version: 0.63.6(postcss@8.5.1)(typescript@5.3.3)(vite@5.4.10)
   unplugin-auto-import:
     specifier: ^0.11.4
     version: 0.11.5(@vueuse/core@11.2.0)
@@ -123,7 +126,7 @@ packages:
       '@jridgewell/trace-mapping': 0.3.25
     dev: true
 
-  /@antfu/eslint-config@3.8.0(@typescript-eslint/utils@8.12.2)(@vue/compiler-sfc@3.5.12)(eslint@9.14.0)(typescript@5.3.3):
+  /@antfu/eslint-config@3.8.0(@typescript-eslint/utils@8.12.2)(@vue/compiler-sfc@3.5.13)(eslint@9.14.0)(typescript@5.3.3):
     resolution: {integrity: sha512-O5QSufPHpKTm0wk1OQ5c2mOZVzCqYV3hIDrt5zt+cOWqiG8YXLPkSOD4fFwjomATtOuUbcLUwkcgY5dErM7aIw==}
     hasBin: true
     peerDependencies:
@@ -195,7 +198,7 @@ packages:
       eslint-plugin-unused-imports: 4.1.4(@typescript-eslint/eslint-plugin@8.12.2)(eslint@9.14.0)
       eslint-plugin-vue: 9.30.0(eslint@9.14.0)
       eslint-plugin-yml: 1.15.0(eslint@9.14.0)
-      eslint-processor-vue-blocks: 0.1.2(@vue/compiler-sfc@3.5.12)(eslint@9.14.0)
+      eslint-processor-vue-blocks: 0.1.2(@vue/compiler-sfc@3.5.13)(eslint@9.14.0)
       globals: 15.11.0
       jsonc-eslint-parser: 2.4.0
       local-pkg: 0.5.0
@@ -1634,7 +1637,7 @@ packages:
       - typescript
     dev: true
 
-  /@unocss/postcss@0.63.6(postcss@8.4.47):
+  /@unocss/postcss@0.63.6(postcss@8.5.1):
     resolution: {integrity: sha512-XI6U1jMwbQoSHVWpZZu3Cxp3t1PVj5VOj+IYtz7xmcWP9GVK+eyETo/xyB0l4muD4emXfSrhNDrFYzSyIyF5cg==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -1644,7 +1647,7 @@ packages:
       '@unocss/core': 0.63.6
       '@unocss/rule-utils': 0.63.6
       css-tree: 3.0.0
-      postcss: 8.4.47
+      postcss: 8.5.1
       tinyglobby: 0.2.10
     transitivePeerDependencies:
       - supports-color
@@ -1853,7 +1856,6 @@ packages:
       entities: 4.5.0
       estree-walker: 2.0.2
       source-map-js: 1.2.1
-    dev: false
 
   /@vue/compiler-dom@3.5.12:
     resolution: {integrity: sha512-9G6PbJ03uwxLHKQ3P42cMTi85lDRvGLB2rSGOiQqtXELat6uI4n8cNz9yjfVHRPIu+MsK6TE418Giruvgptckg==}
@@ -1866,7 +1868,6 @@ packages:
     dependencies:
       '@vue/compiler-core': 3.5.13
       '@vue/shared': 3.5.13
-    dev: false
 
   /@vue/compiler-sfc@3.5.12:
     resolution: {integrity: sha512-2k973OGo2JuAa5+ZlekuQJtitI5CgLMOwgl94BzMCsKZCX/xiqzJYzapl4opFogKHqwJk34vfsaKpfEhd1k5nw==}
@@ -1893,7 +1894,6 @@ packages:
       magic-string: 0.30.12
       postcss: 8.5.1
       source-map-js: 1.2.1
-    dev: false
 
   /@vue/compiler-ssr@3.5.12:
     resolution: {integrity: sha512-eLwc7v6bfGBSM7wZOGPmRavSWzNFF6+PdRhE+VFJhNCgHiF8AM7ccoqcv5kBXA2eWUfigD7byekvf/JsOfKvPA==}
@@ -1906,7 +1906,6 @@ packages:
     dependencies:
       '@vue/compiler-dom': 3.5.13
       '@vue/shared': 3.5.13
-    dev: false
 
   /@vue/devtools-api@6.6.4:
     resolution: {integrity: sha512-sGhTPMuXqZ1rVOk32RylztWkfXTRhuS7vgAKv0zjqk8gbsHkJ7xfFf+jbySxt7tWObEJwyKaHMikV/WGDiQm8g==}
@@ -1997,7 +1996,6 @@ packages:
 
   /@vue/shared@3.5.13:
     resolution: {integrity: sha512-/hnE/qP5ZoGpol0a5mDi45bOd7t3tjYJBjsgCsivow7D48cJeV5l05RD82lPqi7gRiphZM37rnhW1l6ZoCNNnQ==}
-    dev: false
 
   /@vue/tsconfig@0.5.1:
     resolution: {integrity: sha512-VcZK7MvpjuTPx2w6blwnwZAu5/LgBUtejFOi3pPGQFXQN5Ela03FUtd2Qtg4yWGGissVL0dr6Ro1LfOFh+PCuQ==}
@@ -2175,17 +2173,17 @@ packages:
       - '@vue/composition-api'
       - vue
 
-  /@widget-js/cli@24.1.1-beta.40(vue@3.5.12):
-    resolution: {integrity: sha512-+3//3Rq91Avgfoj9ERF4t7AxB9025uLZZbMz14MaaebOTm8/pjIaf28nzeaYdohLerb+wlKaHzx77Tz5ZLEqRA==}
+  /@widget-js/cli@24.1.1-beta.62(vue@3.5.12):
+    resolution: {integrity: sha512-u3iPOF3CfvU0DImcmwJu6MFk+XPiUDT3VBzvhv9/ELqJmjfVL2IOP1dI6o92/qqS64bOaNWJQM/BjVbyyibtPA==}
     engines: {node: ^12.0.0 || >= 14.0.0}
     hasBin: true
     dependencies:
       '@types/archiver': 5.3.4
       '@vue/cli-shared-utils': 5.0.8
-      '@widget-js/core': 24.1.1-beta.40
+      '@widget-js/core': 24.1.1-beta.62
       '@widget-js/ssh-config': 4.2.1
-      '@widget-js/utils': 24.1.1-beta.40
-      '@widget-js/vue3': 24.1.1-beta.40(axios@1.7.7)(vue@3.5.12)
+      '@widget-js/utils': 24.1.1-beta.62
+      '@widget-js/vue3': 24.1.1-beta.62(axios@1.7.7)(vue@3.5.12)
       ali-oss: 6.21.0
       archiver: 5.3.2
       axios: 1.7.7
@@ -2227,53 +2225,32 @@ packages:
       - vue
     dev: true
 
-  /@widget-js/core@24.1.1-beta.40:
-    resolution: {integrity: sha512-2k4ab2WeYGQ3sp0ToOQHfqCT1H/w6LvuPk3E8IMUjhIvQPL74FqZ36h4XSBElDuWxpOvLGlVCGgvMLGC/Soa2Q==}
+  /@widget-js/core@24.1.1-beta.62:
+    resolution: {integrity: sha512-kywzCFS7jT5ZE39onCTE0a/hYkBw+k/3VmzbRlu+qpXtQ4DJyZ0j9tLIYctyILirfx7KoODQWeUqpALFfWgRlw==}
     dependencies:
       '@types/css-tree': 2.3.8
       css-tree: 2.3.1
       localforage: 1.10.0
       lodash: 4.17.21
       path-normalize: 6.0.13
-    dev: true
-
-  /@widget-js/core@24.1.1-beta.44:
-    resolution: {integrity: sha512-hsdS48bao2gebvyMfFagXoo3WO2VIZ3D6GeAUgR9zVgCTr5TufiJiPfnpSvBctgoOwCJ3vL77uBkT2NAPN6jAQ==}
-    dependencies:
-      '@types/css-tree': 2.3.8
-      css-tree: 2.3.1
-      localforage: 1.10.0
-      lodash: 4.17.21
-      path-normalize: 6.0.13
-    dev: false
-
-  /@widget-js/core@24.1.1-beta.45:
-    resolution: {integrity: sha512-S5jVOk2DKFBStq/eIhWscEw9YEpeTBqSABFspIiOLTqGtysAxfhcKxrINkGbKg50ntkCe1SdGUDwAqHoXPZ/qw==}
-    dependencies:
-      '@types/css-tree': 2.3.8
-      css-tree: 2.3.1
-      localforage: 1.10.0
-      lodash: 4.17.21
-      path-normalize: 6.0.13
-    dev: false
 
   /@widget-js/ssh-config@4.2.1:
     resolution: {integrity: sha512-8CB134IyK1BwHMEx4L7yXKRtUgst1iOEVkNJdJKEeQiMxjbHVjeArPetCtV1XnoYA1uuUc3ND2dNvKRPBc4fMw==}
     dev: true
 
-  /@widget-js/utils@24.1.1-beta.40:
-    resolution: {integrity: sha512-orqbF+f1nLtLV5wX4IMVmZtEfSB7plNoADKpxQYSKGS81Rhs6NzlatwVY67rnJFpIusN+S3z5/PFm7n89aJZQA==}
+  /@widget-js/utils@24.1.1-beta.62:
+    resolution: {integrity: sha512-kuy4ppbILTuTrxKxGbjUsfI0sXBf/oXrDgzz4qMuiOeQ0JpBQuUE1upjAt0G1FZdYj4vWuzxWr24u1/vcWGK+Q==}
     dependencies:
-      '@widget-js/core': 24.1.1-beta.40
+      '@widget-js/core': 24.1.1-beta.62
       consola: 2.15.3
       glob: 10.4.5
       typescript: 5.3.3
     dev: true
 
-  /@widget-js/vite-plugin-widget@24.1.1-beta.41(@types/node@18.19.63)(sass@1.83.1):
-    resolution: {integrity: sha512-qbgctlCmoTcBe2Q3rugE1mktNdpHSxmkFTILhoqRrLOkp2V+Lk6R98hYTUF5IhT1u0XkLZbQOkIk92N1kEZQ6w==}
+  /@widget-js/vite-plugin-widget@24.1.1-beta.62(@types/node@18.19.63)(sass@1.83.1):
+    resolution: {integrity: sha512-RiL6Z3zMfuCJMI91gCixlTzdZZYMgCL3bCJOViND8V2yDG/PsW/u21sHkukEbvaxhbMRbl+JRAUrSQ6vLgxDsg==}
     dependencies:
-      '@widget-js/utils': 24.1.1-beta.40
+      '@widget-js/utils': 24.1.1-beta.62
       consola: 2.15.3
       glob: 10.4.5
       lodash: 4.17.21
@@ -2294,45 +2271,17 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@widget-js/vue3@24.1.1-beta.40(axios@1.7.7)(vue@3.5.12):
-    resolution: {integrity: sha512-EOJi6G2IHnli4ZZ0r3zc0pIr4jvmD4F+p7PIGAW7/zy2HJBdwkiPECBOFSfyDaAjV5MlWU8hKvOIHwvG3rzB2w==}
+  /@widget-js/vue3@24.1.1-beta.62(axios@1.7.7)(vue@3.5.12):
+    resolution: {integrity: sha512-O0WAmxeEHQTMBY9r3z64pmcoh0lcEmj7VwooMEbpLMe1jzosRsMuH9alj5+IY8y0DcvzmJ/HDfNn8CtZt/tDVg==}
     dependencies:
       '@icon-park/vue-next': 1.4.2(vue@3.5.12)
       '@vueuse/core': 9.13.0(vue@3.5.12)
       '@vueuse/integrations': 9.13.0(axios@1.7.7)(change-case@5.4.4)(vue@3.5.12)
       '@vueuse/shared': 10.11.1(vue@3.5.12)
-      '@widget-js/core': 24.1.1-beta.40
+      '@widget-js/core': 24.1.1-beta.62
       change-case: 5.4.4
       consola: 3.2.3
-      element-plus: 2.8.7(vue@3.5.12)
-      popmotion: 11.0.5
-      vue-demi: 0.14.10(vue@3.5.12)
-    transitivePeerDependencies:
-      - '@vue/composition-api'
-      - async-validator
-      - axios
-      - drauu
-      - focus-trap
-      - fuse.js
-      - idb-keyval
-      - jwt-decode
-      - nprogress
-      - qrcode
-      - universal-cookie
-      - vue
-    dev: true
-
-  /@widget-js/vue3@24.1.1-beta.48(axios@1.7.7)(vue@3.5.12):
-    resolution: {integrity: sha512-1UZ20h9MnGvQ1jA3C6UbRokZ5piJJJI0DuhfjP88qDZdG5xM7gTv/QuxS+l9GdTzUaPxHZAPrizrFTrrxlpqoA==}
-    dependencies:
-      '@icon-park/vue-next': 1.4.2(vue@3.5.12)
-      '@vueuse/core': 9.13.0(vue@3.5.12)
-      '@vueuse/integrations': 9.13.0(axios@1.7.7)(change-case@5.4.4)(vue@3.5.12)
-      '@vueuse/shared': 10.11.1(vue@3.5.12)
-      '@widget-js/core': 24.1.1-beta.44
-      change-case: 5.4.4
-      consola: 3.2.3
-      element-plus: 2.8.7(vue@3.5.12)
+      element-plus: 2.10.2(vue@3.5.12)
       popmotion: 11.0.5
       semver: 7.6.3
       vue-demi: 0.14.10(vue@3.5.12)
@@ -2349,7 +2298,6 @@ packages:
       - qrcode
       - universal-cookie
       - vue
-    dev: false
 
   /acorn-jsx@5.3.2(acorn@8.14.0):
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -3203,6 +3151,30 @@ packages:
     resolution: {integrity: sha512-eMVObiUQ2LdgeO1F/ySTXsvqvxb6ZH2zPGaMYsWzRDdOddUa77tdmI0ltg+L16UpbWdhPmuF3wIQYyQq65WfZw==}
     dev: true
 
+  /element-plus@2.10.2(vue@3.5.12):
+    resolution: {integrity: sha512-p2KiAa0jEGXrzdlTAfpiS7HQFAhla4gvx6H7RuDf+OO0uC3DGpolxvdHjFR8gt7+vaWyxQNcHa1sAdBkmjqlgA==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      '@ctrl/tinycolor': 3.6.1
+      '@element-plus/icons-vue': 2.3.1(vue@3.5.12)
+      '@floating-ui/dom': 1.6.12
+      '@popperjs/core': /@sxzz/popperjs-es@2.11.7
+      '@types/lodash': 4.17.13
+      '@types/lodash-es': 4.17.12
+      '@vueuse/core': 9.13.0(vue@3.5.12)
+      async-validator: 4.2.5
+      dayjs: 1.11.13
+      escape-html: 1.0.3
+      lodash: 4.17.21
+      lodash-es: 4.17.21
+      lodash-unified: 1.0.3(@types/lodash-es@4.17.12)(lodash-es@4.17.21)(lodash@4.17.21)
+      memoize-one: 6.0.0
+      normalize-wheel-es: 1.2.0
+      vue: 3.5.12(typescript@5.3.3)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+
   /element-plus@2.8.7(vue@3.5.12):
     resolution: {integrity: sha512-oGQyFRufFOgjd872tZc+T4xQAYLlX4hj6d3ixeY13L4fFNUuc1N49JHAqJGPda0tdx3qCnjceZoh1kqqj2+tXQ==}
     peerDependencies:
@@ -3226,6 +3198,7 @@ packages:
       vue: 3.5.12(typescript@5.3.3)
     transitivePeerDependencies:
       - '@vue/composition-api'
+    dev: false
 
   /emoji-regex@10.4.0:
     resolution: {integrity: sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw==}
@@ -3669,13 +3642,13 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-processor-vue-blocks@0.1.2(@vue/compiler-sfc@3.5.12)(eslint@9.14.0):
+  /eslint-processor-vue-blocks@0.1.2(@vue/compiler-sfc@3.5.13)(eslint@9.14.0):
     resolution: {integrity: sha512-PfpJ4uKHnqeL/fXUnzYkOax3aIenlwewXRX8jFinA1a2yCFnLgMuiH3xvCgvHHUlV2xJWQHbCTdiJWGwb3NqpQ==}
     peerDependencies:
       '@vue/compiler-sfc': ^3.3.0
       eslint: ^8.50.0 || ^9.0.0
     dependencies:
-      '@vue/compiler-sfc': 3.5.12
+      '@vue/compiler-sfc': 3.5.13
       eslint: 9.14.0
     dev: true
 
@@ -3752,6 +3725,13 @@ packages:
       text-table: 0.2.0
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /esno@4.8.0:
+    resolution: {integrity: sha512-acMtooReAQGzLU0zcuEDHa8S62meh5aIyi8jboYxyvAePdmuWx2Mpwmt0xjwO0bs9/SXf+dvXJ0QJoDWw814Iw==}
+    hasBin: true
+    dependencies:
+      tsx: 4.19.2
     dev: true
 
   /espree@10.3.0:
@@ -5304,7 +5284,6 @@ packages:
     resolution: {integrity: sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
-    dev: false
 
   /natural-compare-lite@1.4.0:
     resolution: {integrity: sha512-Tj+HTDSJJKaZnfiuw+iaF9skdPpTo2GtEly5JHnWV/hfv2Qj/9RKsGISQtLh2ox3l5EAGw487hnBee0sIJ6v2g==}
@@ -5744,7 +5723,6 @@ packages:
       nanoid: 3.3.8
       picocolors: 1.1.1
       source-map-js: 1.2.1
-    dev: false
 
   /prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -6661,7 +6639,7 @@ packages:
       unist-util-visit-parents: 6.0.1
     dev: true
 
-  /unocss@0.63.6(postcss@8.4.47)(typescript@5.3.3)(vite@5.4.10):
+  /unocss@0.63.6(postcss@8.5.1)(typescript@5.3.3)(vite@5.4.10):
     resolution: {integrity: sha512-OKJJKEFWVz+Lsf3JdOgRiRtL+QOUQRBov89taUcCPFPZtrhP6pPVFCZHD9qMvY4IChMX7dzalQax3ZXJ3hbtkQ==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -6676,7 +6654,7 @@ packages:
       '@unocss/astro': 0.63.6(typescript@5.3.3)(vite@5.4.10)
       '@unocss/cli': 0.63.6
       '@unocss/core': 0.63.6
-      '@unocss/postcss': 0.63.6(postcss@8.4.47)
+      '@unocss/postcss': 0.63.6(postcss@8.5.1)
       '@unocss/preset-attributify': 0.63.6
       '@unocss/preset-icons': 0.63.6
       '@unocss/preset-mini': 0.63.6

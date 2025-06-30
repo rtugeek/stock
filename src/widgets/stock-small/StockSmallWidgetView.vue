@@ -33,7 +33,6 @@ const { quotation, isUp, color } = useStockQuotation(stockCode, {
       <div class="price">
         {{ quotation?.cur?.price ?? '0' }}
       </div>
-      <div id="chart" />
       <StockChart ref="stockChartRef" :is-up="isUp" />
     </div>
   </widget-wrapper>
