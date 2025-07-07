@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { BaiDuStockApi } from '@/api/BaiDuStockApi'
-import FundItem from '@/component/FundItem.vue'
+import BlockItem from '@/component/BlockItem.vue'
 import StockItem from '@/component/StockItem.vue'
 import { useSelfSelectStock } from '@/hook/useSelfSelectStock'
 import { Switch } from '@icon-park/vue-next'
@@ -50,8 +50,8 @@ function switchProfit() {
       <el-scrollbar :height="height - 50">
         <div class="stock-data">
           <template v-for="stock in stocks" :key="stock.code">
-            <StockItem v-if="stock.type == 'stock'" :stock="stock" :profit="showProfit" />
-            <FundItem v-else-if="stock.type == 'fund'" :stock="stock" :profit="showProfit" />
+            <BlockItem v-if="stock.type == 'fund'" :stock="stock" :profit="showProfit" />
+            <StockItem v-else :stock="stock" :profit="showProfit" />
           </template>
         </div>
       </el-scrollbar>

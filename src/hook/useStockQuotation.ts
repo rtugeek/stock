@@ -1,10 +1,10 @@
 import type { QuotationGroup } from '@/api/BaiDuStockApi'
 import type { Quotation } from '@/model/Qutation'
-import type { MaybeRef, Ref } from 'vue'
 import { BaiDuStockApi } from '@/api/BaiDuStockApi'
 import { useStockColor } from '@/hook/useStockColor'
 import { useIntervalFn, useStorage, watchThrottled } from '@vueuse/core'
 import consola from 'consola'
+import { type MaybeRef, type Ref, toValue } from 'vue'
 import { ref } from 'vue'
 
 export function useStockQuotation(code: Ref<string>, option?: UseStockQuotationOption) {
@@ -15,7 +15,7 @@ export function useStockQuotation(code: Ref<string>, option?: UseStockQuotationO
 
   async function refresh() {
     consola.info('refreshing')
-    const result = await BaiDuStockApi.getQuotationMinute(code.value, option?.group)
+    const result = await BaiDuStockApi.getQuotationMinute(code.value, toValue(option?.group))
     quotation.value = result
     isUp.value = result.cur.ratio.includes('+')
     const marketData = result.newMarketData.marketData
@@ -42,5 +42,5 @@ export function useStockQuotation(code: Ref<string>, option?: UseStockQuotationO
 export interface UseStockQuotationOption {
   refreshInterval?: MaybeRef<number>
   onNewData?: (quotation: Quotation, data: (string | number)[]) => void
-  group?: QuotationGroup
+  group?: MaybeRef<QuotationGroup>
 }

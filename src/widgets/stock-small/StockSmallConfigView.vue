@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { StockType } from '@/api/BaiDuStockApi'
 import type { Stock } from '@/model/Stock'
 import RefreshIntervalFormItem from '@/component/RefreshIntervalFormItem.vue'
 import StockColorFormItem from '@/component/StockColorFormItem.vue'
@@ -18,11 +19,13 @@ const widgetConfigOption = new WidgetConfigOption({
 })
 
 const stockCode = useWidgetStorage('stock-code', '01810')
+const stockType = useWidgetStorage<StockType>('stock-type', 'stock')
 const stockLabel = useWidgetStorage<string>('stock-info', '')
 const keyword = ref()
 
 function onStockSelect(newStock: Stock) {
   stockCode.value = newStock.code
+  stockType.value = newStock.type
   stockLabel.value = `${newStock.name}(${newStock.code})`
 }
 

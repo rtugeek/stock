@@ -1,17 +1,34 @@
 <script lang="ts" setup>
+import type { StockType } from '@/api/BaiDuStockApi'
 import ExchangeTag from '@/component/ExchangeTag.vue'
 import StockChart from '@/component/StockChart.vue'
+import { useQuotationGroup } from '@/hook/useQuotationGroup'
 import { useStockQuotation } from '@/hook/useStockQuotation'
 import { useWidget, useWidgetStorage } from '@widget-js/vue3'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 useWidget()
 const stockCode = useWidgetStorage('stock-code', '01810')
 const stockChartRef = ref<InstanceType<typeof StockChart>>()
+const stockType = useWidgetStorage<StockType>('stock-type', 'stock')
+const quotationGroup = useQuotationGroup(stockType)
+const exchangeTag = computed(() => {
+  const ex = quotation.value?.basicinfos?.exchange
+  if (ex == '') {
+    if (quotation.value?.financeType == 'block') {
+      return 'BK'
+    }
+  }
+  else {
+    return ex
+  }
+  return 'err'
+})
 const { quotation, isUp, color } = useStockQuotation(stockCode, {
   onNewData: (quotation, data) => {
     stockChartRef.value?.update(data, isUp.value)
   },
+  group: quotationGroup,
 })
 </script>
 
@@ -23,7 +40,7 @@ const { quotation, isUp, color } = useStockQuotation(stockCode, {
           {{ quotation?.basicinfos.name ?? 'Loading' }}
           <div class="info">
             <div class="flex gap-1 items-center">
-              <ExchangeTag :text="quotation?.basicinfos.exchange ?? 'err'" />
+              <ExchangeTag :text="exchangeTag" />
               <span class="code">{{ stockCode }}</span>
               <span class="ml-auto" :style="{ color }">{{ quotation?.cur?.ratio ?? '0' }}</span>
             </div>

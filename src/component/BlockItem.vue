@@ -1,11 +1,10 @@
 <script setup lang="ts">
+import type StockChart from '@/component/StockChart.vue'
 import type { Stock } from '@/model/Stock'
 import ExchangeTag from '@/component/ExchangeTag.vue'
-import StockChart from '@/component/StockChart.vue'
-import { useQuotationGroup } from '@/hook/useQuotationGroup'
 import { useSelfSelectStock } from '@/hook/useSelfSelectStock'
+import { useStock } from '@/hook/useStock'
 import { useStockColor } from '@/hook/useStockColor'
-import { useStockQuotation } from '@/hook/useStockQuotation'
 import { computed, type PropType, ref } from 'vue'
 
 const props = defineProps({
@@ -16,33 +15,22 @@ const props = defineProps({
   profit: {
     type: Boolean,
   },
-  chart: {
-    type: Boolean,
-    default: true,
-  },
 })
 const stockChartRef = ref<InstanceType<typeof StockChart>>()
 const chartId = computed(() => {
   return `chart_${props.stock.code}`
 })
 const code = ref(props.stock.code)
-const quotationGroup = useQuotationGroup(props.stock.type)
 const selectStock = useSelfSelectStock()
-const { isUp, color } = useStockQuotation(code, {
-  onNewData: (quotation, data) => {
-    const stock = JSON.parse(JSON.stringify(props.stock))
-    stock.increase = quotation.cur.increase
-    stock.price = quotation.cur.price
-    stock.ratio = quotation.cur.ratio
-    stock.amount = quotation.cur.amount
-    stock.volume = quotation.cur.volume
-    selectStock.save(stock)
-    if (props.chart) {
-      stockChartRef.value?.update(data, isUp.value)
-    }
-  },
-  group: quotationGroup,
-})
+const { color } = useStock(code, { onNewData: (newStockData) => {
+  const stock = JSON.parse(JSON.stringify(props.stock))
+  stock.increase = newStockData.increase
+  stock.price = newStockData.price
+  stock.ratio = newStockData.ratio
+  stock.amount = newStockData.amount
+  stock.volume = newStockData.volume
+  selectStock.save(stock)
+} })
 
 const currentPrice = computed<number>(() => {
   return Number.parseFloat(props.stock.price)
@@ -101,7 +89,7 @@ const profitRatio = computed(() => {
         {{ stock.code }}
       </div>
     </div>
-    <StockChart :id="chartId" ref="stockChartRef" class="ml-auto" :height="25" />
+    <div :id="chartId" ref="stockChartRef" class="ml-auto" :height="25" />
     <span v-show="profit" class="stock-price">{{ profitMoneyStr }}</span>
     <span v-show="!profit" class="stock-price">{{ currentPrice.toFixed(2) }}</span>
     <span v-show="profit" class="stock-change" :style="{ backgroundColor: ProfitColor }">

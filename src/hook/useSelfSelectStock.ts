@@ -7,7 +7,7 @@ import { onMounted, ref, toRaw, watch, watchEffect } from 'vue'
 const allStocks = ref<Stock[]>([])
 const stocks = ref<Stock[]>([])
 const { data, post } = useBroadcastChannel({ name: 'self-select-stock' })
-export function useSelfSelectStock(types: StockType[] = ['stock', 'fund']) {
+export function useSelfSelectStock(types: StockType[] = ['stock', 'fund', 'block']) {
   onMounted(async () => {
     allStocks.value = await selfSelectStockRepository.all()
   })

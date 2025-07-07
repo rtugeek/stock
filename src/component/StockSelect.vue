@@ -6,7 +6,7 @@ import { ref, toRaw } from 'vue'
 const props = defineProps({
   type: {
     type: Array<StockType>,
-    default: ['stock', 'fund'],
+    default: ['stock', 'fund', 'block'],
   },
 })
 const emits = defineEmits(['select'])

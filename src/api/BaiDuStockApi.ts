@@ -21,12 +21,16 @@ export class BaiDuStockApi {
    * @param code
    * @param type
    */
-  static async getByType<T>(code: string, type: StockType): Promise<T | undefined> {
+  static async getByType<T>(code: string, type?: StockType): Promise<T | undefined> {
     const data = await this.selfSelect(code)
     if (data.ResultCode == '0' && data.Result.stock.length > 0) {
-      const stock = data.Result.stock.find(it => it.type == type)
-      if (stock) {
-        return stock
+      if (type) {
+        return data.Result.stock.find(it => it.type == type)
+      }
+      else {
+        if (data.Result.stock.length > 0) {
+          return data.Result.stock[0]
+        }
       }
     }
     return undefined
@@ -92,8 +96,8 @@ export class BaiDuStockApi {
   }
 }
 
-export type QuotationGroup = 'quotation_minute_ab' | 'quotation_index_fiveday'
-export type StockType = 'index' | 'fund' | 'stock'
+export type QuotationGroup = 'quotation_minute_ab' | 'quotation_index_fiveday' | 'quotation_block_minute'
+export type StockType = 'index' | 'fund' | 'stock' | 'block'
 
 export interface LabelMap {
   text: string
