@@ -18,7 +18,7 @@ defineExpose({
 </script>
 
 <template>
-  <div :id="id" />
+  <div :id="id" class="chart" />
 </template>
 
 <style scoped>

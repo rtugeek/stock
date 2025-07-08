@@ -3,7 +3,6 @@ import type { Quotation } from '@/model/Qutation'
 import { BaiDuStockApi } from '@/api/BaiDuStockApi'
 import { useStockColor } from '@/hook/useStockColor'
 import { useIntervalFn, useStorage, watchThrottled } from '@vueuse/core'
-import consola from 'consola'
 import { type MaybeRef, type Ref, toValue } from 'vue'
 import { ref } from 'vue'
 
@@ -14,7 +13,6 @@ export function useStockQuotation(code: Ref<string>, option?: UseStockQuotationO
   const defaultRefreshInterval = useStorage('refresh_interval', 60000)
 
   async function refresh() {
-    consola.info('refreshing')
     const result = await BaiDuStockApi.getQuotationMinute(code.value, toValue(option?.group))
     quotation.value = result
     isUp.value = result.cur.ratio.includes('+')
