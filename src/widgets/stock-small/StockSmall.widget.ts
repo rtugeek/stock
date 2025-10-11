@@ -14,10 +14,10 @@ const StockSmallWidget = new Widget({
   minHeight: 2,
   maxHeight: 2,
   previewImage: '/preview_stock_small.png',
-  path: '/widget/stock_small',
   socialLinks: [
-    { name: 'github', link: 'https://github.com/widget-js/widgets' },
+    { name: 'github', link: 'https://github.com/rtugeek/stock' },
   ],
+  path: '/widget/stock_small',
   configPagePath:
     '/widget/config/stock_small?width=600&height=500&frame=true&transparent=false',
 })

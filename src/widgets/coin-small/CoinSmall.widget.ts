@@ -9,6 +9,9 @@ const CoinSmallWidget = new Widget({
   lang: 'zh-CN',
   width: 2,
   height: 2,
+  socialLinks: [
+    { name: 'github', link: 'https://github.com/rtugeek/stock' },
+  ],
   minWidth: 2,
   maxWidth: 2,
   minHeight: 2,

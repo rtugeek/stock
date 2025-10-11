@@ -1,5 +1,11 @@
 # Stock Widgets
 
+
+### Coin Widget
+
+![](./public/preview_coin_small.png)
+
+
 ### 股票组件【小】
 
 ![](./public/preview_stock_small.png)

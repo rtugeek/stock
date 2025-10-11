@@ -13,12 +13,12 @@ const StockWidget = new Widget({
   maxWidth: 5,
   minHeight: 3,
   maxHeight: 8,
+  socialLinks: [
+    { name: 'github', link: 'https://github.com/rtugeek/stock' },
+  ],
   previewImage: '/preview_stock_large.png',
   path: '/widget/stock',
   configPagePath: '/widget/config/stock?transparent=false&frame=true&height=700&width=800',
-  socialLinks: [
-    { name: 'github', link: 'https://github.com/widget-js/widgets' },
-  ],
 })
 
 export default StockWidget

@@ -14,6 +14,9 @@ const GoldWidget = new Widget({
   minHeight: 2,
   maxHeight: 2,
   previewImage: '/preview_gold.png',
+  socialLinks: [
+    { name: 'github', link: 'https://github.com/rtugeek/stock' },
+  ],
   path: '/widget/gold',
   configPagePath:
     '/widget/config/gold?width=600&height=500&frame=true&transparent=false',

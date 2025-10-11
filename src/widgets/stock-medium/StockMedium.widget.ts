@@ -13,6 +13,9 @@ const StockMediumWidget = new Widget({
   maxWidth: 4,
   minHeight: 2,
   maxHeight: 2,
+  socialLinks: [
+    { name: 'github', link: 'https://github.com/rtugeek/stock' },
+  ],
   previewImage: '/preview_stock_medium.png',
   path: '/widget/stock_medium',
   socialLinks: [
