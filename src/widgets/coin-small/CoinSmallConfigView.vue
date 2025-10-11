@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { Coins } from '@/api/CoinApi'
-import StockColorFormItem from '@/component/StockColorFormItem.vue'
 import { useWidget, useWidgetStorage, WidgetConfigOption } from '@widget-js/vue3'
 
 const { widgetParams } = useWidget()
@@ -32,7 +31,6 @@ const widgetConfigOption = new WidgetConfigOption({
             </el-option>
           </el-select>
         </el-form-item>
-        <StockColorFormItem />
       </el-form>
     </template>
   </widget-edit-dialog>

@@ -1,35 +1,66 @@
-import { CoinApi, type CoinType, type IndexTicker } from '@/api/CoinApi'
+import type {
+  Coin,
+  OkxWebSocketEvent,
+  OkxWebSocketEventData,
+  OkxWebSocketOp,
+} from '@/api/CoinApi'
 import { useStockColor } from '@/hook/useStockColor'
-import { useIntervalFn, useStorage, watchThrottled } from '@vueuse/core'
+import { useWebSocket } from '@vueuse/core'
 import consola from 'consola'
 import { computed, type Ref } from 'vue'
 import { ref } from 'vue'
 
-export function useCoinIndexTickers(code: Ref<CoinType>) {
-  const data = ref<IndexTicker>()
+export function useCoinIndexTickers(coin: Ref<Coin>) {
+  const data = ref<OkxWebSocketEventData>()
   const isUp = ref(false)
   const loading = ref(false)
   const { color } = useStockColor(isUp)
-  const defaultRefreshInterval = useStorage('coin_refresh_interval', 60000)
-
-  async function refresh() {
-    consola.info('refreshing')
-    loading.value = true
-    try {
-      const result = await CoinApi.getIndexTickers(code.value)
-      data.value = result[0]
-      isUp.value = Number.parseFloat(data.value?.idxPx ?? '0') >= Number.parseFloat(data.value?.open24h ?? '0')
-    }
-    catch (e) {
-      console.error(e)
-    }
-    finally {
-      loading.value = false
-    }
-  }
+  useWebSocket('wss://wspri.okx.com:8443/ws/v5/ipublic', {
+    autoReconnect: true,
+    onConnected: (ws) => {
+      const subMsg: OkxWebSocketOp = {
+        op: 'subscribe',
+        args: [{
+          channel: 'cup-tickers-3s',
+          ccy: coin.value.ccy,
+        }],
+      }
+      ws.send(JSON.stringify(subMsg))
+      consola.info('WebSocket connected and subscribed:', subMsg)
+    },
+    onError: (ws, event) => {
+      consola.error('WebSocket error:', event)
+    },
+    onMessage: (ws, event) => {
+      const payload = JSON.parse(event.data) as OkxWebSocketEvent
+      consola.info('event', event.data)
+      if (payload && payload.data) {
+        const newData = payload.data[0] as OkxWebSocketEventData
+        if (newData) {
+          isUp.value = Number.parseFloat(newData.last ?? '0') >= Number.parseFloat(newData.open24h ?? '0')
+          data.value = newData
+        }
+      }
+    },
+  })
+  // async function refresh() {
+  //   consola.info('refreshing')
+  //   loading.value = true
+  //   try {
+  //     const result = await CoinApi.getIndexTickers(code.value)
+  //     data.value = result[0]
+  //     isUp.value = Number.parseFloat(data.value?.idxPx ?? '0') >= Number.parseFloat(data.value?.open24h ?? '0')
+  //   }
+  //   catch (e) {
+  //     console.error(e)
+  //   }
+  //   finally {
+  //     loading.value = false
+  //   }
+  // }
 
   const rate = computed(() => {
-    const idxPx = Number.parseFloat(data.value?.idxPx ?? '0')
+    const idxPx = Number.parseFloat(data.value?.last ?? '0')
     const open24h = Number.parseFloat(data.value?.open24h ?? '0')
     return (idxPx - open24h) / open24h * 100
   })
@@ -43,13 +74,13 @@ export function useCoinIndexTickers(code: Ref<CoinType>) {
     }
   })
 
-  watchThrottled(code, () => {
-    refresh()
-  }, {
-    throttle: 1000,
-    immediate: true,
-  })
+  // watchThrottled(code, () => {
+  //   refresh()
+  // }, {
+  //   throttle: 1000,
+  //   immediate: true,
+  // })
 
-  useIntervalFn(refresh, defaultRefreshInterval)
+  // useIntervalFn(refresh, defaultRefreshInterval)
   return { data, isUp, color, loading, rateText, rate }
 }

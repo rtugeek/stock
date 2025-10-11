@@ -1,12 +1,28 @@
 import type { EChartsType } from 'echarts'
-import { useStockColor } from '@/hook/useStockColor'
+import Color from 'color'
 import * as echarts from 'echarts'
-import { nextTick, onMounted, watch } from 'vue'
+import { nextTick, onMounted } from 'vue'
 
 export function useCoinChart(domId: string, height: number = 40) {
   let stockChart: EChartsType
-  let currentIsUp = false
-  const stockColor = useStockColor()
+  const upColor = 'rgb(95,194,93)'
+  const downColor = '#f82842'
+
+  function getColor(isUp: boolean) {
+    if (isUp) {
+      return {
+        color: upColor,
+        colorEnd: Color(upColor).alpha(0).string(),
+      }
+    }
+    else {
+      return {
+        color: downColor,
+        colorEnd: Color(downColor).alpha(0).string(),
+      }
+    }
+  }
+
   onMounted(async () => {
     await nextTick()
     stockChart = echarts.init(document.getElementById(domId))
@@ -38,13 +54,13 @@ export function useCoinChart(domId: string, height: number = 40) {
   })
 
   function updateColor(isUp: boolean) {
-    const newColor = stockColor.getColor(isUp)
+    const newColor = getColor(isUp)
     const lineColor = newColor.color
     const alphaColor = newColor.colorEnd
     stockChart.setOption({
       series: [
         {
-          name: '价格',
+          name: 'price',
           type: 'line',
           itemStyle: {
             color: lineColor,
@@ -102,14 +118,9 @@ export function useCoinChart(domId: string, height: number = 40) {
     })
   }
 
-  watch(stockColor.color, () => {
-    updateColor(currentIsUp)
-  })
-
-  function update(seriesData: (string | number)[], isUp: boolean) {
-    currentIsUp = isUp
+  function update(seriesData: (string | number)[]) {
     updateStyle()
-    updateColor(isUp)
+    const markLineData = seriesData[seriesData.length - 1] ?? 0
     stockChart.setOption({
       series: [
         {
@@ -118,12 +129,13 @@ export function useCoinChart(domId: string, height: number = 40) {
           data: seriesData,
           markLine: {
             data: [
-              { yAxis: seriesData[seriesData.length - 1] },
+              { yAxis: markLineData },
             ],
           },
         },
       ],
     })
   }
-  return { update }
+
+  return { update, updateColor }
 }

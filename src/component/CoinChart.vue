@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useStockChart } from '@/hook/useStockChart'
+import { useCoinChart } from '@/hook/useCoinChart'
 
 const prop = defineProps({
   id: {
@@ -11,9 +11,10 @@ const prop = defineProps({
     default: 40,
   },
 })
-const stockChart = useStockChart(prop.id, prop.height)
+const stockChart = useCoinChart(prop.id, prop.height)
 defineExpose({
   update: stockChart.update,
+  updateColor: stockChart.updateColor,
 })
 </script>
 

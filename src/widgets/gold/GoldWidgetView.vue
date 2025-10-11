@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { GoldStatus } from '@/widgets/gold/GoldStatus'
 import { GoldApi, type GoldApiResponse } from '@/api/GoldApi'
 import GoldTag from '@/component/GoldTag.vue'
 import GoldChart from '@/widgets/gold/GoldChart.vue'
@@ -6,12 +7,22 @@ import { useIntervalFn, useStorage } from '@vueuse/core'
 import { useWidget } from '@widget-js/vue3'
 import { AxiosError } from 'axios'
 import consola from 'consola'
-import { computed, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 
 useWidget()
 const goldChartRef = ref<InstanceType<typeof GoldChart>>()
-const yesterdayClosePrice = useStorage('yesterdayClosePrice', 0)
-const todayClosePrice = useStorage('todayClosePrice', 0)
+const goldStatus = useStorage<GoldStatus>('gold-status', {
+  yesterdayClosePrice: 0,
+  todayClosePrice: 0,
+  data: {
+    times: [],
+    data: [],
+    min: 0,
+    max: 0,
+    heyue: '',
+    delaystr: '',
+  },
+})
 const goldData = useStorage<GoldApiResponse>('goldData', {
   times: [],
   data: [],
@@ -24,12 +35,12 @@ const isUpgrade = ref(false)
 useIntervalFn(async () => {
   try {
     const quotationResult = await GoldApi.quotations()
-    goldData.value = quotationResult
+    goldStatus.value.data = quotationResult
     consola.info(quotationResult)
     consola.info('当前价格', currentPrice.value)
     goldChartRef.value?.update(quotationResult.data, currentPrice.value)
     const hqsjRes = await GoldApi.hqsj()
-    todayClosePrice.value = hqsjRes.close
+    goldStatus.value.todayClosePrice = hqsjRes.close
     consola.info(hqsjRes)
   }
   catch (err) {
@@ -44,9 +55,14 @@ useIntervalFn(async () => {
   immediateCallback: true,
 })
 
+onMounted(async () => {
+  await nextTick()
+  goldChartRef.value?.update(goldStatus.value.data.data, currentPrice.value)
+})
+
 useIntervalFn(() => {
   GoldApi.getYesterdayClosePrice().then((it) => {
-    yesterdayClosePrice.value = it
+    goldStatus.value.yesterdayClosePrice = it
     consola.info('昨日收盘价', it)
   })
 }, 30000, {
@@ -82,8 +98,9 @@ const currentPrice = computed<number>(() => {
 
 const changeRatio = computed(() => {
   const data = goldData.value?.data
-  if (data && yesterdayClosePrice.value) {
-    return ((currentPrice.value - yesterdayClosePrice.value) / yesterdayClosePrice.value) * 100
+  const yesterdayClosePrice = goldStatus.value.yesterdayClosePrice
+  if (data && yesterdayClosePrice) {
+    return ((currentPrice.value - yesterdayClosePrice) / yesterdayClosePrice) * 100
   }
   return 0
 })

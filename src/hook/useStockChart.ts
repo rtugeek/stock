@@ -80,6 +80,25 @@ export function useStockChart(domId: string, height: number = 40) {
           lineStyle: {
             width: 1,
           },
+        },
+      ],
+    })
+  }
+
+  watch(stockColor.color, () => {
+    updateColor(currentIsUp)
+  })
+
+  function update(seriesData: number[], isUp: boolean) {
+    currentIsUp = isUp
+    updateStyle()
+    updateColor(isUp)
+    stockChart.setOption({
+      series: [
+        {
+          name: 'price',
+          type: 'line',
+          data: seriesData,
           markLine: {
             symbol: 'none',
             label: {
@@ -96,27 +115,6 @@ export function useStockChart(domId: string, height: number = 40) {
             emphasis: {
               disabled: true,
             },
-          },
-        },
-      ],
-    })
-  }
-
-  watch(stockColor.color, () => {
-    updateColor(currentIsUp)
-  })
-
-  function update(seriesData: (string | number)[], isUp: boolean) {
-    currentIsUp = isUp
-    updateStyle()
-    updateColor(isUp)
-    stockChart.setOption({
-      series: [
-        {
-          name: '价格',
-          type: 'line',
-          data: seriesData,
-          markLine: {
             data: [
               { yAxis: seriesData[seriesData.length - 1] },
             ],

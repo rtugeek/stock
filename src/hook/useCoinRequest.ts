@@ -1,30 +1,21 @@
 import type { QuotationGroup } from '@/api/BaiDuStockApi'
-import { type CandleData, CoinApi, type CoinType } from '@/api/CoinApi'
+import type { MaybeRef, Ref } from 'vue'
+import { type Coin, CoinApi } from '@/api/CoinApi'
 import { useIntervalFn, useStorage, watchThrottled } from '@vueuse/core'
-import { type MaybeRef, type Ref, watch } from 'vue'
 import { ref } from 'vue'
 
-export function useCoinRequest(code: Ref<CoinType>, option?: UseStockQuotationOption) {
-  const data = ref<CandleData[]>()
+export function useCoinRequest(coin: Ref<Coin>, option?: UseCoinRequestOption) {
+  const data = ref<string[][]>()
   const loading = ref(false)
   const defaultRefreshInterval = useStorage('coin_refresh_interval', 60000)
-  watch(code, () => {
-    refresh()
-  })
 
   async function refresh() {
     loading.value = true
     try {
-      const result = await CoinApi.getCandlesHistory(code.value)
+      const result = await CoinApi.getIndexTickers(coin.value)
       data.value = result
-      // const marketData = result.newMarketData.marketData
-      // const data = marketData[marketData.length - 1]
-      const seriesData: (string | number)[] = []
-      for (const item of data.value) {
-        seriesData.push(item.c)
-      }
-      option?.onNewData?.(result, seriesData)
-      return seriesData
+      option?.onNewData?.(result)
+      return result
     }
     catch (e) {
       console.error(e)
@@ -34,7 +25,7 @@ export function useCoinRequest(code: Ref<CoinType>, option?: UseStockQuotationOp
     }
   }
 
-  watchThrottled(code, () => {
+  watchThrottled(coin.value, () => {
     refresh()
   }, {
     throttle: 5000,
@@ -45,8 +36,8 @@ export function useCoinRequest(code: Ref<CoinType>, option?: UseStockQuotationOp
   return { data, loading }
 }
 
-export interface UseStockQuotationOption {
+export interface UseCoinRequestOption {
   refreshInterval?: MaybeRef<number>
-  onNewData?: (quotation: CandleData[], data: (string | number)[]) => void
+  onNewData?: (quotation: string[][]) => void
   group?: QuotationGroup
 }

@@ -8,12 +8,19 @@ import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  base: '/stock',
-  plugins: [vue(), widget(), UnoCSS(), AutoImport({ resolvers: [ElementPlusResolver()] }), Components({ resolvers: [ElementPlusResolver()] })],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
+export default defineConfig((config) => {
+  const offline = config.mode == 'offline'
+  const base = offline ? './' : '/stock'
+  return {
+    base,
+    plugins: [vue(), widget({
+      zipName: 'stock',
+      generateZip: offline,
+    }), UnoCSS(), AutoImport({ resolvers: [ElementPlusResolver()] }), Components({ resolvers: [ElementPlusResolver()] })],
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      },
     },
-  },
+  }
 })

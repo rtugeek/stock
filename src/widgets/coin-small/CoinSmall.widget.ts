@@ -5,7 +5,7 @@ const CoinSmallWidget = new Widget({
   title: { 'zh-CN': '虚拟币' },
   description: { 'zh-CN': '查看虚拟货币行情，每分钟刷新一次' },
   keywords: [WidgetKeyword.RECOMMEND],
-  categories: [],
+  categories: ['finance'],
   lang: 'zh-CN',
   width: 2,
   height: 2,
@@ -16,10 +16,6 @@ const CoinSmallWidget = new Widget({
   icon: 'https://widgetjs.cn/stock/btc.ico',
   previewImage: '/preview_coin_small.png',
   path: '/widget/coin_small',
-  trayOptions: {
-    closeOnBlur: false,
-    hideOnBlur: true,
-  },
   supportDeployMode: DeployMode.TRAY | DeployMode.OVERLAP | DeployMode.NORMAL,
   configPagePath:
     '/widget/config/coin_small?width=600&height=500&frame=true&transparent=false',

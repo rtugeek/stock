@@ -3,7 +3,7 @@ import { WidgetPackage } from '@widget-js/core'
 export default new WidgetPackage({
   author: 'Neo Fu',
   description: {
-    'zh-CN': '每分钟更新一次股票数据',
+    'zh-CN': '便捷获取股票、基金和虚拟币行情',
   },
   entry: '/',
   hash: true,
@@ -13,8 +13,9 @@ export default new WidgetPackage({
     { name: 'github', link: 'https://github.com/rtugeek/stocks-desktop' },
   ],
   title: {
-    'zh-CN': '股票组件',
+    'zh-CN': '韭菜组件',
   },
+  zipUrl: 'https://widgetjs.cn/stock/widget.zip',
   remote: {
     entry: 'https://widgetjs.cn/stock',
     base: '/stock',

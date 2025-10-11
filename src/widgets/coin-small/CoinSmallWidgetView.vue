@@ -5,19 +5,36 @@ import ExchangeTag from '@/component/ExchangeTag.vue'
 import { useCoinIndexTickers } from '@/hook/useCoinIndexTickers'
 import { useCoinRequest } from '@/hook/useCoinRequest'
 import { useWidget, useWidgetStorage } from '@widget-js/vue3'
-import { computed, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, watch, watchEffect } from 'vue'
 
 useWidget()
 const coinCode = useWidgetStorage<CoinType>('coin-code', 'BTC-USD')
-const { data: indexTickers, rateText, isUp, color, loading: indexLoading } = useCoinIndexTickers(coinCode)
+const latestStatus = useWidgetStorage('latest-status', { data: [], isUp: false })
 const coin = computed<Coin>(() => {
   return Coins.find(c => c.type === coinCode.value)
 })
+const { data: indexTickers, rateText, color, isUp, loading: indexLoading } = useCoinIndexTickers(coin)
+
 const coinChartRef = ref<InstanceType<typeof CoinChart>>()
-useCoinRequest(coinCode, {
-  onNewData: (data, seriaData) => {
-    coinChartRef.value?.update(seriaData, isUp.value)
+useCoinRequest(coin, {
+  onNewData: (data) => {
+    const yData = data.map(it => Number.parseFloat(it[1]))
+    coinChartRef.value?.update(yData)
   },
+})
+
+onMounted(async () => {
+  await nextTick()
+  if (latestStatus.value) {
+    coinChartRef.value?.update(latestStatus.value.data, latestStatus.value.isUp)
+  }
+  watchEffect(() => {
+    coinChartRef.value?.updateColor(isUp.value)
+  })
+})
+
+watch(coinCode, () => {
+  window.location.reload()
 })
 </script>
 
@@ -38,7 +55,7 @@ useCoinRequest(coinCode, {
         </div>
       </div>
       <div v-if="indexTickers" class="price">
-        {{ indexLoading ? '...' : indexTickers.idxPx }}
+        {{ indexLoading ? '...' : indexTickers.last }}
       </div>
       <CoinChart ref="coinChartRef" :is-up="isUp" />
     </div>
