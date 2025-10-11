@@ -23,8 +23,8 @@
     "@types/color": "^4.2.0",
     "@vueuse/core": "^11.0.1",
     "@vueuse/integrations": "^12.4.0",
-    "@widget-js/core": "^24.1.1-beta.71",
-    "@widget-js/vue3": "^24.1.1-beta.70",
+    "@widget-js/core": "^24.1.1-beta.72",
+    "@widget-js/vue3": "^24.1.1-beta.74",
     "axios": "^1.7.4",
     "color": "^4.2.3",
     "consola": "^3.2.3",
@@ -33,6 +33,7 @@
     "localforage": "^1.10.0",
     "sortablejs": "^1.15.6",
     "vue": "^3.3.11",
+    "vue-i18n": "^11.1.12",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {

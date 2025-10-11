@@ -33,7 +33,7 @@ export function useCoinRequest(coin: Ref<Coin>, option?: UseCoinRequestOption) {
   })
 
   useIntervalFn(refresh, option?.refreshInterval ?? defaultRefreshInterval.value)
-  return { data, loading }
+  return { data, loading, refresh }
 }
 
 export interface UseCoinRequestOption {

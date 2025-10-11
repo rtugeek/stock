@@ -62,7 +62,8 @@ export interface Coin {
   type: CoinType | string
   name: string
   logo: string
-  ccy: string
+  ccy?: string
+  basecy?: string
 }
 
 export const Coins: Coin[] = [
@@ -70,133 +71,67 @@ export const Coins: Coin[] = [
     type: 'BTC-USD',
     name: 'Bitcoin',
     ccy: 'BTC',
-    logo: 'https://widgetjs.cn/stock/coin/bitcoin.png',
+    logo: 'https://www.okx.com/cdn/announce/20230419/168187541969745fb238e-d1b3-4ce6-962b-13437f92960d.png?x-oss-process=image/format,webp/ignore-error,1',
+  },
+  {
+    type: 'TETHER-GOLD-XAUT',
+    name: 'Tether Gold',
+    ccy: 'XAUT',
+    logo: 'https://www.okx.com/cdn/oksupport/asset/currency/icon/xaut20230815151810.png?x-oss-process=image/format,webp/ignore-error,1',
   },
   {
     type: 'ETH-USD',
     name: 'Ethereum',
     ccy: 'ETH',
-    logo: 'https://widgetjs.cn/stock/coin/ethereum.png',
-  },
-  {
-    type: 'USDT-USD',
-    name: 'Tether',
-    ccy: 'USDT',
-    logo: 'https://widgetjs.cn/stock/coin/tether.png',
+    logo: 'https://www.okx.com/cdn/announce/20230419/1681875475851e1d1320b-a48f-4c1a-a6fd-3c4ec0a3cc7e.png?x-oss-process=image/format,webp/ignore-error,1',
   },
   {
     type: 'XRP-USD',
     name: 'XRP',
     ccy: 'XRP',
-    logo: 'https://widgetjs.cn/stock/coin/xrp.png',
+    logo: 'https://www.okx.com/cdn/announce/20230419/1681875637926ca623341-1b36-4572-b1f7-8132abf5aa38.png?x-oss-process=image/format,webp/ignore-error,1',
   },
   {
     type: 'BNB-USD',
     name: 'BNB',
     ccy: 'BNB',
-    logo: 'https://widgetjs.cn/stock/coin/bnb.png',
+    logo: 'https://www.okx.com/cdn/announce/20221218/16713389339243f7aae1a-9be4-4610-a777-f246175c1c28.png?x-oss-process=image/format,webp/ignore-error,1',
   },
   {
     type: 'SOL-USD',
     name: 'Solana',
     ccy: 'SOL',
-    logo: 'https://widgetjs.cn/stock/coin/solana.png',
-  },
-  {
-    type: 'USDC-USD',
-    name: 'USD Coin',
-    ccy: 'USDC',
-    logo: 'https://widgetjs.cn/stock/coin/usd_coin.png',
+    logo: 'https://www.okx.com/cdn/announce/20230419/1681875530349f92aa4a2-db30-4964-999c-ef7eb6f3914a.png?x-oss-process=image/format,webp/ignore-error,1',
   },
   {
     type: 'TRX-USD',
     name: 'TRON',
     ccy: 'TRX',
-    logo: 'https://widgetjs.cn/stock/coin/tron.png',
+    logo: 'https://www.okx.com/cdn/announce/20230419/1681875547069b9cd58ac-5e59-4cc1-81f6-ebdddad9b840.png?x-oss-process=image/format,webp/ignore-error,1',
   },
   {
     type: 'DOGE-USD',
     name: 'Dogecoin',
     ccy: 'DOGE',
-    logo: 'https://widgetjs.cn/stock/coin/dogecoin.png',
-  },
-  {
-    type: 'ADA-USD',
-    name: 'Cardano',
-    ccy: 'ADA',
-    logo: 'https://widgetjs.cn/stock/coin/cardano.png',
-  },
-  {
-    type: 'HYPE-USD',
-    name: 'Hyperliquid',
-    ccy: 'HYPE',
-    logo: 'https://widgetjs.cn/stock/coin/hyperliquid.png',
-  },
-  {
-    type: 'BCH-USD',
-    name: 'Bitcoin Cash',
-    ccy: 'BCH',
-    logo: 'https://widgetjs.cn/stock/coin/bitcoin_cash.png',
+    logo: 'https://www.okx.com/cdn/announce/20230419/168187545703814a061ab-16b9-4cc6-9151-327296c29f36.png?x-oss-process=image/format,webp/ignore-error,1',
   },
   {
     type: 'SUI-USD',
     name: 'Sui',
     ccy: 'SUI',
-    logo: 'https://widgetjs.cn/stock/coin/sui.png',
-  },
-  {
-    type: 'LINK-USD',
-    name: 'Chainlink',
-    ccy: 'LINK',
-    logo: 'https://widgetjs.cn/stock/coin/chainlink.png',
-  },
-  {
-    type: 'LEO-USD',
-    name: 'UNUS SED LEO',
-    ccy: 'LEO',
-    logo: 'https://widgetjs.cn/stock/coin/unus_sed_leo.png',
-  },
-  {
-    type: 'AVAX-USD',
-    name: 'Avalanche',
-    ccy: 'AVAX',
-    logo: 'https://widgetjs.cn/stock/coin/avalanche.png',
-  },
-  {
-    type: 'XLM-USD',
-    name: 'Stellar',
-    ccy: 'XLM',
-    logo: 'https://widgetjs.cn/stock/coin/stellar.png',
-  },
-  {
-    type: 'TON-USD',
-    name: 'Toncoin',
-    ccy: 'TON',
-    logo: 'https://widgetjs.cn/stock/coin/toncoin.png',
-  },
-  {
-    type: 'SHIB-USD',
-    name: 'Shiba Inu',
-    ccy: 'SHIB',
-    logo: 'https://widgetjs.cn/stock/coin/shiba_inu.png',
-  },
-  {
-    type: 'PI-USD',
-    name: 'Pi',
-    ccy: 'PI',
-    logo: 'https://widgetjs.cn/stock/coin/pi.png',
+    logo: 'https://www.okx.com/cdn/announce/20230503/1683110375934a70f7d31-4ec2-495f-8675-390441755a5c.png?x-oss-process=image/format,webp/ignore-error,1',
   },
   {
     type: 'OKB-USD',
     name: 'OKB',
     ccy: 'OKB',
-    logo: 'https://widgetjs.cn/stock/coin/okb.png',
+    logo: 'https://www.okx.com/cdn/announce/20230419/16818755125565e5c0127-9cb7-4f32-864a-cdc63448a3b2.png?x-oss-process=image/format,webp/ignore-error,1',
   },
   {
     type: 'TRUMP-USD',
     name: 'TRUMP',
     ccy: 'TRUMP',
-    logo: 'https://widgetjs.cn/stock/coin/trump.png',
+    logo: 'https://www.okx.com/cdn/announce/20250118/17371841165893038a940-cc19-48cf-922d-e0424015a7e1.png?x-oss-process=image/format,webp/ignore-error,1',
   },
 ]
 

@@ -4,7 +4,7 @@ import CoinChart from '@/component/CoinChart.vue'
 import ExchangeTag from '@/component/ExchangeTag.vue'
 import { useCoinIndexTickers } from '@/hook/useCoinIndexTickers'
 import { useCoinRequest } from '@/hook/useCoinRequest'
-import { useWidget, useWidgetStorage } from '@widget-js/vue3'
+import { useWidget, useWidgetProxyConfig, useWidgetStorage } from '@widget-js/vue3'
 import { computed, nextTick, onMounted, ref, watch, watchEffect } from 'vue'
 
 useWidget()
@@ -36,6 +36,14 @@ onMounted(async () => {
 watch(coinCode, () => {
   window.location.reload()
 })
+
+const { hasProxyRule, config: proxyConfig, updateProxy } = useWidgetProxyConfig()
+if (hasProxyRule.value) {
+  updateProxy()
+}
+watch(proxyConfig, async () => {
+  updateProxy()
+}, { deep: true })
 </script>
 
 <template>

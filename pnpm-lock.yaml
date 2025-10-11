@@ -21,11 +21,11 @@ importers:
         specifier: ^12.4.0
         version: 12.4.0(async-validator@4.2.5)(axios@1.7.7)(change-case@5.4.4)(sortablejs@1.15.6)(typescript@5.3.3)
       '@widget-js/core':
-        specifier: ^24.1.1-beta.71
-        version: 24.1.1-beta.71
+        specifier: ^24.1.1-beta.72
+        version: 24.1.1-beta.73
       '@widget-js/vue3':
-        specifier: ^24.1.1-beta.70
-        version: 24.1.1-beta.70(async-validator@4.2.5)(axios@1.7.7)(vue@3.5.12(typescript@5.3.3))
+        specifier: ^24.1.1-beta.74
+        version: 24.1.1-beta.74(async-validator@4.2.5)(axios@1.7.7)(vue@3.5.12(typescript@5.3.3))
       axios:
         specifier: ^1.7.4
         version: 1.7.7
@@ -50,6 +50,9 @@ importers:
       vue:
         specifier: ^3.3.11
         version: 3.5.12(typescript@5.3.3)
+      vue-i18n:
+        specifier: ^11.1.12
+        version: 11.1.12(vue@3.5.12(typescript@5.3.3))
       vue-router:
         specifier: ^4.2.5
         version: 4.4.5(vue@3.5.12(typescript@5.3.3))
@@ -741,6 +744,18 @@ packages:
 
   '@iconify/utils@2.1.33':
     resolution: {integrity: sha512-jP9h6v/g0BIZx0p7XGJJVtkVnydtbgTgt9mVNcGDYwaa7UhdHdI9dvoq+gKj9sijMSJKxUPEG2JyjsgXjxL7Kw==}
+
+  '@intlify/core-base@11.1.12':
+    resolution: {integrity: sha512-whh0trqRsSqVLNEUCwU59pyJZYpU8AmSWl8M3Jz2Mv5ESPP6kFh4juas2NpZ1iCvy7GlNRffUD1xr84gceimjg==}
+    engines: {node: '>= 16'}
+
+  '@intlify/message-compiler@11.1.12':
+    resolution: {integrity: sha512-Fv9iQSJoJaXl4ZGkOCN1LDM3trzze0AS2zRz2EHLiwenwL6t0Ki9KySYlyr27yVOj5aVz0e55JePO+kELIvfdQ==}
+    engines: {node: '>= 16'}
+
+  '@intlify/shared@11.1.12':
+    resolution: {integrity: sha512-Om86EjuQtA69hdNj3GQec9ZC0L0vPSAnXzB3gP/gyJ7+mA7t06d9aOAiqMZ+xEOsumGP4eEBlfl8zF2LOTzf2A==}
+    engines: {node: '>= 16'}
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -1478,11 +1493,14 @@ packages:
   '@vueuse/shared@9.13.0':
     resolution: {integrity: sha512-UrnhU+Cnufu4S6JLCPZnkWh0WwZGUp72ktOF2DFptMlOs3TOdVv8xJN53zhHGARmVOsz5KqOls09+J1NR6sBKw==}
 
-  '@widget-js/core@24.1.1-beta.70':
-    resolution: {integrity: sha512-qgtL2xr7iiGr5CShUyg3J3cBU9wQIacUJ87oxAvxOVO0glI5R6oUAdMPetCXAIxC3qgOue6dPW07/uPOJahFEw==}
-
   '@widget-js/core@24.1.1-beta.71':
     resolution: {integrity: sha512-klbSwwPBp1uBtZg/e1tGf3lDq3lkzqk6M32zAXmi6DKwxILdTAfNFOdzArLgIswmxCJjwGkgMLkS/5cXpEi3sQ==}
+
+  '@widget-js/core@24.1.1-beta.73':
+    resolution: {integrity: sha512-G+jgqzFeSFqGc7DVMtUw53k8hTKgNFM4kfr8RWxkAHQ379iDKEkfksTVcBSHJ8fYGIkFDqwRR4+JcAssucrGxg==}
+
+  '@widget-js/core@24.1.1-beta.74':
+    resolution: {integrity: sha512-S3sYk1f3kXj29IVbJBNzLhmZGlcatYIOdaLbnVX/EDnomXbyp5+2rmaekcf2h+vvDn3SM56WeNdXuVYpCoq2hA==}
 
   '@widget-js/utils@24.1.1-beta.71':
     resolution: {integrity: sha512-5v/nOZN3h/haLDdEAJ9WGQ8cFH0YQg1WoZaYhz2qio9C2y3UzrvmbqiGLn5Gki8xICPXdt1BSeq2fKHIIxKINg==}
@@ -1490,8 +1508,8 @@ packages:
   '@widget-js/vite-plugin-widget@24.1.1-beta.71':
     resolution: {integrity: sha512-Lz8SWDfnG/gQAzPPMe57HqaLBe8jfcGtijzirorIYLxjDoyUey5CI7Avkb0b/RRJVb8RMxwdF89gCrbERwNG/Q==}
 
-  '@widget-js/vue3@24.1.1-beta.70':
-    resolution: {integrity: sha512-tPF6796e+TZ0t6RgP/8GBO4Q5k7WN9M0KgwhOmEZm4VJa66/uU5HvYGuIatBN//TAiW3WAWcvz9oABzCNLjB5w==}
+  '@widget-js/vue3@24.1.1-beta.74':
+    resolution: {integrity: sha512-GbJ8fCCBNN2ujS5weTAzp393iL7dGbNABepaQOuJbbdzUQpkngTXPLRAGsDHqk7AGm1aAuMOl7g+d4J2Je6KbA==}
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -3366,6 +3384,12 @@ packages:
   vue-flow-layout@0.0.5:
     resolution: {integrity: sha512-lZlqQ/Se1trGMtBMneZDWaiQiQBuxU8ivZ+KpJMem5zKROFpzuPq9KqyWABbSYbxq0qhqZs1I4DBwrY041rtOA==}
 
+  vue-i18n@11.1.12:
+    resolution: {integrity: sha512-BnstPj3KLHLrsqbVU2UOrPmr0+Mv11bsUZG0PyCOzsawCivk8W00GMXHeVUWIDOgNaScCuZah47CZFE+Wnl8mw==}
+    engines: {node: '>= 16'}
+    peerDependencies:
+      vue: ^3.0.0
+
   vue-router@4.4.5:
     resolution: {integrity: sha512-4fKZygS8cH1yCyuabAXGUAsyi1b2/o/OKgu/RUb+znIYOxPRxdkytJEx+0wGcpBE1pX6vUgh5jwWOKRGvuA/7Q==}
     peerDependencies:
@@ -3900,6 +3924,18 @@ snapshots:
       mlly: 1.7.2
     transitivePeerDependencies:
       - supports-color
+
+  '@intlify/core-base@11.1.12':
+    dependencies:
+      '@intlify/message-compiler': 11.1.12
+      '@intlify/shared': 11.1.12
+
+  '@intlify/message-compiler@11.1.12':
+    dependencies:
+      '@intlify/shared': 11.1.12
+      source-map-js: 1.2.1
+
+  '@intlify/shared@11.1.12': {}
 
   '@isaacs/cliui@8.0.2':
     dependencies:
@@ -4662,7 +4698,7 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@widget-js/core@24.1.1-beta.70':
+  '@widget-js/core@24.1.1-beta.71':
     dependencies:
       '@types/css-tree': 2.3.8
       css-tree: 2.3.1
@@ -4670,7 +4706,15 @@ snapshots:
       lodash: 4.17.21
       path-normalize: 6.0.13
 
-  '@widget-js/core@24.1.1-beta.71':
+  '@widget-js/core@24.1.1-beta.73':
+    dependencies:
+      '@types/css-tree': 2.3.8
+      css-tree: 2.3.1
+      localforage: 1.10.0
+      lodash: 4.17.21
+      path-normalize: 6.0.13
+
+  '@widget-js/core@24.1.1-beta.74':
     dependencies:
       '@types/css-tree': 2.3.8
       css-tree: 2.3.1
@@ -4711,13 +4755,13 @@ snapshots:
       - utf-8-validate
       - yaml
 
-  '@widget-js/vue3@24.1.1-beta.70(async-validator@4.2.5)(axios@1.7.7)(vue@3.5.12(typescript@5.3.3))':
+  '@widget-js/vue3@24.1.1-beta.74(async-validator@4.2.5)(axios@1.7.7)(vue@3.5.12(typescript@5.3.3))':
     dependencies:
       '@icon-park/vue-next': 1.4.2(vue@3.5.12(typescript@5.3.3))
       '@vueuse/core': 9.13.0(vue@3.5.12(typescript@5.3.3))
       '@vueuse/integrations': 9.13.0(async-validator@4.2.5)(axios@1.7.7)(change-case@5.4.4)(vue@3.5.12(typescript@5.3.3))
       '@vueuse/shared': 10.11.1(vue@3.5.12(typescript@5.3.3))
-      '@widget-js/core': 24.1.1-beta.70
+      '@widget-js/core': 24.1.1-beta.74
       change-case: 5.4.4
       consola: 3.2.3
       element-plus: 2.10.2(vue@3.5.12(typescript@5.3.3))
@@ -6929,6 +6973,13 @@ snapshots:
       vue: 3.5.12(typescript@5.3.3)
     transitivePeerDependencies:
       - typescript
+
+  vue-i18n@11.1.12(vue@3.5.12(typescript@5.3.3)):
+    dependencies:
+      '@intlify/core-base': 11.1.12
+      '@intlify/shared': 11.1.12
+      '@vue/devtools-api': 6.6.4
+      vue: 3.5.12(typescript@5.3.3)
 
   vue-router@4.4.5(vue@3.5.12(typescript@5.3.3)):
     dependencies:
