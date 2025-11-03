@@ -22,7 +22,7 @@ export function useCoinIndexTickers(coin: Ref<Coin>) {
         op: 'subscribe',
         args: [{
           channel: 'cup-tickers-3s',
-          ccy: coin.value.ccy,
+          ccy: coin.value.ccy!,
         }],
       }
       ws.send(JSON.stringify(subMsg))
@@ -43,21 +43,6 @@ export function useCoinIndexTickers(coin: Ref<Coin>) {
       }
     },
   })
-  // async function refresh() {
-  //   consola.info('refreshing')
-  //   loading.value = true
-  //   try {
-  //     const result = await CoinApi.getIndexTickers(code.value)
-  //     data.value = result[0]
-  //     isUp.value = Number.parseFloat(data.value?.idxPx ?? '0') >= Number.parseFloat(data.value?.open24h ?? '0')
-  //   }
-  //   catch (e) {
-  //     console.error(e)
-  //   }
-  //   finally {
-  //     loading.value = false
-  //   }
-  // }
 
   const rate = computed(() => {
     const idxPx = Number.parseFloat(data.value?.last ?? '0')
@@ -74,13 +59,5 @@ export function useCoinIndexTickers(coin: Ref<Coin>) {
     }
   })
 
-  // watchThrottled(code, () => {
-  //   refresh()
-  // }, {
-  //   throttle: 1000,
-  //   immediate: true,
-  // })
-
-  // useIntervalFn(refresh, defaultRefreshInterval)
   return { data, isUp, color, loading, rateText, rate }
 }

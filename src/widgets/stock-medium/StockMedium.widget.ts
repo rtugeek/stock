@@ -18,9 +18,6 @@ const StockMediumWidget = new Widget({
   ],
   previewImage: '/preview_stock_medium.png',
   path: '/widget/stock_medium',
-  socialLinks: [
-    { name: 'github', link: 'https://github.com/widget-js/widgets' },
-  ],
 })
 
 export default StockMediumWidget

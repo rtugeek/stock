@@ -1,20 +1,31 @@
-# Stock Widgets
+# Financial Widgets
 
+This repository contains customizable stock and cryptocurrency desktop widgets for windows. 
+
+![](./public/screenshot.png)
+
+⬇️[Download](https://widgetjs.cn)  
+🔗[All Widgets](https://github.com/widget-js/widgets)
+
+
+### Coin Widget - Medium
+
+![](./public/preview_coin_medium.png)
 
 ### Coin Widget
 
 ![](./public/preview_coin_small.png)
 
 
-### 股票组件【小】
+### Stock Widget - Small
 
 ![](./public/preview_stock_small.png)
 
-### 股票组件
+### Stock Widget - Medium
 
 ![](./public/preview_stock_large.png)
 
-### 大A指数
+### 韭菜指数
 ![](./public/preview_stock_medium.png)
 
 
