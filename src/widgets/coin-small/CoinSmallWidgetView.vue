@@ -52,7 +52,7 @@ watch(proxyConfig, async () => {
       <div class="header">
         <div class="flex flex-col gap-2">
           <div class="flex gap-1 items-center">
-            <el-avatar :src="coin.logo" size="small" />{{ coin.name }}
+            <el-avatar style="width: 26px;height: 26px;min-width: 26px" :src="coin.logo" />{{ coin.name }}
           </div>
           <div class="info">
             <div class="flex gap-1 items-center">

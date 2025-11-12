@@ -133,6 +133,12 @@ export const Coins: Coin[] = [
     ccy: 'TRUMP',
     logo: 'https://www.okx.com/cdn/announce/20250118/17371841165893038a940-cc19-48cf-922d-e0424015a7e1.png?x-oss-process=image/format,webp/ignore-error,1',
   },
+  {
+    type: 'RESOLV-USD',
+    name: 'RESOLV',
+    ccy: 'RESOLV',
+    logo: 'https://www.okx.com/cdn/announce/20250609/1749465909763efdbec98-15d7-4761-a699-fa1c00723fcd.png?x-oss-process=image/format,webp/ignore-error,1',
+  },
 ]
 
 export interface IndexTicker {
