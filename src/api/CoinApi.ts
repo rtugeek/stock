@@ -134,6 +134,12 @@ export const Coins: Coin[] = [
     logo: 'https://www.okx.com/cdn/announce/20250118/17371841165893038a940-cc19-48cf-922d-e0424015a7e1.png?x-oss-process=image/format,webp/ignore-error,1',
   },
   {
+    type: 'ICP-USD',
+    name: 'Internet Computer',
+    ccy: 'ICP',
+    logo: 'https://www.okx.com/cdn/oksupport/asset/currency/icon/icp.png?x-oss-process=image/format,webp/ignore-error,1',
+  },
+  {
     type: 'RESOLV-USD',
     name: 'RESOLV',
     ccy: 'RESOLV',
