@@ -1,7 +1,7 @@
 {
   "name": "stock-widget",
   "type": "module",
-  "version": "1.10.0",
+  "version": "1.12.0",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -20,6 +20,7 @@
   "packageManager": "pnpm@9.15.2",
   "dependencies": {
     "@icon-park/vue-next": "^1.4.2",
+    "@supabase/supabase-js": "^2.93.1",
     "@types/color": "^4.2.0",
     "@vueuse/core": "^11.0.1",
     "@vueuse/integrations": "^12.4.0",

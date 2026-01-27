@@ -35,7 +35,6 @@ export class GoldApi {
 
   /**
    * https://www.sge.com.cn/sjzx/quotation_daily_new?start_date=2025-04-28&end_date=2025-04-28&inst_ids=Au99.99
-   * @param date
    */
   static async getYesterdayClosePrice(): Promise<number> {
     const now = dayjs()
@@ -43,7 +42,7 @@ export class GoldApi {
     const res = await axios.get(`https://www.sge.com.cn/sjzx/quotation_daily_new?start_date=${yesterday}&end_date=${yesterday}&inst_ids=Au99.99`)
     const dom = new DOMParser()
     const document = dom.parseFromString(res.data as string, 'text/html')
-    const price = document.querySelector('.daily_new_table td:nth-child(6)')?.textContent
+    const price = document.querySelector('.daily_new_table tbody td:nth-child(6)')?.textContent
     if (price) {
       return Number.parseFloat(price)
     }

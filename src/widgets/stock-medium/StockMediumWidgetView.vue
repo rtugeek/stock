@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import ExchangeTag from '@/component/ExchangeTag.vue'
-import { useStockIndexApi } from '@/hook/useStockIndexApi'
 import { useWidget } from '@widget-js/vue3'
 import { ref } from 'vue'
+import ExchangeTag from '@/component/ExchangeTag.vue'
+import { useStockIndexApi } from '@/hook/useStockIndexApi'
 
 useWidget()
 const codes = ref('000001,399001,399006')
