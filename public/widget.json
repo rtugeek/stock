@@ -1,0 +1,321 @@
+{
+  "name": "cn.stocks.widget",
+  "version": "26.6.27",
+  "author": "Neo Fu",
+  "homepage": "",
+  "title": {
+    "zh-CN": "韭菜组件"
+  },
+  "description": {
+    "zh-CN": "便捷获取股票、基金和虚拟币行情"
+  },
+  "entry": "/",
+  "remote": {
+    "entry": "https://widgetjs.cn/stock",
+    "base": "/stock",
+    "hostname": "widgetjs.cn"
+  },
+  "zipUrl": "https://widgetjs.cn/stock/widget.zip",
+  "hash": true,
+  "url": "",
+  "widgets": [
+    {
+      "name": "cn.stocks.widget.stock_small",
+      "title": {
+        "zh-CN": "股票",
+        "en-US": "Stock"
+      },
+      "description": {
+        "zh-CN": "跟踪股票价格，每分钟刷新一次",
+        "en-US": "Track stock prices, refresh every minute"
+      },
+      "keywords": [
+        "recommend"
+      ],
+      "security": false,
+      "permissions": [],
+      "lang": "zh-CN",
+      "width": 2,
+      "height": 2,
+      "maxWidth": 2,
+      "webviewTag": false,
+      "maxHeight": 2,
+      "minWidth": 2,
+      "minHeight": 2,
+      "movable": true,
+      "singleton": false,
+      "resizable": true,
+      "path": "/widget/stock_small",
+      "meta": {},
+      "backgroundThrottling": true,
+      "previewImage": "/preview_stock_small.png",
+      "categories": [
+        "utilities",
+        "finance"
+      ],
+      "supportDeployMode": 17,
+      "configPagePath": "/widget/config/stock_small?width=600&height=500&frame=true&transparent=false",
+      "routes": [],
+      "socialLinks": [
+        {
+          "name": "github",
+          "link": "https://github.com/rtugeek/stock"
+        }
+      ]
+    },
+    {
+      "name": "cn.stocks.widget.stock_medium",
+      "title": {
+        "zh-CN": "大A指数"
+      },
+      "description": {
+        "zh-CN": "珍爱生命，远离股市"
+      },
+      "keywords": [
+        "recommend"
+      ],
+      "security": false,
+      "permissions": [],
+      "lang": "zh-CN",
+      "width": 4,
+      "height": 2,
+      "maxWidth": 4,
+      "webviewTag": false,
+      "maxHeight": 2,
+      "minWidth": 4,
+      "minHeight": 2,
+      "movable": true,
+      "singleton": false,
+      "resizable": true,
+      "path": "/widget/stock_medium",
+      "meta": {},
+      "backgroundThrottling": true,
+      "previewImage": "/preview_stock_medium.png",
+      "categories": [
+        "utilities",
+        "finance"
+      ],
+      "supportDeployMode": 17,
+      "routes": [],
+      "socialLinks": [
+        {
+          "name": "github",
+          "link": "https://github.com/rtugeek/stock"
+        }
+      ]
+    },
+    {
+      "name": "cn.stocks.widget.metal",
+      "title": {
+        "zh-CN": "国际贵金属价格",
+        "en-US": "Metals Prices"
+      },
+      "description": {
+        "zh-CN": "金/银/铜/铂金价格，每分钟刷新一次",
+        "en-US": "Gold / Silver / Copper / Platinum prices, updated every minute"
+      },
+      "keywords": [
+        "recommend"
+      ],
+      "security": false,
+      "permissions": [],
+      "lang": "zh-CN",
+      "width": 4,
+      "height": 2,
+      "maxWidth": 4,
+      "webviewTag": false,
+      "maxHeight": 4,
+      "minWidth": 4,
+      "minHeight": 2,
+      "movable": true,
+      "singleton": false,
+      "resizable": true,
+      "path": "/widget/metal",
+      "meta": {},
+      "backgroundThrottling": true,
+      "previewImage": "/preview_metal.png",
+      "categories": [
+        "finance"
+      ],
+      "supportDeployMode": 17,
+      "configPagePath": "/widget/config/metal?width=600&height=500&frame=true&transparent=false",
+      "routes": [],
+      "socialLinks": [
+        {
+          "name": "github",
+          "link": "https://github.com/rtugeek/stock"
+        }
+      ]
+    },
+    {
+      "name": "cn.stocks.widget.stock",
+      "title": {
+        "zh-CN": "股票",
+        "en-US": "Stock"
+      },
+      "description": {
+        "zh-CN": "跟踪股票价格，每分钟刷新一次",
+        "en-US": "Track stock prices, refresh every minute"
+      },
+      "keywords": [
+        "recommend"
+      ],
+      "security": false,
+      "permissions": [],
+      "lang": "zh-CN",
+      "width": 4,
+      "height": 4,
+      "maxWidth": 5,
+      "webviewTag": false,
+      "maxHeight": 8,
+      "minWidth": 4,
+      "minHeight": 3,
+      "movable": true,
+      "singleton": false,
+      "resizable": true,
+      "path": "/widget/stock",
+      "meta": {},
+      "backgroundThrottling": true,
+      "previewImage": "/preview_stock_large.png",
+      "categories": [
+        "utilities",
+        "finance"
+      ],
+      "supportDeployMode": 17,
+      "configPagePath": "/widget/config/stock?transparent=false&frame=true&height=700&width=800",
+      "routes": [],
+      "socialLinks": [
+        {
+          "name": "github",
+          "link": "https://github.com/rtugeek/stock"
+        }
+      ]
+    },
+    {
+      "name": "cn.stocks.widget.gold",
+      "title": {
+        "zh-CN": "黄金价格",
+        "en-US": "Gold Price"
+      },
+      "description": {
+        "zh-CN": "AU99.99价格，每分钟刷新一次",
+        "en-US": "AU99.99 price, refresh every minute"
+      },
+      "keywords": [
+        "recommend"
+      ],
+      "security": false,
+      "permissions": [],
+      "lang": "zh-CN",
+      "width": 2,
+      "height": 2,
+      "maxWidth": 2,
+      "webviewTag": false,
+      "maxHeight": 2,
+      "minWidth": 2,
+      "minHeight": 2,
+      "movable": true,
+      "singleton": false,
+      "resizable": true,
+      "path": "/widget/gold",
+      "meta": {},
+      "backgroundThrottling": true,
+      "previewImage": "/preview_gold.png",
+      "categories": [
+        "finance"
+      ],
+      "supportDeployMode": 17,
+      "configPagePath": "/widget/config/gold?width=600&height=500&frame=true&transparent=false",
+      "routes": [],
+      "socialLinks": [
+        {
+          "name": "github",
+          "link": "https://github.com/rtugeek/stock"
+        }
+      ]
+    },
+    {
+      "name": "cn.stocks.widget.coin_small",
+      "title": {
+        "zh-CN": "虚拟币"
+      },
+      "description": {
+        "zh-CN": "查看虚拟货币行情，每分钟刷新一次"
+      },
+      "keywords": [
+        "recommend"
+      ],
+      "security": false,
+      "permissions": [],
+      "lang": "zh-CN",
+      "width": 2,
+      "height": 2,
+      "maxWidth": 2,
+      "webviewTag": false,
+      "maxHeight": 2,
+      "minWidth": 2,
+      "minHeight": 2,
+      "movable": true,
+      "singleton": false,
+      "resizable": true,
+      "path": "/widget/coin_small",
+      "icon": "https://widgetjs.cn/stock/btc.ico",
+      "meta": {},
+      "backgroundThrottling": true,
+      "previewImage": "/preview_coin_small.png",
+      "categories": [
+        "finance"
+      ],
+      "supportDeployMode": 273,
+      "configPagePath": "/widget/config/coin_small?width=600&height=500&frame=true&transparent=false",
+      "routes": [],
+      "socialLinks": [
+        {
+          "name": "github",
+          "link": "https://github.com/rtugeek/stock"
+        }
+      ]
+    },
+    {
+      "name": "cn.stocks.widget.coin_medium",
+      "title": {
+        "zh-CN": "主流虚拟币"
+      },
+      "description": {
+        "zh-CN": "实时查看主流虚拟币行情"
+      },
+      "keywords": [
+        "recommend"
+      ],
+      "security": false,
+      "permissions": [],
+      "lang": "zh-CN",
+      "width": 4,
+      "height": 4,
+      "maxWidth": 6,
+      "webviewTag": false,
+      "maxHeight": 6,
+      "minWidth": 4,
+      "minHeight": 2,
+      "movable": true,
+      "singleton": false,
+      "resizable": true,
+      "path": "/widget/coin_medium",
+      "icon": "https://widgetjs.cn/stock/btc.ico",
+      "meta": {},
+      "backgroundThrottling": true,
+      "previewImage": "/preview_coin_medium.png",
+      "categories": [],
+      "supportDeployMode": 273,
+      "configPagePath": "/widget/config/coin_medium?width=600&height=500&frame=true&transparent=false",
+      "routes": [],
+      "socialLinks": [
+        {
+          "name": "github",
+          "link": "https://github.com/rtugeek/stock"
+        }
+      ]
+    }
+  ],
+  "pages": []
+}

@@ -1,11 +1,12 @@
 <script lang="ts" setup>
+import { delay } from '@widget-js/core'
+import { useWidget, useWidgetProxyConfig, useWidgetStorage } from '@widget-js/vue3'
+import { computed, nextTick, onMounted, ref, watch, watchEffect } from 'vue'
 import { type Coin, Coins, type CoinType } from '@/api/CoinApi'
 import CoinChart from '@/component/CoinChart.vue'
 import ExchangeTag from '@/component/ExchangeTag.vue'
 import { useCoinIndexTickers } from '@/hook/useCoinIndexTickers'
 import { useCoinRequest } from '@/hook/useCoinRequest'
-import { useWidget, useWidgetProxyConfig, useWidgetStorage } from '@widget-js/vue3'
-import { computed, nextTick, onMounted, ref, watch, watchEffect } from 'vue'
 
 useWidget()
 const coinCode = useWidgetStorage<CoinType>('coin-code', 'BTC-USD')
@@ -13,10 +14,10 @@ const latestStatus = useWidgetStorage('latest-status', { data: [], isUp: false }
 const coin = computed<Coin>(() => {
   return Coins.find(c => c.type === coinCode.value)
 })
-const { data: indexTickers, rateText, color, isUp, loading: indexLoading } = useCoinIndexTickers(coin)
+const { data: indexTickers, rateText, color, isUp, loading: indexLoading, disconnect, connect } = useCoinIndexTickers(coin)
 
 const coinChartRef = ref<InstanceType<typeof CoinChart>>()
-useCoinRequest(coin, {
+const { start: startCoinRequest } = useCoinRequest(coin, {
   onNewData: (data) => {
     const yData = data.map(it => Number.parseFloat(it[1]))
     coinChartRef.value?.update(yData)
@@ -31,10 +32,25 @@ onMounted(async () => {
   watchEffect(() => {
     coinChartRef.value?.updateColor(isUp.value)
   })
+
+  await delay(1000)
+  connect()
+  await startCoinRequest()
 })
 
-watch(coinCode, () => {
+const isReloading = ref(false)
+async function reloadAfterDisconnect() {
+  if (isReloading.value) {
+    return
+  }
+  isReloading.value = true
+  disconnect()
+  await delay(1000)
   window.location.reload()
+}
+
+watch(coinCode, async () => {
+  await reloadAfterDisconnect()
 })
 
 const { hasProxyRule, config: proxyConfig, updateProxy } = useWidgetProxyConfig()
@@ -43,6 +59,7 @@ if (hasProxyRule.value) {
 }
 watch(proxyConfig, async () => {
   updateProxy()
+  await reloadAfterDisconnect()
 }, { deep: true })
 </script>
 

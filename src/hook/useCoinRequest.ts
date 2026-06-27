@@ -1,12 +1,13 @@
-import type { QuotationGroup } from '@/api/BaiDuStockApi'
 import type { MaybeRef, Ref } from 'vue'
-import { type Coin, CoinApi } from '@/api/CoinApi'
+import type { QuotationGroup } from '@/api/BaiDuStockApi'
 import { useIntervalFn, useStorage, watchThrottled } from '@vueuse/core'
 import { ref } from 'vue'
+import { type Coin, CoinApi } from '@/api/CoinApi'
 
 export function useCoinRequest(coin: Ref<Coin>, option?: UseCoinRequestOption) {
   const data = ref<string[][]>()
   const loading = ref(false)
+  const started = ref(false)
   const defaultRefreshInterval = useStorage('coin_refresh_interval', 60000)
 
   async function refresh() {
@@ -25,15 +26,32 @@ export function useCoinRequest(coin: Ref<Coin>, option?: UseCoinRequestOption) {
     }
   }
 
-  watchThrottled(coin.value, () => {
+  watchThrottled(coin, () => {
+    if (!started.value) {
+      return
+    }
     refresh()
   }, {
     throttle: 5000,
-    immediate: true,
+    immediate: false,
   })
 
-  useIntervalFn(refresh, option?.refreshInterval ?? defaultRefreshInterval.value)
-  return { data, loading, refresh }
+  useIntervalFn(() => {
+    if (!started.value) {
+      return
+    }
+    refresh()
+  }, option?.refreshInterval ?? defaultRefreshInterval.value)
+
+  const start = async () => {
+    if (started.value) {
+      return
+    }
+    started.value = true
+    await refresh()
+  }
+
+  return { data, loading, refresh, start }
 }
 
 export interface UseCoinRequestOption {

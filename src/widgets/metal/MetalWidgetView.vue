@@ -19,11 +19,12 @@ useWidget()
 
 const metals = ref<MetalInfo[]>([])
 const latestPrices = ref<Record<string, string>>({})
-const loading = ref(true)
+// `initing` indicates the initial loading state. It should only show the "加载中..."
+// UI for the very first load. Subsequent updates won't toggle it on.
+const initing = ref(true)
 const error = ref('')
 
 async function fetchMetalData() {
-  loading.value = true
   error.value = ''
   try {
     const { data, error: dbError } = await supabase
@@ -58,7 +59,9 @@ async function fetchMetalData() {
     metals.value = []
   }
   finally {
-    loading.value = false
+    // Only end the initial loading state; subsequent fetches will not set `initing` true,
+    // so this line makes sure the initial "加载中..." disappears after the first run.
+    initing.value = false
   }
 }
 
@@ -85,6 +88,8 @@ async function fetchMetalLatestPrices() {
   catch (e) {
     // 不影响主界面显示
     latestPrices.value = {}
+    // If the initial fetch fails, ensure the initial loading indicator is cleared so UI won't be stuck.
+    initing.value = false
   }
 }
 
@@ -118,7 +123,7 @@ const metalNames: Record<string, string> = {
   <widget-wrapper>
     <el-scrollbar>
       <div class="metal-data">
-        <template v-if="loading">
+        <template v-if="initing">
           加载中...
         </template>
         <template v-else-if="error">
@@ -140,7 +145,7 @@ const metalNames: Record<string, string> = {
                 +{{ item.changePercent }}
               </div>
               <div v-else-if="item.changeAmount < 0" class="metal-change negative">
-                -{{ item.changePercent }}
+                {{ item.changePercent }}
               </div>
               <div v-else class="metal-change neutral">
                 {{ item.changePercent }}

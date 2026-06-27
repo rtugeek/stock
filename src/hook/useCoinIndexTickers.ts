@@ -4,18 +4,19 @@ import type {
   OkxWebSocketEventData,
   OkxWebSocketOp,
 } from '@/api/CoinApi'
-import { useStockColor } from '@/hook/useStockColor'
 import { useWebSocket } from '@vueuse/core'
 import consola from 'consola'
 import { computed, type Ref } from 'vue'
 import { ref } from 'vue'
+import { useStockColor } from '@/hook/useStockColor'
 
 export function useCoinIndexTickers(coin: Ref<Coin>) {
   const data = ref<OkxWebSocketEventData>()
   const isUp = ref(false)
   const loading = ref(false)
   const { color } = useStockColor(isUp)
-  useWebSocket('wss://wspri.okx.com:8443/ws/v5/ipublic', {
+  const { close, open } = useWebSocket('wss://wspri.okx.com:8443/ws/v5/ipublic', {
+    immediate: false,
     autoReconnect: true,
     onConnected: (ws) => {
       const subMsg: OkxWebSocketOp = {
@@ -59,5 +60,13 @@ export function useCoinIndexTickers(coin: Ref<Coin>) {
     }
   })
 
-  return { data, isUp, color, loading, rateText, rate }
+  const disconnect = () => {
+    close()
+  }
+
+  const connect = () => {
+    open()
+  }
+
+  return { data, isUp, color, loading, rateText, rate, disconnect, connect }
 }

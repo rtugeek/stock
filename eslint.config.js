@@ -14,6 +14,7 @@ export default antfu({
     'curly': ['error', 'multi-line'],
     'ts/no-use-before-define': 'off',
     'eqeqeq': 'off',
+    'ts/explicit-function-return-type': 'off',
     'unused-imports/no-unused-vars': ['error', { caughtErrors: 'none' }],
     'style/max-statements-per-line': ['error', {
       max: 2,

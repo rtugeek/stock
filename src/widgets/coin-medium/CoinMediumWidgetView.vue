@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { type Coin, Coins, type OkxWebSocketEventData } from '@/api/CoinApi'
-import { useCoinsIndexTickers } from '@/hook/useCoinsIndexTickers'
 import { useWidget, useWidgetProxyConfig } from '@widget-js/vue3'
 import { reactive, watch } from 'vue'
+import { type Coin, Coins, type OkxWebSocketEventData } from '@/api/CoinApi'
+import { useCoinsIndexTickers } from '@/hook/useCoinsIndexTickers'
 
 useWidget()
 

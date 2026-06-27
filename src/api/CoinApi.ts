@@ -1,5 +1,5 @@
-import { SignUtils } from '@/api/SignUtils'
 import axios from 'axios'
+import { SignUtils } from '@/api/SignUtils'
 
 const api = axios.create({
   baseURL: 'https://global.itime.fun/coin/api',
@@ -41,7 +41,7 @@ export class CoinApi {
     return res.data.data
   }
 }
-export type CoinType = 'BTC-USD' | 'ETH-USD' | 'DOGE-USD'
+export type CoinType = 'BTC-USD' | 'ETH-USD' | 'DOGE-USD' | 'SYN-USD'
 export interface CandleData {
   /**
    * 需要设置成索引，并且这个是id
@@ -126,6 +126,12 @@ export const Coins: Coin[] = [
     name: 'OKB',
     ccy: 'OKB',
     logo: 'https://www.okx.com/cdn/announce/20230419/16818755125565e5c0127-9cb7-4f32-864a-cdc63448a3b2.png?x-oss-process=image/format,webp/ignore-error,1',
+  },
+  {
+    type: 'SNX-USD',
+    name: 'SNX',
+    ccy: 'SNX',
+    logo: 'https://www.okx.com/cdn/assets/imgs/221/AE34D218320754F9.png?x-oss-process=image/format,webp/ignore-error,1',
   },
   {
     type: 'TRUMP-USD',
