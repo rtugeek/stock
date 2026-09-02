@@ -1,4 +1,4 @@
-import type { StockType } from '@/api/BaiDuStockApi'
+import type { StockType } from '@/api/bai-du-stock-api'
 
 export interface Stock {
   code: string

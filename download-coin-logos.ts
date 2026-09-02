@@ -1,12 +1,11 @@
-import type { CoinType } from '@/api/CoinApi'
-// 创建目录（如果不存在）
+type CoinType = 'BTC-USD' | 'ETH-USD' | 'DOGE-USD' | 'SYN-USD' | string
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import axios from 'axios'
 import consola from 'consola'
 
 export interface Coin {
-  type: CoinType | string
+  type: CoinType
   name: string
   logo: string
 }
@@ -143,8 +142,8 @@ async function downloadLogo(coin: Coin) {
     fs.writeFileSync(filePath, response.data)
     consola.log(`✅ Downloaded: ${filename}`)
   }
-  catch (error) {
-    consola.error(`❌ Failed to download ${coin.name}:`, error.message)
+  catch (error: any) {
+    consola.error(`❌ Failed to download ${coin.name}:`, error?.message ?? String(error))
   }
 }
 

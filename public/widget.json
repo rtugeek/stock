@@ -55,7 +55,6 @@
       ],
       "supportDeployMode": 17,
       "configPagePath": "/widget/config/stock_small?width=600&height=500&frame=true&transparent=false",
-      "routes": [],
       "socialLinks": [
         {
           "name": "github",
@@ -96,50 +95,6 @@
         "finance"
       ],
       "supportDeployMode": 17,
-      "routes": [],
-      "socialLinks": [
-        {
-          "name": "github",
-          "link": "https://github.com/rtugeek/stock"
-        }
-      ]
-    },
-    {
-      "name": "cn.stocks.widget.metal",
-      "title": {
-        "zh-CN": "国际贵金属价格",
-        "en-US": "Metals Prices"
-      },
-      "description": {
-        "zh-CN": "金/银/铜/铂金价格，每分钟刷新一次",
-        "en-US": "Gold / Silver / Copper / Platinum prices, updated every minute"
-      },
-      "keywords": [
-        "recommend"
-      ],
-      "security": false,
-      "permissions": [],
-      "lang": "zh-CN",
-      "width": 4,
-      "height": 2,
-      "maxWidth": 4,
-      "webviewTag": false,
-      "maxHeight": 4,
-      "minWidth": 4,
-      "minHeight": 2,
-      "movable": true,
-      "singleton": false,
-      "resizable": true,
-      "path": "/widget/metal",
-      "meta": {},
-      "backgroundThrottling": true,
-      "previewImage": "/preview_metal.png",
-      "categories": [
-        "finance"
-      ],
-      "supportDeployMode": 17,
-      "configPagePath": "/widget/config/metal?width=600&height=500&frame=true&transparent=false",
-      "routes": [],
       "socialLinks": [
         {
           "name": "github",
@@ -182,8 +137,57 @@
         "finance"
       ],
       "supportDeployMode": 17,
+      "configPage": {
+        "path": "/widget/config/stock",
+        "transparent": false,
+        "frame": true,
+        "height": 900,
+        "resizable": true,
+        "width": 800
+      },
       "configPagePath": "/widget/config/stock?transparent=false&frame=true&height=700&width=800",
-      "routes": [],
+      "socialLinks": [
+        {
+          "name": "github",
+          "link": "https://github.com/rtugeek/stock"
+        }
+      ]
+    },
+    {
+      "name": "cn.stocks.widget.metal",
+      "title": {
+        "zh-CN": "国际贵金属价格",
+        "en-US": "Metals Prices"
+      },
+      "description": {
+        "zh-CN": "金/银/铜/铂金价格，每分钟刷新一次",
+        "en-US": "Gold / Silver / Copper / Platinum prices, updated every minute"
+      },
+      "keywords": [
+        "recommend"
+      ],
+      "security": false,
+      "permissions": [],
+      "lang": "zh-CN",
+      "width": 4,
+      "height": 2,
+      "maxWidth": 4,
+      "webviewTag": false,
+      "maxHeight": 4,
+      "minWidth": 4,
+      "minHeight": 2,
+      "movable": true,
+      "singleton": false,
+      "resizable": true,
+      "path": "/widget/metal",
+      "meta": {},
+      "backgroundThrottling": true,
+      "previewImage": "/preview_metal.png",
+      "categories": [
+        "finance"
+      ],
+      "supportDeployMode": 17,
+      "configPagePath": "/widget/config/metal?width=600&height=500&frame=true&transparent=false",
       "socialLinks": [
         {
           "name": "github",
@@ -226,7 +230,6 @@
       ],
       "supportDeployMode": 17,
       "configPagePath": "/widget/config/gold?width=600&height=500&frame=true&transparent=false",
-      "routes": [],
       "socialLinks": [
         {
           "name": "github",
@@ -268,7 +271,6 @@
       ],
       "supportDeployMode": 273,
       "configPagePath": "/widget/config/coin_small?width=600&height=500&frame=true&transparent=false",
-      "routes": [],
       "socialLinks": [
         {
           "name": "github",
@@ -308,7 +310,6 @@
       "categories": [],
       "supportDeployMode": 273,
       "configPagePath": "/widget/config/coin_medium?width=600&height=500&frame=true&transparent=false",
-      "routes": [],
       "socialLinks": [
         {
           "name": "github",
