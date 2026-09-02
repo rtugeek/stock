@@ -47,10 +47,8 @@ const GoldChart = forwardRef<GoldChartHandle, GoldChartProps>(function GoldChart
     const alphaColor = 'rgba(255,200,91,0.66)'
 
     const { data, currentPrice } = chartDataRef.current
-    const values: number[] =
-      data.length > 0
-        ? data.map((v) => Number(v))
-        : Array.from({ length: 48 }, (_, i) => 600 + Math.sin(i / 4) * 20 + Math.random() * 10)
+    const values = data.map((value) => Number(value)).filter(Number.isFinite)
+    if (values.length === 0) return
 
     const max = Math.max(...values)
     const min = Math.min(...values)

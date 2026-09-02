@@ -1,9 +1,21 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { WidgetWrapper } from '@widget-js/react'
+import { createGlobalStyle } from 'styled-components'
 import { useStockColorStore } from '@/store/use-stock-color-store'
 import { Badge } from '@/components/ui/badge'
 import { TrendingDown, TrendingUp } from 'lucide-react'
 import { cn, formatNumber, formatPercent } from '@/lib/utils'
 import type { StockType } from '@/api/bai-du-stock-api'
+
+const StockSmallGlobalStyle = createGlobalStyle`
+  body {
+    background-color: transparent;
+  }
+
+  * {
+    user-select: none;
+  }
+`
 
 interface StockQuotation {
   basicinfos: {
@@ -152,10 +164,12 @@ export default function StockSmallWidgetView() {
   }, [quotation])
 
   return (
-    <div
-      className="w-full h-full flex flex-col"
-      style={{ color: 'var(--widget-color, inherit)' }}
-    >
+    <WidgetWrapper>
+      <StockSmallGlobalStyle />
+      <div
+        className="w-full h-full flex flex-col"
+        style={{ color: 'var(--widget-color, inherit)' }}
+      >
       <div className="px-4 pt-4 pb-2">
         <div className="flex flex-col gap-2">
           <div className="text-base font-bold leading-tight">
@@ -191,6 +205,7 @@ export default function StockSmallWidgetView() {
       <div className="flex-1 px-2 pt-2 pb-3 min-h-0">
         <SmallLineChart data={chartData} isUp={isUp} color={color} />
       </div>
-    </div>
+      </div>
+    </WidgetWrapper>
   )
 }

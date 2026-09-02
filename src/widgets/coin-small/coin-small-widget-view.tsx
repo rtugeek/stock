@@ -1,8 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { WidgetWrapper } from '@widget-js/react'
+import { createGlobalStyle } from 'styled-components'
 import { Badge } from '@/components/ui/badge'
 import { TrendingDown, TrendingUp } from 'lucide-react'
 import { Coins, type Coin, type CoinType, type OkxWebSocketEventData } from '@/api/coin-api'
 import { formatNumber, formatPercent } from '@/lib/utils'
+
+const CoinSmallGlobalStyle = createGlobalStyle`
+  body {
+    background-color: transparent;
+  }
+
+  * {
+    user-select: none;
+  }
+`
 
 function MiniCoinChart({ data, isUp, color }: { data: number[]; isUp: boolean; color: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -130,10 +142,12 @@ export default function CoinSmallWidgetView() {
   }, [])
 
   return (
-    <div
-      className="w-full h-full flex flex-col gap-1"
-      style={{ color: 'var(--widget-color, inherit)' }}
-    >
+    <WidgetWrapper>
+      <CoinSmallGlobalStyle />
+      <div
+        className="w-full h-full flex flex-col gap-1"
+        style={{ color: 'var(--widget-color, inherit)' }}
+      >
       <div className="px-4 pt-4 pb-2">
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-1">
@@ -178,6 +192,7 @@ export default function CoinSmallWidgetView() {
       <div className="flex-1 px-2 pt-1 pb-3 min-h-0">
         <MiniCoinChart data={chartData} isUp={ticker.isUp} color={ticker.color} />
       </div>
-    </div>
+      </div>
+    </WidgetWrapper>
   )
 }

@@ -1,6 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { WidgetWrapper } from '@widget-js/react'
+import { createGlobalStyle } from 'styled-components'
 import { Badge } from '@/components/ui/badge'
+import { MetalApi } from '@/api/metal-api'
 import { cn, formatNumber } from '@/lib/utils'
+
+const MetalGlobalStyle = createGlobalStyle`
+  body {
+    background-color: transparent;
+  }
+
+  * {
+    user-select: none;
+  }
+`
 
 export interface MetalInfo {
   name: string
@@ -10,15 +23,6 @@ export interface MetalInfo {
   changePercent: string
 }
 
-const METAL_ORDER = ['XAUUSD', 'XAGUSD', 'XCUUSD', 'XPTUSD']
-
-const METAL_NAMES: Record<string, string> = {
-  XAUUSD: 'Gold',
-  XAGUSD: 'Silver',
-  XCUUSD: 'Copper',
-  XPTUSD: 'Platinum',
-}
-
 const METAL_LABEL_COLORS: Record<string, string> = {
   XAUUSD: 'bg-yellow-400/90 text-yellow-950',
   XAGUSD: 'bg-slate-300 text-slate-900',
@@ -26,68 +30,46 @@ const METAL_LABEL_COLORS: Record<string, string> = {
   XPTUSD: 'bg-slate-200 text-slate-900',
 }
 
-const INITIAL_METALS: MetalInfo[] = [
-  {
-    name: 'Gold',
-    code: 'XAUUSD',
-    currentPrice: 5094.07,
-    changeAmount: 81.56,
-    changePercent: '1.63%',
-  },
-  {
-    name: 'Silver',
-    code: 'XAGUSD',
-    currentPrice: 112.96,
-    changeAmount: 9.23495,
-    changePercent: '8.90%',
-  },
-  {
-    name: 'Copper',
-    code: 'XCUUSD',
-    currentPrice: 5.87149,
-    changeAmount: 0.02367,
-    changePercent: '0.40%',
-  },
-  {
-    name: 'Platinum',
-    code: 'XPTUSD',
-    currentPrice: 2703.438,
-    changeAmount: 164.488,
-    changePercent: '6.48%',
-  },
-]
-
 export default function MetalWidgetView() {
-  const [metals, setMetals] = useState<MetalInfo[]>(INITIAL_METALS)
+  const [metals, setMetals] = useState<MetalInfo[]>([])
   const [initing, setIniting] = useState(true)
   const [error, setError] = useState('')
+  const hasDataRef = useRef(false)
 
   useEffect(() => {
-    const timer = setTimeout(() => setIniting(false), 300)
-    return () => clearTimeout(timer)
-  }, [])
+    let cancelled = false
 
-  useEffect(() => {
-    const updatePrices = () => {
-      setMetals((prev) =>
-        prev.map((metal) => {
-          const delta = (Math.random() - 0.48) * (metal.currentPrice * 0.002)
-          const newPrice = metal.currentPrice + delta
-          const basePrice = metal.currentPrice - metal.changeAmount
-          const change = newPrice - basePrice
-          const changePct = `${change >= 0 ? '+' : ''}${((change / basePrice) * 100).toFixed(2)}%`
-          return {
-            ...metal,
-            currentPrice: newPrice,
-            changeAmount: change,
-            changePercent: changePct,
-          }
-        })
-      )
+    const updatePrices = async () => {
+      try {
+        const prices = await MetalApi.getPrices()
+        if (cancelled) return
+        setMetals(() =>
+          prices.map((metal) => {
+            return {
+              name: metal.name,
+              code: metal.code,
+              currentPrice: metal.price,
+              changeAmount: metal.changePercent,
+              changePercent: `${metal.changePercent.toFixed(2)}%`,
+            }
+          })
+        )
+        hasDataRef.current = true
+        setError('')
+      } catch (requestError) {
+        console.error('Failed to refresh metal prices', requestError)
+        if (!hasDataRef.current) setError('行情暂不可用')
+      } finally {
+        if (!cancelled) setIniting(false)
+      }
     }
 
-    const timer = setInterval(updatePrices, 15000)
-    return () => clearInterval(timer)
+    updatePrices()
+    const timer = setInterval(updatePrices, 30000)
+    return () => {
+      cancelled = true
+      clearInterval(timer)
+    }
   }, [])
 
   const getChangeClass = (amount: number) => {
@@ -97,10 +79,12 @@ export default function MetalWidgetView() {
   }
 
   return (
-    <div
-      className="w-full h-full overflow-y-auto"
-      style={{ color: 'var(--widget-color, inherit)' }}
-    >
+    <WidgetWrapper>
+      <MetalGlobalStyle />
+      <div
+        className="w-full h-full overflow-y-auto"
+        style={{ color: 'var(--widget-color, inherit)' }}
+      >
       <div className="metal-data flex flex-col p-4 w-full h-full box-border gap-2">
         {initing ? (
           <div className="flex-1 flex items-center justify-center opacity-70 text-sm">
@@ -129,7 +113,7 @@ export default function MetalWidgetView() {
                   </Badge>
                 </div>
                 <div className="ml-auto tabular-nums font-semibold text-sm">
-                  ${formatNumber(item.currentPrice, item.code === 'XCUUSD' ? 5 : 2)}
+                  ${formatNumber(item.currentPrice, 2)}
                 </div>
                 <div
                   className={cn(
@@ -145,6 +129,7 @@ export default function MetalWidgetView() {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </WidgetWrapper>
   )
 }

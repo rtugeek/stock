@@ -1,8 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { WidgetWrapper } from '@widget-js/react'
+import { createGlobalStyle } from 'styled-components'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Coins, type OkxWebSocketEventData } from '@/api/coin-api'
 import { formatNumber } from '@/lib/utils'
+
+const CoinMediumGlobalStyle = createGlobalStyle`
+  body {
+    background-color: transparent;
+  }
+
+  * {
+    user-select: none;
+  }
+`
 
 interface CoinLiveData extends OkxWebSocketEventData {
   rate24h: number
@@ -156,10 +168,12 @@ export default function CoinMediumWidgetView() {
   }, [])
 
   return (
-    <div
-      className="w-full h-full overflow-y-auto"
-      style={{ color: 'var(--widget-color, inherit)' }}
-    >
+    <WidgetWrapper>
+      <CoinMediumGlobalStyle />
+      <div
+        className="w-full h-full overflow-y-auto"
+        style={{ color: 'var(--widget-color, inherit)' }}
+      >
       <div className="flex flex-col gap-3 p-3">
         {Coins.map((coin) => {
           const ccy = coin.ccy || 'BTC'
@@ -221,6 +235,7 @@ export default function CoinMediumWidgetView() {
           )
         })}
       </div>
-    </div>
+      </div>
+    </WidgetWrapper>
   )
 }

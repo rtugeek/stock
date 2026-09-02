@@ -1,7 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { WidgetWrapper } from '@widget-js/react'
+import { createGlobalStyle } from 'styled-components'
 import { useStockColorStore } from '@/store/use-stock-color-store'
 import { Badge } from '@/components/ui/badge'
 import { formatNumber, formatPercent } from '@/lib/utils'
+
+const StockMediumGlobalStyle = createGlobalStyle`
+  body {
+    background-color: transparent;
+  }
+
+  * {
+    user-select: none;
+  }
+`
 
 interface StockIndexData {
   code: string
@@ -190,10 +202,12 @@ export default function StockMediumWidgetView() {
   const { color } = getColorByValue(ratio)
 
   return (
-    <div
-      className="w-full h-full flex flex-col p-3 gap-2"
-      style={{ color: 'var(--widget-color, inherit)' }}
-    >
+    <WidgetWrapper>
+      <StockMediumGlobalStyle />
+      <div
+        className="w-full h-full flex flex-col p-3 gap-2"
+        style={{ color: 'var(--widget-color, inherit)' }}
+      >
       <div className="flex-1 min-h-0 flex flex-col gap-2">
         {indexData.map((stock) => {
           const sRatio = Number.parseFloat(stock.ratio)
@@ -250,6 +264,7 @@ export default function StockMediumWidgetView() {
           <MediumLineChart data={chartData} color={color} timeLabels={timeLabels} />
         </div>
       </div>
-    </div>
+      </div>
+    </WidgetWrapper>
   )
 }
