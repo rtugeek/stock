@@ -4,6 +4,12 @@ import { createGlobalStyle } from 'styled-components'
 import GoldChart from './gold-chart'
 import type { GoldChartHandle } from './gold-chart'
 import { Badge } from '@/components/ui/badge'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { formatNumber, formatPercent } from '@/lib/utils'
 import { GoldApi, type GoldApiResponse } from '@/api/gold-api'
 
@@ -81,45 +87,70 @@ export default function GoldWidgetView() {
         style={{ color: 'var(--widget-color, inherit)' }}
       >
         <div className="px-4 pt-4 pb-2">
-          <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
             <div className="text-base font-bold leading-tight">黄金价格</div>
-            <div className="flex items-center gap-1 text-xs">
-              <Badge
-                className="h-4 px-1.5 text-[10px] font-semibold"
-                style={{
-                  backgroundColor: GOLD_LINE_COLOR + '33',
-                  color: '#b8860b',
-                  border: `1px solid ${GOLD_LINE_COLOR}55`,
-                }}
-              >
-                AU99.99
-              </Badge>
-              <span
-                className="ml-auto tabular-nums font-semibold text-xs"
-                style={{ color: isUp ? '#e53935' : '#43a047' }}
-              >
-                {isUp ? '+' : ''}
-                {formatNumber(change)} ({formatPercent(changeRatio)})
-              </span>
-            </div>
+            <Badge
+              className="h-4 px-1.5 text-[10px] font-semibold"
+              style={{
+                backgroundColor: GOLD_LINE_COLOR + '33',
+                color: '#fdbf21ff',
+                border: `1px solid ${GOLD_LINE_COLOR}55`,
+              }}
+            >
+              AU99.99
+            </Badge>
           </div>
         </div>
 
-        <div
-          className="px-4 text-3xl font-bold leading-none tabular-nums"
-          style={{ color: GOLD_LINE_COLOR }}
-        >
-          {isUnavailable && currentPrice === 0 ? '行情暂不可用' : formatNumber(currentPrice, 2)}
-        </div>
-
-        <div className="px-4 py-1 text-[10px] opacity-60 flex justify-between tabular-nums">
-          <span>昨收: {formatNumber(yesterdayClose, 2)}</span>
-          <span>最高: {formatNumber(goldData.max, 2)}</span>
-          <span>最低: {formatNumber(goldData.min, 2)}</span>
-        </div>
+        <TooltipProvider delayDuration={150}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="px-4 cursor-default">
+                <div className="flex items-baseline justify-between">
+                  <div
+                    className="text-2xl font-bold leading-none tabular-nums"
+                    style={{ color: GOLD_LINE_COLOR }}
+                  >
+                    {isUnavailable && currentPrice === 0 ? '行情暂不可用' : formatNumber(currentPrice, 2)}
+                  </div>
+                  <span
+                    className="tabular-nums font-semibold text-xs"
+                    style={{ color: isUp ? '#e53935' : '#43a047' }}
+                  >
+                    {formatPercent(changeRatio)}
+                  </span>
+                </div>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent
+              side="bottom"
+              sideOffset={6}
+              className="backdrop-blur-xl border !bg-black/55 !text-white/90 !border-white/10 shadow-lg rounded-lg px-2.5 py-2"
+            >
+              <div className="text-[10px] tabular-nums grid grid-cols-3 gap-2 min-w-[120px]">
+                <div>
+                  <div className="opacity-60 text-[9px]">昨收</div>
+                  <div className="font-semibold">{formatNumber(yesterdayClose, 2)}</div>
+                </div>
+                <div>
+                  <div className="opacity-60 text-[9px]">最高</div>
+                  <div className="font-semibold" style={{ color: '#ef5350' }}>
+                    {formatNumber(goldData.max, 2)}
+                  </div>
+                </div>
+                <div>
+                  <div className="opacity-60 text-[9px]">最低</div>
+                  <div className="font-semibold" style={{ color: '#66bb6a' }}>
+                    {formatNumber(goldData.min, 2)}
+                  </div>
+                </div>
+              </div>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
 
         <div className="flex-1 px-2 pt-1 pb-3 min-h-0">
-          <GoldChart ref={goldChartRef} height={120} />
+          <GoldChart ref={goldChartRef} height={80} />
         </div>
       </div>
     </WidgetWrapper>

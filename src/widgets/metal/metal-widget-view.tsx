@@ -3,6 +3,7 @@ import { WidgetWrapper } from '@widget-js/react'
 import { createGlobalStyle } from 'styled-components'
 import { Badge } from '@/components/ui/badge'
 import { MetalApi } from '@/api/metal-api'
+import { useStockColorStore } from '@/store/use-stock-color-store'
 import { cn, formatNumber } from '@/lib/utils'
 
 const MetalGlobalStyle = createGlobalStyle`
@@ -31,6 +32,7 @@ const METAL_LABEL_COLORS: Record<string, string> = {
 }
 
 export default function MetalWidgetView() {
+  const { getColorByValue } = useStockColorStore()
   const [metals, setMetals] = useState<MetalInfo[]>([])
   const [initing, setIniting] = useState(true)
   const [error, setError] = useState('')
@@ -72,10 +74,12 @@ export default function MetalWidgetView() {
     }
   }, [])
 
-  const getChangeClass = (amount: number) => {
-    if (amount > 0) return 'bg-red-500 text-white'
-    if (amount < 0) return 'bg-emerald-500 text-white'
-    return 'bg-gray-300 text-gray-700'
+  const getChangeStyle = (amount: number) => {
+    if (amount === 0) {
+      return { backgroundColor: 'rgb(209,213,219)', color: 'rgb(55,65,81)' }
+    }
+    const { color } = getColorByValue(amount)
+    return { backgroundColor: color, color: 'white' }
   }
 
   return (
@@ -117,9 +121,9 @@ export default function MetalWidgetView() {
                 </div>
                 <div
                   className={cn(
-                    'metal-change h-6 w-20 flex items-center justify-center rounded text-xs font-semibold tabular-nums',
-                    getChangeClass(item.changeAmount)
+                    'metal-change h-6 w-20 flex items-center justify-center rounded text-xs font-semibold tabular-nums'
                   )}
+                  style={getChangeStyle(item.changeAmount)}
                 >
                   {item.changeAmount > 0 ? '+' : ''}
                   {item.changePercent}

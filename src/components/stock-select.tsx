@@ -41,13 +41,9 @@ export function StockSelect({
     setLoading(true)
     try {
       const res = await BaiDuStockApi.selfSelect(query)
-      if (res.ResultCode === '0' || res.ResultCode === 0) {
-        setOptions(res.Result.stock || [])
-        setShowDropdown(true)
-      }
-      else {
-        setOptions([])
-      }
+      const results: Stock[] = (res.ResultCode === '0' && res.Result?.stock) ? res.Result.stock : []
+      setOptions(results)
+      setShowDropdown(results.length > 0)
     }
     catch {
       setOptions([])

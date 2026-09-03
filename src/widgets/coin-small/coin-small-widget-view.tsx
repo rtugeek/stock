@@ -1,10 +1,17 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { WidgetWrapper } from '@widget-js/react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { WidgetWrapper, useWidgetStorage, useWidgetProxyConfig, useWidget } from '@widget-js/react'
 import { createGlobalStyle } from 'styled-components'
 import { Badge } from '@/components/ui/badge'
 import { TrendingDown, TrendingUp } from 'lucide-react'
-import { Coins, type Coin, type CoinType, type OkxWebSocketEventData } from '@/api/coin-api'
-import { formatNumber, formatPercent } from '@/lib/utils'
+import { CoinApi, Coins, type Coin, type CoinType, type IndexTicker } from '@/api/coin-api'
+import { formatNumber } from '@/lib/utils'
+import { useStockColorStore } from '@/store/use-stock-color-store'
+
+const PROXY_APPLIED_KEY = 'coin-small-proxy-applied'
+
+function hashProxy(config: { protocol?: string; host?: string; port?: string }): string {
+  return `${config.protocol ?? ''}::${config.host ?? ''}::${config.port ?? ''}`
+}
 
 const CoinSmallGlobalStyle = createGlobalStyle`
   body {
@@ -15,6 +22,29 @@ const CoinSmallGlobalStyle = createGlobalStyle`
     user-select: none;
   }
 `
+
+function hexOrRgbToRgba(color: string, alpha: number): string {
+  if (color.startsWith('#')) {
+    let hex = color.slice(1)
+    if (hex.length === 3) {
+      hex = hex.split('').map((c) => c + c).join('')
+    }
+    if (hex.length === 8) {
+      hex = hex.slice(0, 6)
+    }
+    const r = Number.parseInt(hex.slice(0, 2), 16)
+    const g = Number.parseInt(hex.slice(2, 4), 16)
+    const b = Number.parseInt(hex.slice(4, 6), 16)
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`
+  }
+  const rgb = color.match(/rgba?\(([^)]+)\)/)
+  if (rgb) {
+    const parts = rgb[1].split(',').map((s) => s.trim()).filter(Boolean)
+    const [r, g, b] = parts
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`
+  }
+  return `rgba(255, 255, 255, ${alpha})`
+}
 
 function MiniCoinChart({ data, isUp, color }: { data: number[]; isUp: boolean; color: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -57,8 +87,8 @@ function MiniCoinChart({ data, isUp, color }: { data: number[]; isUp: boolean; c
     ctx.stroke()
 
     const grad = ctx.createLinearGradient(0, padTop, 0, H - padBottom)
-    grad.addColorStop(0, color + '3D')
-    grad.addColorStop(1, color + '00')
+    grad.addColorStop(0, hexOrRgbToRgba(color, 0.24))
+    grad.addColorStop(1, hexOrRgbToRgba(color, 0))
     ctx.lineTo(W, H - padBottom)
     ctx.lineTo(0, H - padBottom)
     ctx.closePath()
@@ -89,7 +119,33 @@ interface CoinTickerState {
 }
 
 export default function CoinSmallWidgetView() {
-  const [coinType] = useState<CoinType | string>('BTC-USD')
+  useWidget()
+  const [coinType] = useWidgetStorage<CoinType | string>('coin-small-type', 'BTC-USD')
+  const [refreshInterval] = useWidgetStorage<string>('coin-small-refresh', '60000')
+  const { config: proxyConfig, updateProxy } = useWidgetProxyConfig({ storageKey: 'coin-proxy' })
+  const [appliedHash, setAppliedHash] = useWidgetStorage<string>(PROXY_APPLIED_KEY, '')
+
+  const getColorByValue = useStockColorStore((state) => state.getColorByValue)
+
+  useEffect(() => {
+    const expected = hashProxy(proxyConfig)
+    if (appliedHash === expected) return
+    let cancelled = false
+    const timer = setTimeout(() => {
+      ;(async () => {
+        await updateProxy()
+        if (!cancelled) {
+          setAppliedHash(expected)
+          window.location.reload()
+        }
+      })()
+    }, 3000)
+    return () => {
+      clearTimeout(timer)
+      cancelled = true
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [proxyConfig.protocol, proxyConfig.host, proxyConfig.port])
 
   const coin = useMemo<Coin>(
     () => Coins.find((c) => c.type === coinType) || Coins[0],
@@ -97,49 +153,58 @@ export default function CoinSmallWidgetView() {
   )
 
   const [ticker, setTicker] = useState<CoinTickerState>(() => ({
-    last: '68250.25',
-    rate24h: 2.45,
-    rateText: '+2.45%',
+    last: '--',
+    rate24h: 0,
+    rateText: '--',
     isUp: true,
-    color: '#22c55e',
-    open24h: '66610.00',
+    color: '#ffffff',
+    open24h: '0',
   }))
 
-  const [chartData, setChartData] = useState<number[]>(() => generateCoinChartData(68000))
-  const [loading] = useState(false)
+  const [chartData, setChartData] = useState<number[]>(() => generateCoinChartData(100))
+  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    const basePrice = coinType === 'BTC-USD' ? 68000 : coinType === 'ETH-USD' ? 3500 : coinType === 'SOL-USD' ? 140 : 500
-    setChartData(generateCoinChartData(basePrice))
-  }, [coinType])
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTicker((prev) => {
-        const current = Number.parseFloat(prev.last)
-        const delta = (Math.random() - 0.5) * (current * 0.0015)
-        const newLast = (current + delta).toFixed(2)
-        const open = Number.parseFloat(prev.open24h)
-        const rate = ((Number.parseFloat(newLast) - open) / open) * 100
-        const isUp = rate >= 0
-        return {
-          ...prev,
-          last: newLast,
-          rate24h: rate,
-          rateText: `${isUp ? '+' : ''}${rate.toFixed(2)}%`,
-          isUp,
-          color: isUp ? '#22c55e' : '#ef4444',
-        }
+  const fetchTicker = useCallback(async () => {
+    try {
+      const t: IndexTicker | null = await CoinApi.getIndexTicker(coinType as string)
+      if (!t) return
+      const open = Number.parseFloat(t.open24h || t.sodUtc8 || '0')
+      const last = Number.parseFloat(t.idxPx || '0')
+      const rate = open === 0 ? 0 : ((last - open) / open) * 100
+      const isUp = rate >= 0
+      const { color } = getColorByValue(isUp)
+      setTicker({
+        last: t.idxPx,
+        rate24h: rate,
+        rateText: `${isUp ? '+' : ''}${rate.toFixed(2)}%`,
+        isUp,
+        color,
+        open24h: t.open24h || t.sodUtc8 || '0',
       })
       setChartData((prev) => {
-        const newData = [...prev.slice(1)]
-        const last = prev[prev.length - 1]
-        newData.push(Number((last + (Math.random() - 0.48) * (last * 0.004)).toFixed(4)))
-        return newData
+        const nd = [...prev.slice(1)]
+        nd.push(last)
+        return nd
       })
-    }, 3000)
+      setLoading(false)
+    }
+    catch {
+      // ignore
+    }
+  }, [coinType, getColorByValue])
+
+  useEffect(() => {
+    const basePrice = Number.parseFloat(ticker.last) || 100
+    setChartData(generateCoinChartData(basePrice))
+    setLoading(true)
+    fetchTicker()
+  }, [coinType]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const intervalMs = Math.max(3000, Number.parseInt(refreshInterval, 10) || 60000)
+    const timer = setInterval(fetchTicker, intervalMs)
     return () => clearInterval(timer)
-  }, [])
+  }, [fetchTicker, refreshInterval])
 
   return (
     <WidgetWrapper>
@@ -164,12 +229,12 @@ export default function CoinSmallWidgetView() {
             <span className="text-base font-bold leading-tight ml-1">{coin.name}</span>
           </div>
           <div className="flex items-center gap-1 text-xs">
-            <Badge
-              variant="outline"
-              className="h-4 px-1.5 text-[10px] font-mono border-opacity-60"
+            <div
+              className="h-4 px-1 text-[10px] font-bold rounded inline-flex items-center justify-center"
+              style={{ color: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.2)' }}
             >
-              USD
-            </Badge>
+              {coin.ccy || 'USD'}
+            </div>
             <span className="ml-auto tabular-nums font-semibold" style={{ color: ticker.color }}>
               {ticker.isUp ? (
                 <TrendingUp className="h-3 w-3 inline mr-0.5" />

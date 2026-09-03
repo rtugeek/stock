@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import * as echarts from 'echarts'
 import Color from 'color'
 import type { EChartsType } from 'echarts'
-import { BaiDuStockApi } from '@/api/bai-du-stock-api'
+import { EastMoneyStockApi } from '@/api/eastmoney-stock-api'
 import { useStockColorStore } from '@/store/use-stock-color-store'
 import { cn } from '@/lib/utils'
 
@@ -117,16 +117,17 @@ export function StockChart({ code, height = 40, refreshInterval, className }: St
 
   const fetchData = React.useCallback(async () => {
     try {
-      const result = await BaiDuStockApi.getQuotationMinute(code)
+      const result = await EastMoneyStockApi.getQuotationMinute(code)
       const marketData = result.newMarketData.marketData
       if (marketData && marketData.length > 0) {
-        const lastData = marketData[marketData.length - 1]
         const prices: (string | number)[] = []
-        for (const row of lastData.p.split(';').map((it) => it.split(','))) {
-          if (row[2]) prices.push(row[2])
+        for (const row of marketData) {
+          const parts = row.p.split(',')
+          if (parts[1]) prices.push(parts[1])
         }
         if (prices.length > 0) {
-          const up = result.cur.ratio.includes('+')
+          const increase = Number.parseFloat(result.cur.increase)
+          const up = increase >= 0
           setSeriesData(prices)
           setIsUp(up)
           updateChart(prices, up)

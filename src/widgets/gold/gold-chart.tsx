@@ -44,7 +44,7 @@ const GoldChart = forwardRef<GoldChartHandle, GoldChartProps>(function GoldChart
     ctx.clearRect(0, 0, W, H)
 
     const lineColor = '#ffc85b'
-    const alphaColor = 'rgba(255,200,91,0.66)'
+    const alphaColor = 'rgba(255,200,91,0)'
 
     const { data, currentPrice } = chartDataRef.current
     const values = data.map((value) => Number(value)).filter(Number.isFinite)

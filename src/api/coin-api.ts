@@ -40,6 +40,19 @@ export class CoinApi {
     const res = await axios.get(`https://www.okx.com/priapi/v5/market/currency-trend?baseCcy=${coin.ccy}&limit=288&bar=5m&quoteCcy=${quoteCcy}&isPremium=false`)
     return res.data.data
   }
+
+  static async getIndexTicker(instId: string): Promise<IndexTicker | null> {
+    try {
+      const res = await axios.get(`https://www.okx.com/api/v5/market/index-tickers?instId=${instId}`)
+      if (res.data?.code === '0' && res.data?.data?.length > 0) {
+        return res.data.data[0] as IndexTicker
+      }
+      return null
+    }
+    catch {
+      return null
+    }
+  }
 }
 export type CoinType = 'BTC-USD' | 'ETH-USD' | 'DOGE-USD' | 'SYN-USD'
 export interface CandleData {

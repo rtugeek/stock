@@ -151,8 +151,9 @@ export default function StockMediumConfigView({ open = true, onOpenChange, onSav
         </div>
         <Separator />
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange?.(false)}>取消</Button>
-          <Button onClick={onSave}>确定</Button>
+          <Button type="button" onClick={() => window.close()}>
+            关闭
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

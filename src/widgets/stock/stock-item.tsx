@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
+import { ExchangeTag } from '@/components/exchange-tag'
 import { cn, formatMoney, formatNumber, formatPercent } from '@/lib/utils'
 import type { Stock } from '@/model/stock'
 
@@ -113,17 +114,6 @@ function MiniSparkline({ ratio, color, seed }: MiniSparklineProps) {
   )
 }
 
-const MARKET_LABEL: Record<string, { label: string; cls: string; flag: string }> = {
-  us: { label: 'US', cls: 'bg-red-500/15 text-red-400 border-red-500/30', flag: 'us' },
-  hk: { label: 'HK', cls: 'bg-blue-500/15 text-blue-400 border-blue-500/30', flag: 'hk' },
-  cn: { label: 'CN', cls: 'bg-purple-500/15 text-purple-400 border-purple-500/30', flag: 'cn' },
-}
-
-function getMarketBadge(stock: Stock) {
-  const m = stock.market?.toLowerCase() || 'us'
-  return MARKET_LABEL[m] || MARKET_LABEL.us
-}
-
 interface StockItemProps {
   stock: Stock
   idx: number
@@ -156,7 +146,6 @@ export default function StockItem({ stock, idx, isLast, metricMode, getColorByVa
       : `${returnAmount >= 0 ? '+' : ''}${formatMoney(returnAmount)}`
   const { color: marketColor } = getColorByValue(ratio)
   const { color: metricColor } = getColorByValue(metricValue)
-  const badge = getMarketBadge(stock)
 
   return (
     <div
@@ -171,10 +160,11 @@ export default function StockItem({ stock, idx, isLast, metricMode, getColorByVa
           {stock.name}
         </span>
         <div className="flex items-center gap-1.5 mt-1">
-          <img
-            src={`https://flagcdn.com/w40/${badge.flag}.png`}
-            alt={badge.label}
-            style={{ height: '10px' }}
+          <ExchangeTag
+            exchange={stock.market || 'us'}
+            size="xs"
+            style={{ height: '10px', width: 'auto' }}
+            className="!w-auto"
           />
           <span className="text-[12px] leading-none tracking-wide" style={{ color: 'var(--widget-color, inherit)' }}>
             {stock.code}

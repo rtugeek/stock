@@ -4,7 +4,7 @@ import type { ColumnDef } from '@tanstack/react-table'
 import { useWidgetStorage, useWidgetTheme, WidgetThemeForm, Window } from '@widget-js/react'
 import { useSelfSelectStockStore } from '@/store/use-self-select-stock-store'
 import { useStockColorStore } from '@/store/use-stock-color-store'
-import { BaiDuStockApi } from '@/api/bai-du-stock-api'
+import { EastMoneyStockApi } from '@/api/eastmoney-stock-api'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -67,7 +67,7 @@ export default function StockConfigView({ open = true, onOpenChange, onSave }: S
     setListLoading(true)
     try {
       const results = await Promise.allSettled(
-        stockList.map((stock) => BaiDuStockApi.getByType<Stock>(stock.code, stock.type))
+        stockList.map((stock) => EastMoneyStockApi.getByType<Stock>(stock.code, stock.type))
       )
       const refreshed = stockList.map((original, index) => {
         const result = results[index]
@@ -240,11 +240,8 @@ export default function StockConfigView({ open = true, onOpenChange, onSave }: S
 
   const footer = (
     <div className="flex flex-wrap justify-end gap-3">
-      <Button type="button" variant="outline" onClick={() => onSave?.(false)}>
-        应用
-      </Button>
-      <Button type="button" onClick={() => onSave?.(true)}>
-        保存并关闭
+      <Button type="button" onClick={() => window.close()}>
+        关闭
       </Button>
     </div>
   )

@@ -1,7 +1,30 @@
 import type { OpenDataResult } from '@/api/opendata'
 import type { Stock } from '@/model/stock'
 import { Quotation } from '@/model/quotation'
-import axios from 'axios'
+import axios, { type AxiosRequestConfig } from 'axios'
+
+const CACHE_TTL_MS = 60_000
+const cache = new Map<string, { expireAt: number; value: any }>()
+
+function cacheKey(url: string, params?: Record<string, any>): string {
+  if (!params || Object.keys(params).length === 0) return url
+  const sorted = Object.keys(params)
+    .sort()
+    .map((k) => `${k}=${JSON.stringify(params[k])}`)
+  return `${url}?${sorted.join('&')}`
+}
+
+async function cachedGet<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
+  const key = cacheKey(url, config?.params as Record<string, any> | undefined)
+  const hit = cache.get(key)
+  const now = Date.now()
+  if (hit && hit.expireAt > now) {
+    return hit.value as T
+  }
+  const response = await axios.get(url, config)
+  cache.set(key, { expireAt: now + CACHE_TTL_MS, value: response.data })
+  return response.data as T
+}
 
 export class BaiDuStockApi {
   /**
@@ -37,8 +60,8 @@ export class BaiDuStockApi {
   }
 
   static async getQuotation(code: string): Promise<BaiDuApiResponse<QuotationResult>> {
-    const response = await axios.get(`https://finance.pae.baidu.com/vapi/v1/getquotation?all=1&srcid=5353&pointType=string&group=quotation_fiveday_ab&market_type=ab&new_Format=1&finClientType=pc&code=${code}`)
-    return response.data as BaiDuApiResponse<QuotationResult>
+    const data = await cachedGet(`https://finance.pae.baidu.com/vapi/v1/getquotation?all=1&srcid=5353&pointType=string&group=quotation_fiveday_ab&market_type=ab&new_Format=1&finClientType=pc&code=${code}`)
+    return data as BaiDuApiResponse<QuotationResult>
   }
 
   /**
@@ -47,10 +70,10 @@ export class BaiDuStockApi {
    * @param month 1,3,6,12,36,60
    */
   static async getOpenData(query: string, month: number): Promise<OpenDataResult | undefined> {
-    const response = await axios.get(`https://gushitong.baidu.com/opendata?resource_id=5824&query=${query}&new_need_di=1&source=qieman&m=${month}&t=ai&finClientType=pc`)
-    const data = response.data as BaiDuApiResponse<OpenDataResult[]>
-    if (data.Result && data.Result.length > 0) {
-      return data.Result[0]
+    const data = await cachedGet(`https://gushitong.baidu.com/opendata?resource_id=5824&query=${query}&new_need_di=1&source=qieman&m=${month}&t=ai&finClientType=pc`)
+    const res = data as BaiDuApiResponse<OpenDataResult[]>
+    if (res.Result && res.Result.length > 0) {
+      return res.Result[0]
     }
     return undefined
   }
@@ -61,7 +84,7 @@ export class BaiDuStockApi {
    * @param group quotation_minute_ab  quotation_index_fiveday
    */
   static async getQuotationMinute(code: string, group: QuotationGroup = 'quotation_minute_ab'): Promise<Quotation> {
-    const response = await axios.get(`https://finance.pae.baidu.com/vapi/v1/getquotation`, {
+    const data = await cachedGet(`https://finance.pae.baidu.com/vapi/v1/getquotation`, {
       params: {
         all: 1,
         srcid: 5353,
@@ -74,13 +97,13 @@ export class BaiDuStockApi {
         stock_type: 'ab',
       },
     })
-    const data = response.data as BaiDuApiResponse<Quotation>
-    return new Quotation(data.Result)
+    const res = data as BaiDuApiResponse<Quotation>
+    return new Quotation(res.Result)
   }
 
   static async selfSelect(code: string) {
-    const response = await axios.get(`https://finance.pae.baidu.com/selfselect/sug?wd=${code}&skip_login=1&finClientType=pc`)
-    return response.data as BaiDuApiResponse<any>
+    const data = await cachedGet(`https://finance.pae.baidu.com/selfselect/sug?wd=${code}&skip_login=1&finClientType=pc`)
+    return data as BaiDuApiResponse<any>
   }
 
   /**

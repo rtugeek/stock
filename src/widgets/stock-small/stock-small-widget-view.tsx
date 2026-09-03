@@ -1,11 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { WidgetWrapper } from '@widget-js/react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { WidgetWrapper, useWidgetStorage, useWidget } from '@widget-js/react'
 import { createGlobalStyle } from 'styled-components'
+import Color from 'color'
+import { ExchangeTag } from '@/components/exchange-tag'
 import { useStockColorStore } from '@/store/use-stock-color-store'
-import { Badge } from '@/components/ui/badge'
+import { EastMoneyStockApi, type EmMinuteRaw } from '@/api/eastmoney-stock-api'
+import { useInterval } from '@/hooks/use-interval'
 import { TrendingDown, TrendingUp } from 'lucide-react'
-import { cn, formatNumber, formatPercent } from '@/lib/utils'
-import type { StockType } from '@/api/bai-du-stock-api'
+import { cn, formatPercent } from '@/lib/utils'
 
 const StockSmallGlobalStyle = createGlobalStyle`
   body {
@@ -16,34 +18,6 @@ const StockSmallGlobalStyle = createGlobalStyle`
     user-select: none;
   }
 `
-
-interface StockQuotation {
-  basicinfos: {
-    name: string
-    exchange: string
-  }
-  cur: {
-    price: string
-    ratio: string
-    increase: string
-  }
-  financeType?: string
-}
-
-const MOCK_QUOTATION: Record<string, StockQuotation> = {
-  '01810': {
-    basicinfos: { name: '小米集团-W', exchange: 'HK' },
-    cur: { price: '18.56', ratio: '1.87', increase: '0.34' },
-  },
-  AAPL: {
-    basicinfos: { name: 'Apple', exchange: 'NSD' },
-    cur: { price: '189.84', ratio: '1.23', increase: '2.31' },
-  },
-  '00700': {
-    basicinfos: { name: '腾讯控股', exchange: 'HK' },
-    cur: { price: '382.40', ratio: '-2.10', increase: '-8.20' },
-  },
-}
 
 interface QuotationMinuteData {
   times: string[]
@@ -94,8 +68,8 @@ function SmallLineChart({ data, isUp, color }: { data: QuotationMinuteData; isUp
     const lastX = W
     const lastY = padTop + chartH - ((values[values.length - 1] - min) / range) * chartH
     const grad = ctx.createLinearGradient(0, padTop, 0, H - padBottom)
-    grad.addColorStop(0, color + '4D')
-    grad.addColorStop(1, color + '00')
+    grad.addColorStop(0, Color(color).alpha(0.3).string())
+    grad.addColorStop(1, Color(color).alpha(0).string())
     ctx.lineTo(lastX, H - padBottom)
     ctx.lineTo(padX, H - padBottom)
     ctx.closePath()
@@ -106,62 +80,98 @@ function SmallLineChart({ data, isUp, color }: { data: QuotationMinuteData; isUp
   return <canvas ref={canvasRef} className="w-full h-full" style={{ display: 'block' }} />
 }
 
-export default function StockSmallWidgetView() {
-  const { getColorByValue } = useStockColorStore()
-  const [stockCode] = useState<string>('01810')
-  const [stockType] = useState<StockType>('stock')
-  const [quotation, setQuotation] = useState<StockQuotation | null>(null)
-  const [chartData] = useState<QuotationMinuteData>(() => {
-    const base = Number.parseFloat(MOCK_QUOTATION['01810'].cur.price)
-    const points = 48
-    const times: string[] = []
-    const data: number[] = []
-    let val = base
-    for (let i = 0; i < points; i++) {
-      const h = 9 + Math.floor((i * 4) / points)
-      const m = ((i * 4) % points) * (60 / points)
-      times.push(`${String(h).padStart(2, '0')}:${String(Math.floor(m)).padStart(2, '0')}`)
-      val += (Math.random() - 0.48) * 0.15
-      data.push(Number(val.toFixed(2)))
-    }
-    return { times, data }
-  })
+function emMarketToExchangeCode(market: number): string {
+  if (market === 1) return 'sh'
+  if (market === 0) return 'sz'
+  if (market === 116) return 'hk'
+  if (market === 105 || market === 106 || market === 107) return 'nasdaq'
+  if (market === 113 || market === 114) return 'nyse'
+  if (market === 155 || market === 156 || market === 157) return 'us'
+  return 'us'
+}
 
-  useEffect(() => {
-    const mock = MOCK_QUOTATION[stockCode] || MOCK_QUOTATION['01810']
-    setQuotation(mock)
-    const timer = setInterval(() => {
-      setQuotation((prev) => {
-        if (!prev) return mock
-        const delta = (Math.random() - 0.5) * 0.1
-        const newPrice = (Number.parseFloat(prev.cur.price) + delta).toFixed(2)
-        const base = 18.22
-        const newRatio = (((Number.parseFloat(newPrice) - base) / base) * 100).toFixed(2)
-        return {
-          ...prev,
-          cur: {
-            ...prev.cur,
-            price: newPrice,
-            ratio: newRatio,
-          },
-        }
-      })
-    }, 5000)
-    return () => clearInterval(timer)
+function parseNumberSafe(v: string | number | undefined | null, fallback = 0): number {
+  if (v === undefined || v === null || v === '') return fallback
+  const n = Number.parseFloat(String(v))
+  return Number.isNaN(n) ? fallback : n
+}
+
+export default function StockSmallWidgetView() {
+  useWidget()
+  const { getColorByValue } = useStockColorStore()
+  const [stockCode] = useWidgetStorage<string>('stock-small-code', '01810')
+  const [refreshInterval] = useWidgetStorage<string>('stock-small-refresh', '60000')
+
+  const [quotation, setQuotation] = useState<EmMinuteRaw | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  const refresh = useCallback(async () => {
+    setLoading(true)
+    try {
+      const data = await EastMoneyStockApi.getRawMinuteTrends(stockCode)
+      if (data) setQuotation(data)
+    } finally {
+      setLoading(false)
+    }
   }, [stockCode])
 
-  const ratio = useMemo(() => Number.parseFloat(quotation?.cur.ratio ?? '0'), [quotation])
-  const isUp = ratio >= 0
-  const { color } = getColorByValue(ratio)
+  useEffect(() => {
+    void refresh()
+  }, [refresh])
 
-  const exchangeTag = useMemo(() => {
-    const ex = quotation?.basicinfos?.exchange
-    if (!ex || ex === '') {
-      if (quotation?.financeType === 'block') return 'BK'
-      return 'err'
+  useInterval(() => {
+    void refresh()
+  }, Number.parseInt(refreshInterval || '60000', 10))
+
+  const decimal = Math.min(quotation?.decimal ?? 2, 2)
+  const preClose = quotation?.preClose ?? 0
+
+  const { lastPrice, ratio, change } = useMemo(() => {
+    if (!quotation?.trends || quotation.trends.length === 0) {
+      return { lastPrice: 0, ratio: 0, change: 0 }
     }
-    return ex
+    const lastRow = quotation.trends[quotation.trends.length - 1]
+    const parts = lastRow.split(',')
+    const close = parseNumberSafe(parts[2])
+    const diff = preClose === 0 ? 0 : close - preClose
+    const r = preClose === 0 ? 0 : (diff / preClose) * 100
+    return { lastPrice: close, ratio: r, change: diff }
+  }, [quotation, preClose])
+
+  const chartData = useMemo<QuotationMinuteData>(() => {
+    if (!quotation?.trends || quotation.trends.length === 0) {
+      return { times: [], data: [] }
+    }
+    const times: string[] = []
+    const data: number[] = []
+    for (const row of quotation.trends) {
+      const parts = row.split(',')
+      const t = parts[0]
+      const p = parseNumberSafe(parts[2], NaN)
+      if (!Number.isNaN(p)) {
+        times.push(t)
+        data.push(p)
+      }
+    }
+    return { times, data }
   }, [quotation])
+
+  const ratioNum = ratio
+  const isUp = ratioNum >= 0
+  const { color } = getColorByValue(ratioNum)
+
+  const exchangeCode = useMemo(() => {
+    if (!quotation) return ''
+    return emMarketToExchangeCode(quotation.market)
+  }, [quotation])
+
+  const displayName = quotation?.name ?? (loading ? '加载中...' : '暂无数据')
+  const displayPrice = quotation
+    ? lastPrice.toFixed(decimal)
+    : loading
+      ? '--'
+      : '0'
+  const ratioDisplay = `${ratioNum >= 0 ? '+' : ''}${ratioNum.toFixed(2)}%`
 
   return (
     <WidgetWrapper>
@@ -173,33 +183,36 @@ export default function StockSmallWidgetView() {
       <div className="px-4 pt-4 pb-2">
         <div className="flex flex-col gap-2">
           <div className="text-base font-bold leading-tight">
-            {quotation?.basicinfos?.name ?? '加载中...'}
+            {displayName}
           </div>
           <div className="flex items-center gap-1 text-xs">
-            <Badge
-              variant="outline"
-              className="h-4 px-1.5 text-[10px] font-mono border-opacity-60"
-            >
-              {exchangeTag}
-            </Badge>
+            <ExchangeTag
+              exchange={exchangeCode}
+              size="xs"
+              className="h-3.5"
+            />
             <span className="font-mono opacity-60">{stockCode}</span>
             <span
-              className={cn('ml-auto tabular-nums font-semibold', isUp ? '' : '')}
+              className={cn('ml-auto tabular-nums font-semibold flex items-center')}
               style={{ color }}
             >
-              {isUp ? (
+              {ratioNum > 0 ? (
                 <TrendingUp className="h-3 w-3 inline mr-0.5" />
-              ) : ratio < 0 ? (
+              ) : ratioNum < 0 ? (
                 <TrendingDown className="h-3 w-3 inline mr-0.5" />
               ) : null}
-              {formatPercent(quotation?.cur.ratio ?? '0')}
+              {quotation
+                ? ratioDisplay
+                : loading
+                  ? '加载中'
+                  : formatPercent('0')}
             </span>
           </div>
         </div>
       </div>
 
       <div className="px-4 text-3xl font-light leading-none tabular-nums">
-        {quotation?.cur?.price ?? '0'}
+        {displayPrice}
       </div>
 
       <div className="flex-1 px-2 pt-2 pb-3 min-h-0">

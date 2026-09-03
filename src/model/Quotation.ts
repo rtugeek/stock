@@ -1,4 +1,4 @@
-import type { NewMarketData } from '@/api/bai-du-stock-api'
+import type { NewMarketData } from '@/api/eastmoney-stock-api'
 
 export interface PankouInfos {
   indicatorTitle: string

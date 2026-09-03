@@ -1,0 +1,15 @@
+{
+  "host": ["mine"],
+  "steps": [
+    {
+      "type": "upload",
+      "local": "./dist/widget.json",
+      "remote": "/www/wwwroot/widgetjs.cn/stock/widget.json"
+    },
+    {
+      "type": "upload",
+      "local": "./dist/stock_v26_9_3.zip",
+      "remote": "/www/wwwroot/widgetjs.cn/stock/widget.zip"
+    }
+  ]
+}

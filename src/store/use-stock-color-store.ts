@@ -18,7 +18,8 @@ interface StockColorState {
 const RED = '#f82842'
 const GREEN = 'rgb(95,194,93)'
 
-export const useStockColorStore = create<StockColorState>()(
+export const useStockColorStore = create<StockColorState>(
+  // @ts-ignore
   persist(
     (set, get) => ({
       stockColor: 0,

@@ -1,5 +1,5 @@
-import { createHashRouter, Navigate, Outlet } from 'react-router-dom'
-import { lazy, Suspense } from 'react'
+import { createHashRouter, Navigate, Outlet, useLocation } from 'react-router-dom'
+import { lazy, Suspense, useEffect } from 'react'
 import { RouteErrorElement } from '@/components/error-boundary'
 
 const LandingPage = lazy(() => import('@/widgets/landing-page'))
@@ -25,6 +25,18 @@ const MetalWidgetView = lazy(() => import('@/widgets/metal/metal-widget-view'))
 const MetalConfigView = lazy(() => import('@/widgets/metal/metal-config-view'))
 
 function LazyWrapper() {
+  const location = useLocation()
+
+  useEffect(() => {
+    const isConfigOrLanding =
+      location.pathname === '/' || location.pathname.includes('/config/')
+    if (isConfigOrLanding) {
+      document.body.classList.add('app-shell')
+    } else {
+      document.body.classList.remove('app-shell')
+    }
+  }, [location.pathname])
+
   return (
     <Suspense fallback={null}>
       <Outlet />

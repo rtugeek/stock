@@ -1,6 +1,6 @@
-import { Component, type ErrorInfo, type ReactNode } from 'react'
+import { Component, useState, type ErrorInfo, type ReactNode } from 'react'
 import { isRouteErrorResponse, useRouteError } from 'react-router-dom'
-import { AlertTriangle, RefreshCw, ArrowLeft } from 'lucide-react'
+import { AlertTriangle, RefreshCw, ArrowLeft, Check, Copy } from 'lucide-react'
 import styled from 'styled-components'
 import { Button } from '@/components/ui/button'
 
@@ -189,6 +189,8 @@ export function ErrorFallback({
   onReload,
   onBack,
 }: ErrorFallbackProps) {
+  const [copied, setCopied] = useState(false)
+
   const handleBack = () => {
     if (onBack) {
       onBack()
@@ -204,6 +206,17 @@ export function ErrorFallback({
       onReload()
     } else {
       window.location.reload()
+    }
+  }
+
+  const handleCopyStack = async () => {
+    if (!error?.stack) return
+    try {
+      await navigator.clipboard.writeText(error.stack)
+      setCopied(true)
+      window.setTimeout(() => setCopied(false), 2000)
+    } catch (copyError) {
+      console.error('Failed to copy error stack', copyError)
     }
   }
 
@@ -240,6 +253,17 @@ export function ErrorFallback({
         )}
 
         <ButtonGroup>
+          {error?.stack && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleCopyStack}
+              className="gap-1.5"
+            >
+              {copied ? <Check size={14} /> : <Copy size={14} />}
+              {copied ? '已复制' : '复制堆栈'}
+            </Button>
+          )}
           {onRetry && (
             <Button
               variant="outline"

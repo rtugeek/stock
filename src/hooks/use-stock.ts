@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { Stock } from '@/model/stock'
-import { BaiDuStockApi } from '@/api/bai-du-stock-api'
+import { EastMoneyStockApi } from '@/api/eastmoney-stock-api'
 import { useStockColorStore } from '@/store/use-stock-color-store'
 import { useInterval } from './use-interval'
 
@@ -15,9 +15,10 @@ export function useStock(code: string, refreshInterval: number = 60000) {
   const refresh = useCallback(async () => {
     setLoading(true)
     try {
-      const result = await BaiDuStockApi.getByType<Stock>(code)
+      const result = await EastMoneyStockApi.getByType<Stock>(code)
       setStock(result)
-      setIsUp(result?.increase?.includes('+') ?? false)
+      const increase = Number.parseFloat(result?.increase ?? '0')
+      setIsUp(increase >= 0)
     } finally {
       setLoading(false)
     }

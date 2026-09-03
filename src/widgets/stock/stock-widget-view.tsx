@@ -7,7 +7,7 @@ import { useStockColorStore } from '@/store/use-stock-color-store'
 import type { Stock } from '@/model/stock'
 import Sortable from 'sortablejs'
 import { WidgetApi } from '@widget-js/core'
-import { BaiDuStockApi } from '@/api/bai-du-stock-api'
+import { EastMoneyStockApi } from '@/api/eastmoney-stock-api'
 import { useInterval } from '@/hooks/use-interval'
 import StockItem, { type StockMetricMode } from './stock-item'
 
@@ -81,7 +81,7 @@ export default function StockWidgetView() {
     setLoading(true)
     try {
       const results = await Promise.allSettled(
-        stockList.map((stock) => BaiDuStockApi.getByType<Stock>(stock.code, stock.type))
+        stockList.map((stock) => EastMoneyStockApi.getByType<Stock>(stock.code, stock.type))
       )
       const refreshed = stockList.map((original, index) => {
         const result = results[index]
